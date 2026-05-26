@@ -38,7 +38,7 @@ const GOV_LINKS = [
 const QUICK_FILTERS = [
   {label:"🛋 Furnished",    key:"furnished"},
   {label:"🐾 Pet Friendly", key:"pet"},
-  {label:"👥 Flatmate OK",  key:"flatmate"},
+  {label:"👥 Flatmate",  key:"flatmate"},
   {label:"🚗 Parking",      key:"parking"},
   {label:"⚡ Generator",    key:"gen"},
   {label:"❄️ AC",           key:"ac"},
@@ -47,6 +47,103 @@ const QUICK_FILTERS = [
   {label:"🏋 Gym/Pool",    key:"gym"},
   {label:"📶 WiFi",        key:"wifi"},
 ];
+
+const LANG = {
+  en:{
+    topBar:"🇧🇩 Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust BashaBD",
+    signIn:"Sign In", register:"Register", agentLogin:"Agent Login", langBtn:"বাংলা 🇧🇩",
+    listBtn:"+ List Property Free",
+    tenantMode:"🔍 I'm Looking to Rent", ownerMode:"🏠 I Have a Property to List",
+    heroT1:"Find Your Next", heroT2:"Home to Rent", heroT3:"in Bangladesh",
+    heroTSub:"Search thousands of verified rentals across all 8 divisions",
+    heroO1:"List Your Vacant Property", heroO2:"Reach 1.2M+ Tenants — Free",
+    heroOSub:"Under 5 minutes · No agent fees · Direct tenant contact · Set inspection times",
+    startFree:"🚀 Start Free Listing →",
+    ownerBadges:["✅ 100% Free","⚡ Live in Minutes","📞 Direct Contact","📅 Inspection Times","🔒 Verified Tenants"],
+    searchPh:"🔍  Area, road, city… (e.g. Gulshan, Uttara)", searchBtn:"Search",
+    filtersBtn:"⚙ Filters", maxBudget:"Max ৳/mo:", resetBtn:"✕ Reset",
+    quickLabel:"QUICK FILTERS:", clearAll:"✕ Clear all",
+    propsFound:"Properties", rentals:"Rentals", forSale:"For Sale", allList:"All",
+    noMatch:"No properties match your search", clearFilters:"Clear Filters",
+    browseAreas:"Browse Popular Areas", viewAll:"View all →",
+    startListBtn:"📋 Start Listing My Property",
+    ctaTitle:"List Your Vacant Property Today",
+    ctaSub:"Free listing · Reach 10,000+ active renters · Get direct calls",
+    listFreeBtn:"{L.listFreeBtn}",
+    govTitle:"🏛 OFFICIAL GOVERNMENT RESOURCES — BANGLADESH",
+    callBtn:"📞 Call", msgOwnerBtn:"✉️ Message", inspectBtn:"📅 Inspect",
+    enquireBtn:"✉️ Enquire Now",
+    overviewTab:"🏠 Overview", utilTab:"⚡ Utilities", msgTab:"✉️ Message", inspTab:"📅 Inspections",
+    msgHeading:"Message the Owner / Agent",
+    msgName:"Your full name *", msgPhone:"Your phone *", msgEmail:"Email (optional)",
+    msgSubjects:["I'd like to schedule an inspection","Question about this property","Rental application","Other"],
+    msgPrefDate:"Preferred visit date", msgPrefTime:"Preferred time",
+    msgTimes:["Morning (8am–12pm)","Afternoon (12pm–5pm)","Evening (5pm–8pm)","Anytime"],
+    msgBodyPh:"Your message… move-in date, questions etc.",
+    sendMsgBtn:"📤 Send Message to Owner", msgSentTitle:"✅ Message Sent!", msgSentSub:"The owner will reply within 24 hours.",
+    inspHeading:"Book an Inspection", inspSub:"Pick a slot — the owner will confirm your visit.",
+    inspAvailLabel:"Available times:", confirmBookBtn:"✅ Confirm Booking", bookedTitle:"🎉 Inspection Booked!",
+    noInspMsg:"No inspection times listed yet.", callDirectLabel:"Or call directly:",
+    utilInclLabel:"Utilities Included:", noUtilsMsg:"No utilities included — tenant pays bills separately.",
+    tipsTitle:"Renting Tips for Bangladesh",
+    tips:[["📄","Verify Ownership","Always ask for Khatian & Porcha documents before signing."],
+          ["✍️","Written Rental Deed","A notarised Chukti Patra protects both tenant and owner."],
+          ["📅","Book an Inspection","Always visit the property in person before paying any advance."],
+          ["🏛","Check RAJUK Approval","Verify RAJUK or CDA building approval for Dhaka properties."]],
+    howTitle:"How BashaBD Works for Owners",
+    howSteps:[["1","📋","Create Your Listing","Fill details, set inspection times, upload photos — under 5 mins"],
+              ["2","⚡","Go Live Instantly","Reaches thousands of active renters immediately"],
+              ["3","📅","Manage Inspections","Tenants book from your available times — you get notified"],
+              ["4","📞","Get Direct Enquiries","Tenants message or call you directly — no middlemen"]],
+  },
+  bn:{
+    topBar:"🇧🇩 বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী বিশ্বাস করেন",
+    signIn:"সাইন ইন", register:"নিবন্ধন", agentLogin:"এজেন্ট লগইন", langBtn:"English 🇬🇧",
+    listBtn:"+ বিনামূল্যে তালিকা দিন",
+    tenantMode:"🔍 আমি ভাড়া খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
+    heroT1:"আপনার পরবর্তী", heroT2:"ভাড়ার বাড়ি খুঁজুন", heroT3:"বাংলাদেশে",
+    heroTSub:"সারা বাংলাদেশে হাজারো যাচাইকৃত ভাড়া — অ্যাপার্টমেন্ট, রুম ও অফিস",
+    heroO1:"আপনার খালি সম্পত্তি তালিকা দিন", heroO2:"১২ লক্ষ+ ভাড়াটিয়ার কাছে পৌঁছান — বিনামূল্যে",
+    heroOSub:"মাত্র ৫ মিনিটে · কোনো এজেন্ট ফি নেই · সরাসরি যোগাযোগ",
+    startFree:"🚀 বিনামূল্যে শুরু করুন →",
+    ownerBadges:["✅ সম্পূর্ণ বিনামূল্যে","⚡ মিনিটেই লাইভ","📞 সরাসরি যোগাযোগ","📅 পরিদর্শনের সময়","🔒 যাচাইকৃত ভাড়াটিয়া"],
+    searchPh:"🔍  এলাকা, রাস্তা, শহর… (যেমন গুলশান, উত্তরা)", searchBtn:"খুঁজুন",
+    filtersBtn:"⚙ ফিল্টার", maxBudget:"সর্বোচ্চ ৳/মাস:", resetBtn:"✕ রিসেট",
+    quickLabel:"দ্রুত ফিল্টার:", clearAll:"✕ সব মুছুন",
+    propsFound:"সম্পত্তি", rentals:"ভাড়া", forSale:"বিক্রয়", allList:"সব",
+    noMatch:"কোনো সম্পত্তি পাওয়া যায়নি", clearFilters:"ফিল্টার মুছুন",
+    browseAreas:"জনপ্রিয় এলাকা দেখুন", viewAll:"সব দেখুন →",
+    startListBtn:"📋 তালিকা শুরু করুন",
+    ctaTitle:"আজই আপনার খালি সম্পত্তি তালিকা দিন",
+    ctaSub:"বিনামূল্যে · ১০,০০০+ ভাড়াটিয়ার কাছে পৌঁছান",
+    listFreeBtn:"এখনই বিনামূল্যে →",
+    govTitle:"🏛 সরকারি সম্পদ — বাংলাদেশ",
+    callBtn:"📞 ফোন", msgOwnerBtn:"✉️ বার্তা", inspectBtn:"📅 পরিদর্শন",
+    enquireBtn:"✉️ জিজ্ঞেস করুন",
+    overviewTab:"🏠 বিবরণ", utilTab:"⚡ সুবিধা", msgTab:"✉️ বার্তা", inspTab:"📅 পরিদর্শন",
+    msgHeading:"মালিক / এজেন্টকে বার্তা পাঠান",
+    msgName:"আপনার পুরো নাম *", msgPhone:"ফোন নম্বর *", msgEmail:"ইমেইল (ঐচ্ছিক)",
+    msgSubjects:["পরিদর্শনের সময় চাই","সম্পত্তি সম্পর্কে প্রশ্ন","ভাড়ার আবেদন","অন্যান্য"],
+    msgPrefDate:"পছন্দের পরিদর্শনের তারিখ", msgPrefTime:"পছন্দের সময়",
+    msgTimes:["সকাল (৮টা–১২টা)","বিকেল (১২টা–৫টা)","সন্ধ্যা (৫টা–৮টা)","যেকোনো সময়"],
+    msgBodyPh:"আপনার বার্তা লিখুন…",
+    sendMsgBtn:"📤 মালিককে বার্তা পাঠান", msgSentTitle:"✅ বার্তা পাঠানো হয়েছে!", msgSentSub:"মালিক ২৪ ঘণ্টার মধ্যে উত্তর দেবেন।",
+    inspHeading:"পরিদর্শন বুক করুন", inspSub:"একটি সময় বেছে নিন — মালিক নিশ্চিত করবেন।",
+    inspAvailLabel:"পরিদর্শনের সময়:", confirmBookBtn:"✅ বুকিং নিশ্চিত করুন", bookedTitle:"🎉 পরিদর্শন বুক হয়েছে!",
+    noInspMsg:"এখনো কোনো পরিদর্শনের সময় নেই।", callDirectLabel:"সরাসরি ফোন করুন:",
+    utilInclLabel:"অন্তর্ভুক্ত সুবিধা:", noUtilsMsg:"কোনো ইউটিলিটি অন্তর্ভুক্ত নেই।",
+    tipsTitle:"ভাড়াটিয়াদের জন্য টিপস",
+    tips:[["📄","মালিকানা যাচাই","চুক্তি সই করার আগে খতিয়ান ও পর্চা দেখুন।"],
+          ["✍️","লিখিত চুক্তি","নোটারি করা চুক্তি পত্র উভয় পক্ষকে রক্ষা করে।"],
+          ["📅","পরিদর্শন বুক করুন","অগ্রিম দেওয়ার আগে সরেজমিনে সম্পত্তি দেখুন।"],
+          ["🏛","RAJUK অনুমোদন","ঢাকায় RAJUK বা CDA অনুমোদন যাচাই করুন।"]],
+    howTitle:"BashaBD মালিকদের জন্য কীভাবে কাজ করে",
+    howSteps:[["1","📋","তালিকা তৈরি করুন","বিবরণ দিন, পরিদর্শনের সময় সেট করুন — ৫ মিনিটে"],
+              ["2","⚡","তাৎক্ষণিক লাইভ","হাজারো ভাড়াটিয়ার কাছে পৌঁছান"],
+              ["3","📅","পরিদর্শন পরিচালনা","ভাড়াটিয়ারা বুক করেন — আপনি নোটিশ পান"],
+              ["4","📞","সরাসরি অনুসন্ধান","ভাড়াটিয়ারা সরাসরি ফোন বা বার্তা পাঠান"]],
+  },
+};
 
 function fmtPrice(price, status) {
   if (status==="for-rent") return {main:`৳${price.toLocaleString("en-BD")}`, sub:"/mo"};
@@ -546,6 +643,8 @@ export default function App() {
   const [budgetMax,  setBudgetMax]  = useState("");
   const [showAdv,    setShowAdv]    = useState(false);
   const [mainTab,    setMainTab]    = useState("tenant");
+  const [lang,       setLang]       = useState("en");
+  const L = LANG[lang];
 
   const toggleQ = k => setActiveQ(p=>p.includes(k)?p.filter(x=>x!==k):[...p,k]);
 
@@ -586,8 +685,17 @@ export default function App() {
 
       {/* TOP BAR */}
       <div style={{background:T.green,color:"#fff",fontSize:11,padding:"4px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span>🇧🇩 Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust BashaBD</span>
-        <div style={{display:"flex",gap:16}}><span style={{cursor:"pointer",opacity:.85}}>Sign In</span><span style={{cursor:"pointer",opacity:.85}}>Register</span><span style={{cursor:"pointer",opacity:.85}}>Agent Login</span></div>
+        <span>{L.topBar}</span>
+        <div style={{display:"flex",gap:12,alignItems:"center"}}>
+          <span style={{cursor:"pointer",opacity:.85}}>{L.signIn}</span>
+          <span style={{cursor:"pointer",opacity:.85}}>{L.register}</span>
+          <span style={{cursor:"pointer",opacity:.85}}>{L.agentLogin}</span>
+          <button onClick={()=>setLang(l=>l==="en"?"bn":"en")} style={{
+            background:"rgba(255,255,255,0.2)",border:"1.5px solid rgba(255,255,255,0.6)",
+            borderRadius:14,padding:"3px 11px",color:"#fff",fontSize:11,fontWeight:800,
+            cursor:"pointer",letterSpacing:.3,marginLeft:4
+          }}>{L.langBtn}</button>
+        </div>
       </div>
 
       {/* HEADER */}
@@ -605,7 +713,7 @@ export default function App() {
           ))}
         </nav>
         <button onClick={()=>setShowWizard(true)} style={{background:T.red,color:"#fff",border:"none",padding:"9px 18px",borderRadius:20,fontWeight:800,fontSize:12,cursor:"pointer",boxShadow:"0 2px 10px rgba(200,16,46,0.3)"}}>
-          + List Property Free
+          {L.listBtn}
         </button>
       </header>
 
@@ -618,34 +726,34 @@ export default function App() {
           {/* Mode toggle */}
           <div style={{display:"inline-flex",background:"#f1f3f5",borderRadius:13,padding:4,marginBottom:22,gap:3}}>
             <button onClick={()=>{setMainTab("tenant");setStatus("for-rent");}} style={{padding:"9px 22px",borderRadius:9,border:"none",cursor:"pointer",fontWeight:800,fontSize:13,transition:"all .2s",background:mainTab==="tenant"?T.red:"transparent",color:mainTab==="tenant"?"#fff":"#666",boxShadow:mainTab==="tenant"?"0 2px 10px rgba(200,16,46,0.25)":"none"}}>
-              🔍 I'm Looking to Rent
+              {L.tenantMode}
             </button>
             <button onClick={()=>{setMainTab("owner");}} style={{padding:"9px 22px",borderRadius:9,border:"none",cursor:"pointer",fontWeight:800,fontSize:13,transition:"all .2s",background:mainTab==="owner"?T.green:"transparent",color:mainTab==="owner"?"#fff":"#666",boxShadow:mainTab==="owner"?"0 2px 10px rgba(26,107,60,0.25)":"none"}}>
-              🏠 I Have a Property to List
+              {L.ownerMode}
             </button>
           </div>
 
           {mainTab==="owner" ? (
             <div>
               <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:36,fontWeight:900,margin:"0 0 10px",color:T.text,lineHeight:1.1}}>
-                List Your Vacant Property<br/><span style={{color:T.green}}>Reach 1.2M+ Tenants</span> — Free
+                {L.heroO1}<br/><span style={{color:T.green}}>{L.heroO2}</span>
               </h1>
-              <p style={{fontSize:14,color:T.muted,marginBottom:24}}>Under 5 minutes · No agent fees · Direct tenant contact · Set inspection times</p>
+              <p style={{fontSize:14,color:T.muted,marginBottom:24}}>{L.heroOSub}</p>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:26,flexWrap:"wrap"}}>
                 {["✅ 100% Free","⚡ Live in Minutes","📞 Direct Contact","📅 Set Inspection Times","🔒 Verified Tenants"].map(t=>(
                   <div key={t} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:20,padding:"6px 14px",fontSize:12,fontWeight:700,boxShadow:"0 1px 4px rgba(0,0,0,0.05)"}}>{t}</div>
                 ))}
               </div>
               <button onClick={()=>setShowWizard(true)} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
-                🚀 Start Free Listing →
+                {L.startFree}
               </button>
             </div>
           ) : (
             <div>
               <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:36,fontWeight:900,margin:"0 0 10px",color:T.text,lineHeight:1.1}}>
-                Find Your Next <span style={{color:T.red}}>Home to Rent</span><br/>in Bangladesh
+                {L.heroT1} <span style={{color:T.red}}>{L.heroT2}</span><br/>{L.heroT3}
               </h1>
-              <p style={{fontSize:14,color:T.muted,marginBottom:24}}>Search thousands of verified rentals across all 8 divisions</p>
+              <p style={{fontSize:14,color:T.muted,marginBottom:24}}>{L.heroTSub}</p>
               <div style={{background:"#fff",borderRadius:16,padding:"18px 20px",maxWidth:860,margin:"0 auto",boxShadow:"0 6px 40px rgba(0,0,0,0.1)",border:`1px solid ${T.border}`}}>
                 <div style={{display:"flex",gap:5,marginBottom:12,flexWrap:"wrap"}}>
                   {[["🔑 Rent","for-rent"],["🏢 Buy","for-sale"],["📊 All","all"]].map(([label,val])=>(
@@ -656,7 +764,7 @@ export default function App() {
                   <button onClick={()=>setShowAdv(!showAdv)} style={{marginLeft:"auto",padding:"6px 13px",border:`1.5px solid ${T.border}`,borderRadius:8,background:"#fff",cursor:"pointer",fontSize:12,fontWeight:600,color:T.muted}}>⚙ Filters {showAdv?"▲":"▼"}</button>
                 </div>
                 <div style={{display:"flex",gap:9,flexWrap:"wrap"}}>
-                  <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="🔍  Area, road, city… (e.g. Gulshan, Uttara)"
+                  <input value={search} onChange={e=>setSearch(e.target.value)} placeholder={L.searchPh}
                     style={{flex:"2 1 180px",padding:"11px 14px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none"}}/>
                   <select value={typeF} onChange={e=>setTypeF(e.target.value)} style={{flex:"1 1 110px",padding:"11px 9px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:12,color:"#444",background:"#fff"}}>
                     {PTYPES.map(p=><option key={p}>{p}</option>)}
@@ -664,7 +772,7 @@ export default function App() {
                   <select value={divF} onChange={e=>setDivF(e.target.value)} style={{flex:"1 1 120px",padding:"11px 9px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:12,color:"#444",background:"#fff"}}>
                     {DIVISIONS.map(d=><option key={d}>{d}</option>)}
                   </select>
-                  <button style={{background:T.red,color:"#fff",border:"none",padding:"11px 22px",borderRadius:9,fontWeight:800,fontSize:14,cursor:"pointer"}}>Search</button>
+                  <button style={{background:T.red,color:"#fff",border:"none",padding:"11px 22px",borderRadius:9,fontWeight:800,fontSize:14,cursor:"pointer"}}>{L.searchBtn}</button>
                 </div>
                 {showAdv && (
                   <div style={{marginTop:12,paddingTop:12,borderTop:"1px solid #f0f0f0",display:"flex",gap:9,flexWrap:"wrap",alignItems:"center"}}>
@@ -698,11 +806,11 @@ export default function App() {
 
       {/* QUICK FILTERS */}
       <div style={{background:"#fff",borderBottom:`1px solid ${T.border}`,padding:"9px 20px",display:"flex",gap:6,overflowX:"auto",whiteSpace:"nowrap",alignItems:"center"}}>
-        <span style={{fontSize:10,fontWeight:800,color:T.muted,flexShrink:0,marginRight:3}}>QUICK FILTERS:</span>
+        <span style={{fontSize:10,fontWeight:800,color:T.muted,flexShrink:0,marginRight:3}}>{L.quickLabel}</span>
         {QUICK_FILTERS.map(f=>(
           <Pill key={f.key} active={activeQ.includes(f.key)} onClick={()=>toggleQ(f.key)}>{f.label}</Pill>
         ))}
-        {activeQ.length>0 && <Pill onClick={()=>setActiveQ([])}>✕ Clear all</Pill>}
+        {activeQ.length>0 && <Pill onClick={()=>setActiveQ([])}>{L.clearAll}</Pill>}
       </div>
 
       {/* MAIN */}
@@ -726,7 +834,7 @@ export default function App() {
               ))}
             </div>
             <div style={{textAlign:"center",marginTop:16}}>
-              <button onClick={()=>setShowWizard(true)} style={{background:T.green,color:"#fff",border:"none",padding:"12px 34px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer"}}>📋 Start Listing My Property</button>
+              <button onClick={()=>setShowWizard(true)} style={{background:T.green,color:"#fff",border:"none",padding:"12px 34px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer"}}>{L.startListBtn}</button>
             </div>
           </div>
         )}
@@ -759,7 +867,7 @@ export default function App() {
         {/* Popular Areas */}
         <div style={{marginTop:44}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:0}}>Browse Popular Areas</h2>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:0}}>{L.browseAreas}</h2>
             <span style={{fontSize:13,color:T.green,fontWeight:700,cursor:"pointer"}}>View all →</span>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:8}}>
@@ -807,7 +915,7 @@ export default function App() {
       {/* GOVT LINKS */}
       <div style={{background:"#fff",borderTop:`2px solid ${T.border}`,marginTop:32}}>
         <div style={{maxWidth:1220,margin:"0 auto",padding:"12px 18px"}}>
-          <div style={{fontSize:10,fontWeight:800,color:"#9ca3af",letterSpacing:1.5,marginBottom:9}}>🏛 OFFICIAL GOVERNMENT RESOURCES — BANGLADESH</div>
+          <div style={{fontSize:10,fontWeight:800,color:"#9ca3af",letterSpacing:1.5,marginBottom:9}}>{L.govTitle}</div>
           <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
             {GOV_LINKS.map(g=>(
               <a key={g.label} href={g.url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:4,padding:"5px 11px",background:"#f9fafb",border:`1.5px solid ${T.border}`,borderRadius:18,fontSize:11,fontWeight:700,color:"#374151",textDecoration:"none",transition:"all .15s"}}
