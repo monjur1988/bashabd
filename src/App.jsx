@@ -781,54 +781,17 @@ function DetailModal({p, onClose, L}){
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:12,overflowY:"auto"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:20,width:"100%",maxWidth:700,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(0,0,0,0.3)",margin:"auto"}}>
         {/* ── PHOTO GALLERY ── */}
-        {(()=>{
-          // Build gallery: use uploaded photos if available, else use default img
-          const gallery = p.galleryUrls && p.galleryUrls.length>0
-            ? p.galleryUrls
-            : [p.img, p.img2||p.img, p.img3||p.img].filter(Boolean).slice(0,3);
-          return (
-            <div style={{position:"relative",borderRadius:"20px 20px 0 0",overflow:"hidden"}}>
-              {/* Main image */}
-              <img src={gallery[activeGallery]||p.img} alt={p.title}
-                style={{width:"100%",height:260,objectFit:"cover",display:"block",transition:"opacity .2s"}}/>
-
-              {/* Thumbnail strip */}
-              {gallery.length>1&&(
-                <div style={{position:"absolute",bottom:48,left:12,display:"flex",gap:5}}>
-                  {gallery.map((url,i)=>(
-                    <button key={i} onClick={()=>setActiveGallery(i)} style={{
-                      width:40,height:30,borderRadius:5,overflow:"hidden",border:`2px solid ${i===activeGallery?"#fff":"rgba(255,255,255,0.4)"}`,
-                      padding:0,cursor:"pointer",flexShrink:0,background:"transparent"
-                    }}>
-                      <img src={url} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Arrow nav */}
-              {gallery.length>1&&(<>
-                <button onClick={()=>setActiveGallery(g=>(g-1+gallery.length)%gallery.length)}
-                  style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.85)",border:"none",borderRadius:"50%",width:32,height:32,cursor:"pointer",fontWeight:800,fontSize:16,display:"flex",alignItems:"center",justifyContent:"center"}}>‹</button>
-                <button onClick={()=>setActiveGallery(g=>(g+1)%gallery.length)}
-                  style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.85)",border:"none",borderRadius:"50%",width:32,height:32,cursor:"pointer",fontWeight:800,fontSize:16,display:"flex",alignItems:"center",justifyContent:"center"}}>›</button>
-              </>)}
-
-              {/* Photo count badge */}
-              <div style={{position:"absolute",top:10,left:14,background:"rgba(0,0,0,0.5)",color:"#fff",fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:12}}>
-                📷 {activeGallery+1}/{gallery.length}
-              </div>
-
-              <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
-              <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
-                <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
-                  {p.status==="for-sale"?"FOR SALE":"FOR RENT"}
-                </span>
-                {p.featured&&<span style={{background:T.gold,color:"#111",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>★ FEATURED</span>}
-              </div>
-            </div>
-          );
-        })()}
+        <div style={{position:"relative",borderRadius:"20px 20px 0 0",overflow:"hidden"}}>
+          <img src={p.img} alt={p.title}
+            style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
+          <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
+          <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
+            <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
+              {p.status==="for-sale"?"FOR SALE":"FOR RENT"}
+            </span>
+            {p.featured&&<span style={{background:T.gold,color:"#111",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>★ FEATURED</span>}
+          </div>
+        </div>
         <div style={{padding:"20px 24px 26px"}}>
           <div style={{marginBottom:16}}>
             <div style={{fontSize:26,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif",lineHeight:1}}>
