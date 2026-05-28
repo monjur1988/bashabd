@@ -908,7 +908,30 @@ function DetailModal({p, onClose, L}){
                   </div>
                   <textarea rows={3} value={msg.body} onChange={e=>upd("body",e.target.value)} placeholder="Your message… include move-in date, questions, etc."
                     style={{padding:"10px 12px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none",resize:"vertical",fontFamily:"inherit"}}/>
-                  <button onClick={()=>{if(msg.name&&msg.phone)setMsgSent(true);}} style={{background:T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>{L.sendMsgBtn}</button>
+                  <button onClick={async()=>{
+                    if(!msg.name||!msg.phone) return;
+                    setMsgSent(true);
+                    try {
+                      await fetch("/api/send-email",{
+                        method:"POST",
+                        headers:{"Content-Type":"application/json"},
+                        body:JSON.stringify({
+                          type:"owner_new_message",
+                          data:{
+                            ownerEmail:"monjur111@gmail.com",
+                            propertyTitle:p.title,
+                            senderName:msg.name,
+                            senderPhone:msg.phone,
+                            senderEmail:msg.email,
+                            subject:msg.subject,
+                            body:msg.body,
+                            prefDate:msg.prefDate,
+                            prefTime:msg.prefTime,
+                          }
+                        })
+                      });
+                    } catch(e){ console.log("Email error:",e); }
+                  }} style={{background:T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>{L.sendMsgBtn}</button>
                 </div>
               )}
             </div>
@@ -936,7 +959,26 @@ function DetailModal({p, onClose, L}){
                       </button>
                     ))}
                   </div>
-                  <button onClick={()=>{if(selectedSlot)setBooked(true);}} disabled={!selectedSlot}
+                  <button onClick={async()=>{
+                    if(!selectedSlot) return;
+                    setBooked(true);
+                    try {
+                      await fetch("/api/send-email",{
+                        method:"POST",
+                        headers:{"Content-Type":"application/json"},
+                        body:JSON.stringify({
+                          type:"owner_inspection_booked",
+                          data:{
+                            ownerEmail:"monjur111@gmail.com",
+                            propertyTitle:p.title,
+                            tenantName:"Tenant",
+                            tenantPhone:"—",
+                            slot:selectedSlot,
+                          }
+                        })
+                      });
+                    } catch(e){ console.log("Email error:",e); }
+                  }} disabled={!selectedSlot}
                     style={{width:"100%",background:selectedSlot?T.green:"#d1d5db",color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:selectedSlot?"pointer":"not-allowed"}}>
                     {L.confirmBookBtn}
                   </button>
@@ -1257,8 +1299,18 @@ export default function App(){
     setSavedIds(prev=>prev.includes(id)?prev.filter(x=>x!==id):[...prev,id]);
   };
 
-  const handleLogin = (u) => {
+  const handleLogin = async (u) => {
     setUser(u);
+    try {
+      await fetch("/api/send-email",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          type:"welcome",
+          data:{ email:u.email, name:u.name, role:u.role }
+        })
+      });
+    } catch(e){}
     // Show appropriate dashboard
     if(u.role==="owner") setShowOwnerDash(true);
     else setShowTenantDash(true);
