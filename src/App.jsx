@@ -14,7 +14,7 @@ const LANG = {
     signIn:"Sign In", register:"Register", agentLogin:"Agent Login", langBtn:"বাংলা 🇧🇩",
     listBtn:"+ List Property Free",
     tenantMode:"🔍 I'm Looking to Rent", ownerMode:"🏠 I Have a Property to List",
-    heroT1:"Find Your Next", heroT2:"Home to Rent", heroT3:"in Bangladesh",
+    heroT1:"Find Your Next", heroT2:"Home", heroT3:"",
     heroTSub:"Search thousands of verified rentals across all 8 divisions",
     heroO1:"List Your Vacant Property", heroO2:"Reach 1.2M+ Tenants — Free",
     heroOSub:"Under 5 minutes · No agent fees · Direct tenant contact · Set inspection times",
@@ -37,7 +37,7 @@ const LANG = {
     signIn:"সাইন ইন", register:"নিবন্ধন", agentLogin:"এজেন্ট লগইন", langBtn:"English 🇬🇧",
     listBtn:"+ বিনামূল্যে তালিকা দিন",
     tenantMode:"🔍 আমি ভাড়া খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
-    heroT1:"আপনার পরবর্তী", heroT2:"ভাড়ার বাড়ি খুঁজুন", heroT3:"বাংলাদেশে",
+    heroT1:"আপনার পরবর্তী", heroT2:"বাড়ি খুঁজুন", heroT3:"",
     heroTSub:"সারা বাংলাদেশে হাজারো যাচাইকৃত ভাড়া",
     heroO1:"আপনার খালি সম্পত্তি তালিকা দিন", heroO2:"১২ লক্ষ+ ভাড়াটিয়ার কাছে পৌঁছান",
     heroOSub:"মাত্র ৫ মিনিটে · কোনো এজেন্ট ফি নেই · সরাসরি যোগাযোগ",
@@ -85,7 +85,6 @@ const QUICK_FILTERS = [
   {label:"🛋 Furnished",key:"furnished"},{label:"🐾 Pet Friendly",key:"pet"},
   {label:"👥 Flatmate",key:"flatmate"},{label:"🚗 Parking",key:"parking"},
   {label:"⚡ Generator",key:"gen"},{label:"❄️ AC",key:"ac"},
-  {label:"🌊 Sea View",key:"seaview"},{label:"📅 Has Inspection",key:"insp"},
   {label:"🏋 Gym/Pool",key:"gym"},{label:"📶 WiFi",key:"wifi"},
 ];
 
@@ -1157,10 +1156,8 @@ export default function App(){
     if(activeQ.includes("parking")&&p.cars<1) return false;
     if(activeQ.includes("gen")&&!p.tags.some(t=>t.includes("Gen")||t.includes("Generator"))) return false;
     if(activeQ.includes("ac")&&!p.tags.some(t=>t.includes("AC"))) return false;
-    if(activeQ.includes("seaview")&&!p.tags.some(t=>t.includes("Sea"))) return false;
     if(activeQ.includes("gym")&&!p.tags.some(t=>t.includes("Gym")||t.includes("Pool"))) return false;
     if(activeQ.includes("wifi")&&!p.utilities.includes("WiFi")) return false;
-    if(activeQ.includes("insp")&&(!p.inspSlots||p.inspSlots.length===0)) return false;
     return true;
   }).sort((a,b)=>{
     if(sortBy==="price-asc") return a.price-b.price;
