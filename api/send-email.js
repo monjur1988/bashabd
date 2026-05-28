@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     // ── OWNER: Tenant sent a message ─────────────────────────
     case "owner_new_message":
       emailPayload = {
-        from: "BashaBD <notifications@bashabd.com.bd>",
+        from: "BashaBD <onboarding@resend.dev>",
         to: data.ownerEmail,
         subject: `💬 New message about "${data.propertyTitle}" — BashaBD`,
         html: `
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     // ── OWNER: Tenant booked an inspection ───────────────────
     case "owner_inspection_booked":
       emailPayload = {
-        from: "BashaBD <notifications@bashabd.com.bd>",
+        from: "BashaBD <onboarding@resend.dev>",
         to: data.ownerEmail,
         subject: `📅 Inspection Booked — "${data.propertyTitle}" — BashaBD`,
         html: `
@@ -146,7 +146,7 @@ export default async function handler(req, res) {
     // ── TENANT: Message sent confirmation ────────────────────
     case "tenant_message_sent":
       emailPayload = {
-        from: "BashaBD <notifications@bashabd.com.bd>",
+        from: "BashaBD <onboarding@resend.dev>",
         to: data.tenantEmail,
         subject: `✅ Your message was sent — BashaBD`,
         html: `
@@ -181,7 +181,7 @@ export default async function handler(req, res) {
     // ── TENANT: Inspection booked confirmation ───────────────
     case "tenant_inspection_confirmed":
       emailPayload = {
-        from: "BashaBD <notifications@bashabd.com.bd>",
+        from: "BashaBD <onboarding@resend.dev>",
         to: data.tenantEmail,
         subject: `📅 Inspection Booked — "${data.propertyTitle}" — BashaBD`,
         html: `
@@ -231,7 +231,7 @@ export default async function handler(req, res) {
     // ── WELCOME: New user registered ─────────────────────────
     case "welcome":
       emailPayload = {
-        from: "BashaBD <welcome@bashabd.com.bd>",
+        from: "BashaBD <onboarding@resend.dev>",
         to: data.email,
         subject: `🏠 Welcome to BashaBD — Bangladesh's #1 Property Portal`,
         html: `
