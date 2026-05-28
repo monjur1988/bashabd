@@ -780,16 +780,55 @@ function DetailModal({p, onClose, L}){
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:12,overflowY:"auto"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:20,width:"100%",maxWidth:700,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(0,0,0,0.3)",margin:"auto"}}>
-        <div style={{position:"relative"}}>
-          <img src={p.img} alt={p.title} style={{width:"100%",height:260,objectFit:"cover",borderRadius:"20px 20px 0 0"}}/>
-          <button onClick={onClose} style={{position:"absolute",top:14,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
-          <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
-            <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
-              {p.status==="for-sale"?"FOR SALE":"FOR RENT"}
-            </span>
-            {p.featured && <span style={{background:T.gold,color:"#111",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>★ FEATURED</span>}
-          </div>
-        </div>
+        {/* ── PHOTO GALLERY ── */}
+        {(()=>{
+          // Build gallery: use uploaded photos if available, else use default img
+          const gallery = p.galleryUrls && p.galleryUrls.length>0
+            ? p.galleryUrls
+            : [p.img, p.img2||p.img, p.img3||p.img].filter(Boolean).slice(0,3);
+          return (
+            <div style={{position:"relative",borderRadius:"20px 20px 0 0",overflow:"hidden"}}>
+              {/* Main image */}
+              <img src={gallery[activeGallery]||p.img} alt={p.title}
+                style={{width:"100%",height:260,objectFit:"cover",display:"block",transition:"opacity .2s"}}/>
+
+              {/* Thumbnail strip */}
+              {gallery.length>1&&(
+                <div style={{position:"absolute",bottom:48,left:12,display:"flex",gap:5}}>
+                  {gallery.map((url,i)=>(
+                    <button key={i} onClick={()=>setActiveGallery(i)} style={{
+                      width:40,height:30,borderRadius:5,overflow:"hidden",border:`2px solid ${i===activeGallery?"#fff":"rgba(255,255,255,0.4)"}`,
+                      padding:0,cursor:"pointer",flexShrink:0,background:"transparent"
+                    }}>
+                      <img src={url} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Arrow nav */}
+              {gallery.length>1&&(<>
+                <button onClick={()=>setActiveGallery(g=>(g-1+gallery.length)%gallery.length)}
+                  style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.85)",border:"none",borderRadius:"50%",width:32,height:32,cursor:"pointer",fontWeight:800,fontSize:16,display:"flex",alignItems:"center",justifyContent:"center"}}>‹</button>
+                <button onClick={()=>setActiveGallery(g=>(g+1)%gallery.length)}
+                  style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.85)",border:"none",borderRadius:"50%",width:32,height:32,cursor:"pointer",fontWeight:800,fontSize:16,display:"flex",alignItems:"center",justifyContent:"center"}}>›</button>
+              </>)}
+
+              {/* Photo count badge */}
+              <div style={{position:"absolute",top:10,left:14,background:"rgba(0,0,0,0.5)",color:"#fff",fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:12}}>
+                📷 {activeGallery+1}/{gallery.length}
+              </div>
+
+              <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
+              <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
+                <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
+                  {p.status==="for-sale"?"FOR SALE":"FOR RENT"}
+                </span>
+                {p.featured&&<span style={{background:T.gold,color:"#111",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>★ FEATURED</span>}
+              </div>
+            </div>
+          );
+        })()}
         <div style={{padding:"20px 24px 26px"}}>
           <div style={{marginBottom:16}}>
             <div style={{fontSize:26,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif",lineHeight:1}}>
@@ -920,7 +959,7 @@ function DetailModal({p, onClose, L}){
 /* ── LISTING WIZARD ───────────────────────────── */
 function ListWizard({onClose}){
   const [step,setStep]=useState(0);
-  const [form,setForm]=useState({type:"apartment",status:"for-rent",title:"",address:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:""});
+  const [form,setForm]=useState({type:"apartment",status:"for-rent",title:"",address:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:"",photos:[],coverIdx:0});
   const upd=(k,v)=>setForm(f=>({...f,[k]:v}));
   const toggleArr=(k,v)=>setForm(f=>({...f,[k]:f[k].includes(v)?f[k].filter(x=>x!==v):[...f[k],v]}));
   const addSlot=()=>setForm(f=>({...f,inspSlots:[...f.inspSlots,{day:"",time:""}]}));
@@ -1061,7 +1100,93 @@ function ListWizard({onClose}){
                 <textarea rows={4} value={form.desc} onChange={e=>upd("desc",e.target.value)} placeholder="Describe your property — nearby landmarks, special features, house rules…"
                   style={{width:"100%",padding:"10px 12px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none",resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
               </div>
-              <div style={{border:`2px dashed ${T.border}`,borderRadius:12,padding:"24px",textAlign:"center",cursor:"pointer",color:T.muted,fontSize:13}}>📷 Click to add photos (up to 10)</div>
+              {/* ── PHOTO UPLOADER ── */}
+              <div>
+                <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:8}}>📷 PROPERTY PHOTOS (up to 10)</div>
+                <div style={{fontSize:11,color:T.muted,marginBottom:10}}>First photo = cover photo shown in listings. Tap ⭐ to change cover.</div>
+
+                {/* Upload area */}
+                <label style={{display:"block",border:`2px dashed ${form.photos.length>0?T.green:T.border}`,borderRadius:12,padding:"20px",textAlign:"center",cursor:"pointer",background:form.photos.length>0?T.greenL:"#fafafa",transition:"all .2s"}}>
+                  <input type="file" accept="image/*" multiple style={{display:"none"}}
+                    onChange={e=>{
+                      const files = Array.from(e.target.files);
+                      const remaining = 10 - form.photos.length;
+                      const toAdd = files.slice(0,remaining).map(f=>({
+                        file:f,
+                        url:URL.createObjectURL(f),
+                        name:f.name,
+                        size:(f.size/1024/1024).toFixed(1),
+                        uploading:false,
+                        done:false,
+                      }));
+                      upd("photos",[...form.photos,...toAdd]);
+                    }}
+                  />
+                  <div style={{fontSize:28,marginBottom:6}}>📷</div>
+                  <div style={{fontWeight:700,fontSize:13,color:form.photos.length>0?T.green:T.muted}}>
+                    {form.photos.length>0?`${form.photos.length} photo${form.photos.length>1?"s":""} selected — tap to add more`:"Click here to select photos"}
+                  </div>
+                  <div style={{fontSize:11,color:T.muted,marginTop:4}}>JPG, PNG, WEBP · Max 5MB each · Up to 10 photos</div>
+                </label>
+
+                {/* Photo previews */}
+                {form.photos.length>0&&(
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:12}}>
+                    {form.photos.map((ph,i)=>(
+                      <div key={i} style={{position:"relative",borderRadius:10,overflow:"hidden",border:`2.5px solid ${i===form.coverIdx?T.gold:"transparent"}`,boxShadow:i===form.coverIdx?"0 0 0 1px "+T.gold:"0 1px 4px rgba(0,0,0,0.1)"}}>
+                        <img src={ph.url} alt={ph.name} style={{width:"100%",height:80,objectFit:"cover",display:"block"}}/>
+                        {/* Cover badge */}
+                        {i===form.coverIdx&&(
+                          <div style={{position:"absolute",bottom:0,left:0,right:0,background:"rgba(245,200,66,0.92)",textAlign:"center",fontSize:9,fontWeight:800,padding:"2px",color:"#1a2e22"}}>⭐ COVER</div>
+                        )}
+                        {/* Actions */}
+                        <div style={{position:"absolute",top:4,right:4,display:"flex",gap:3}}>
+                          {i!==form.coverIdx&&(
+                            <button onClick={()=>upd("coverIdx",i)} title="Set as cover" style={{background:"rgba(245,200,66,0.9)",border:"none",borderRadius:6,width:22,height:22,cursor:"pointer",fontSize:11,display:"flex",alignItems:"center",justifyContent:"center"}}>⭐</button>
+                          )}
+                          <button onClick={()=>{
+                            const newPhotos=form.photos.filter((_,idx)=>idx!==i);
+                            upd("photos",newPhotos);
+                            if(form.coverIdx>=newPhotos.length) upd("coverIdx",0);
+                          }} style={{background:"rgba(200,16,46,0.85)",border:"none",borderRadius:6,width:22,height:22,cursor:"pointer",color:"#fff",fontSize:11,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+                        </div>
+                        {/* File size */}
+                        <div style={{position:"absolute",top:4,left:4,background:"rgba(0,0,0,0.5)",color:"#fff",fontSize:8,padding:"1px 5px",borderRadius:5}}>{ph.size}MB</div>
+                      </div>
+                    ))}
+                    {/* Add more slot */}
+                    {form.photos.length<10&&(
+                      <label style={{border:`2px dashed ${T.border}`,borderRadius:10,height:84,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer",background:"#fafafa",gap:4}}>
+                        <input type="file" accept="image/*" multiple style={{display:"none"}}
+                          onChange={e=>{
+                            const files=Array.from(e.target.files);
+                            const remaining=10-form.photos.length;
+                            const toAdd=files.slice(0,remaining).map(f=>({file:f,url:URL.createObjectURL(f),name:f.name,size:(f.size/1024/1024).toFixed(1),uploading:false,done:false}));
+                            upd("photos",[...form.photos,...toAdd]);
+                          }}
+                        />
+                        <span style={{fontSize:20}}>➕</span>
+                        <span style={{fontSize:9,color:T.muted,fontWeight:600}}>{10-form.photos.length} left</span>
+                      </label>
+                    )}
+                  </div>
+                )}
+
+                {/* Tips */}
+                {form.photos.length===0&&(
+                  <div style={{marginTop:10,display:"flex",gap:6,flexWrap:"wrap"}}>
+                    {["📸 Good lighting = more enquiries","🏠 Show living room first","🌿 Include exterior view","🚿 Bathroom & kitchen matter"].map(tip=>(
+                      <span key={tip} style={{background:T.greenL,color:T.green,fontSize:10,fontWeight:600,padding:"3px 9px",borderRadius:8,border:`1px solid ${T.greenM}`}}>{tip}</span>
+                    ))}
+                  </div>
+                )}
+
+                {form.photos.length>0&&(
+                  <div style={{marginTop:10,background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:9,padding:"9px 12px",fontSize:11,color:T.green,fontWeight:600}}>
+                    ✅ {form.photos.length} photo{form.photos.length>1?"s":""} ready · Cover: photo #{form.coverIdx+1} · These will be uploaded when you publish
+                  </div>
+                )}
+              </div>
               {form.price&&<div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:11,padding:"11px 13px",fontSize:12,color:T.green,fontWeight:600}}>👁 Preview: <strong>{form.title||"Your Property"}</strong> · ৳{Number(form.price||0).toLocaleString("en-BD")}{form.status==="for-rent"?"/mo":""} · {form.division}{form.inspSlots.filter(s=>s.day).length>0&&` · ${form.inspSlots.filter(s=>s.day).length} inspection slot(s)`}</div>}
             </div>
           )}
@@ -1078,6 +1203,7 @@ function ListWizard({onClose}){
                   🛏 {form.beds||"?"} Beds · 🚿 {form.baths||"?"} Baths · 📐 {form.area||"?"} sqft<br/>
                   {form.utils.length>0&&<span>⚡ Includes: {form.utils.join(", ")}<br/></span>}
                   {form.inspSlots.filter(s=>s.day).length>0&&<span>📅 {form.inspSlots.filter(s=>s.day).map(s=>`${s.day}${s.time?" – "+s.time:""}`).join(" | ")}<br/></span>}
+                  {form.photos.length>0&&<span>📷 {form.photos.length} photo{form.photos.length>1?"s":""} ready to upload<br/></span>}
                   {form.petFriendly&&<span>🐾 Pets welcome · </span>}{form.flatmate&&<span>👥 Flatmate friendly</span>}
                 </div>
               </div>
