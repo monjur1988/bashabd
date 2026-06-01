@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* ── MOBILE HOOK ─────────────────────────────── */
 function useIsMobile() {
@@ -1131,6 +1131,180 @@ function ListWizard({onClose}){
   );
 }
 
+/* ── LEAFLET INTERACTIVE MAP ──────────────────── */
+function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersRef = useRef([]);
+
+  useEffect(() => {
+    // Inject Leaflet CSS
+    if (!document.getElementById("leaflet-css")) {
+      const link = document.createElement("link");
+      link.id = "leaflet-css";
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      document.head.appendChild(link);
+    }
+    // Load Leaflet JS
+    const loadLeaflet = () => {
+      if (window.L) { initMap(); return; }
+      const script = document.createElement("script");
+      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      script.onload = initMap;
+      document.head.appendChild(script);
+    };
+
+    const initMap = () => {
+      if (!mapRef.current || mapInstanceRef.current) return;
+      const L = window.L;
+
+      const map = L.map(mapRef.current, {
+        center: [23.8103, 90.4125], // Dhaka
+        zoom: 11,
+        zoomControl: true,
+      });
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
+      }).addTo(map);
+
+      mapInstanceRef.current = map;
+      addMarkers(map, properties);
+    };
+
+    loadLeaflet();
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
+  // Update markers when filters change
+  useEffect(() => {
+    if (!mapInstanceRef.current || !window.L) return;
+    const map = mapInstanceRef.current;
+    markersRef.current.forEach(m => m.remove());
+    markersRef.current = [];
+    addMarkers(map, properties);
+  }, [properties]);
+
+  const addMarkers = (map, props) => {
+    if (!window.L) return;
+    const L = window.L;
+
+    // Approximate coordinates for each property location
+    const coordMap = {
+      "Bashundhara R/A, Dhaka":   [23.8122, 90.4240],
+      "Gulshan 1, Dhaka":         [23.7808, 90.4147],
+      "Uttara Sector 6, Dhaka":   [23.8749, 90.3984],
+      "Banani, Dhaka":            [23.7936, 90.4066],
+      "Dhanmondi, Dhaka":         [23.7461, 90.3742],
+      "Panchlaish, Chittagong":   [22.3669, 91.8128],
+      "Mirpur 10, Dhaka":         [23.8074, 90.3679],
+      "Baridhara, Dhaka":         [23.7965, 90.4244],
+      "Gulshan 2, Dhaka":         [23.7925, 90.4143],
+      "Purbachal New Town, Dhaka":[23.8204, 90.5031],
+    };
+
+    props.forEach(p => {
+      const coords = coordMap[p.location];
+      if (!coords) return;
+
+      const price = p.status === "for-rent"
+        ? `৳${p.price.toLocaleString("en-BD")}/mo`
+        : p.price >= 10000000
+          ? `৳${(p.price/10000000).toFixed(1)}Cr`
+          : `৳${(p.price/100000).toFixed(0)}L`;
+
+      const color = p.status === "for-sale" ? "#C8102E" : "#1a6b3c";
+
+      // Custom pin HTML
+      const icon = L.divIcon({
+        className: "",
+        html: `<div style="
+          background:${color};
+          color:#fff;
+          padding:4px 8px;
+          border-radius:20px;
+          font-size:11px;
+          font-weight:800;
+          white-space:nowrap;
+          box-shadow:0 2px 8px rgba(0,0,0,0.3);
+          border:2px solid #fff;
+          font-family:'DM Sans',sans-serif;
+          cursor:pointer;
+          position:relative;
+        ">${price}<div style="
+          position:absolute;
+          bottom:-6px;
+          left:50%;
+          transform:translateX(-50%);
+          width:0;height:0;
+          border-left:5px solid transparent;
+          border-right:5px solid transparent;
+          border-top:6px solid ${color};
+        "></div></div>`,
+        iconSize: [null, null],
+        iconAnchor: [0, 0],
+      });
+
+      const marker = L.marker(coords, { icon }).addTo(map);
+
+      // Popup on click
+      marker.on("click", () => {
+        const popup = L.popup({ maxWidth: 240, closeButton: true })
+          .setLatLng(coords)
+          .setContent(`
+            <div style="font-family:'DM Sans',sans-serif;padding:4px">
+              <img src="${p.img}" style="width:100%;height:110px;object-fit:cover;border-radius:8px;margin-bottom:8px"/>
+              <div style="font-weight:800;font-size:13px;color:#111;margin-bottom:2px;line-height:1.3">${p.title}</div>
+              <div style="font-size:16px;font-weight:900;color:${color};margin-bottom:4px">${price}</div>
+              <div style="font-size:11px;color:#6b7280;margin-bottom:6px">📍 ${p.location}</div>
+              <div style="font-size:11px;color:#555;margin-bottom:8px">
+                ${p.beds > 0 ? `🛏 ${p.beds} ` : ""}${p.baths > 0 ? `🚿 ${p.baths} ` : ""}📐 ${p.area.toLocaleString()} sqft
+              </div>
+              <button id="view-prop-${p.id}" style="
+                width:100%;background:${color};color:#fff;border:none;
+                padding:8px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;
+              ">View Details →</button>
+            </div>
+          `)
+          .openOn(map);
+
+        // Wire up the button after popup renders
+        setTimeout(() => {
+          const btn = document.getElementById(`view-prop-${p.id}`);
+          if (btn) btn.onclick = () => { onSelect(p); map.closePopup(); };
+        }, 100);
+      });
+
+      markersRef.current.push(marker);
+    });
+
+    // Fit map to markers if any
+    if (markersRef.current.length > 0) {
+      try {
+        const group = L.featureGroup(markersRef.current);
+        map.fitBounds(group.getBounds().pad(0.2));
+      } catch(e) {}
+    }
+  };
+
+  return (
+    <div ref={mapRef} style={{
+      width: "100%",
+      height: "520px",
+      borderRadius: "0 0 16px 16px",
+      zIndex: 1,
+    }} />
+  );
+}
+
 /* ── MAIN APP ─────────────────────────────────── */
 export default function App(){
   const isMobile = useIsMobile();
@@ -1154,6 +1328,7 @@ export default function App(){
   const [showTenantDash,setShowTenantDash] = useState(false);
   // ── FIX: showMap state (was missing — caused "Can't find variable: showMap") ──
   const [showMap,setShowMap]     = useState(false);
+  const [viewMode,setViewMode]   = useState("list"); // "list" | "map"
   // Saved & history
   const [savedIds,setSavedIds]   = useState([1,6]);
   const [searchHistory,setSearchHistory] = useState([
@@ -1255,7 +1430,7 @@ export default function App(){
               <button key={label} style={{padding:"5px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:T.muted}}>{label}</button>
             ))}
             <button
-              onClick={()=>setShowMap(s=>!s)}
+              onClick={()=>{ setShowMap(s=>!s); setViewMode(v=>v==="map"?"list":"map"); }}
               style={{padding:"5px 12px",border:"none",background:showMap?T.redL:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:showMap?T.red:T.muted,borderRadius:8,transition:"all .15s"}}>
               🗺 Map
             </button>
@@ -1415,46 +1590,73 @@ export default function App(){
           </div>
         )}
 
-        {/* Results header */}
+        {/* Results header with List / Map toggle */}
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:9}}>
           <div>
             <h2 style={{margin:0,fontSize:18,fontWeight:800}}>{filtered.length} {lang==="bn"?"সম্পত্তি":"Properties"}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
             <div style={{fontSize:12,color:T.muted,marginTop:2}}>{status==="for-rent"?"Rentals":status==="for-sale"?"For Sale":"All Listings"}</div>
           </div>
-          <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-            {[["All","all"],["For Rent","for-rent"],["For Sale","for-sale"]].map(([label,val])=>(
-              <Pill key={label} active={status===val} onClick={()=>setStatus(val)}>{label}</Pill>
-            ))}
+          <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+            {/* Status pills */}
+            <div style={{display:"flex",gap:5}}>
+              {[["All","all"],["For Rent","for-rent"],["For Sale","for-sale"]].map(([label,val])=>(
+                <Pill key={label} active={status===val} onClick={()=>setStatus(val)}>{label}</Pill>
+              ))}
+            </div>
+            {/* List / Map toggle */}
+            <div style={{display:"flex",background:"#f3f4f6",borderRadius:10,padding:3,gap:2}}>
+              <button onClick={()=>setViewMode("list")} style={{padding:"6px 14px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,background:viewMode==="list"?"#fff":"transparent",color:viewMode==="list"?T.text:T.muted,boxShadow:viewMode==="list"?"0 1px 4px rgba(0,0,0,0.1)":"none",transition:"all .15s"}}>
+                🏠 List
+              </button>
+              <button onClick={()=>setViewMode("map")} style={{padding:"6px 14px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,background:viewMode==="map"?T.green:"transparent",color:viewMode==="map"?"#fff":T.muted,boxShadow:viewMode==="map"?"0 2px 8px rgba(26,107,60,0.25)":"none",transition:"all .15s"}}>
+                🗺 Map
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Property grid */}
-        {filtered.length>0?(
-          <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"repeat(auto-fill,minmax(280px,1fr))",gap:isMobile?14:18}}>
-            {filtered.map(p=><Card key={p.id} p={p} onSelect={setSelected} savedIds={savedIds} onSaveToggle={handleSaveToggle}/>)}
-          </div>
-        ):(
-          <div style={{textAlign:"center",padding:"56px 0",color:T.muted}}>
-            <div style={{fontSize:48,marginBottom:10}}>🏚</div>
-            <div style={{fontSize:17,fontWeight:700}}>No properties match your search</div>
-            <button onClick={()=>{setSearch("");setActiveQ([]);setBudgetMax("");setStatus("all");}} style={{marginTop:12,background:T.red,color:"#fff",border:"none",padding:"9px 22px",borderRadius:18,fontWeight:700,cursor:"pointer"}}>Clear Filters</button>
+        {/* MAP VIEW */}
+        {viewMode==="map" && (
+          <div style={{borderRadius:16,overflow:"hidden",border:`1px solid ${T.border}`,boxShadow:"0 4px 24px rgba(0,0,0,0.1)",marginBottom:32}}>
+            {/* Map header */}
+            <div style={{background:T.green,padding:"12px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div>
+                <div style={{color:"#fff",fontWeight:800,fontSize:14}}>🗺 Property Map — Bangladesh</div>
+                <div style={{color:"rgba(255,255,255,0.75)",fontSize:11,marginTop:2}}>{filtered.length} properties shown · Click a pin to view details</div>
+              </div>
+              <div style={{display:"flex",gap:10,alignItems:"center"}}>
+                <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                  <span style={{background:"#1a6b3c",color:"#fff",fontSize:9,fontWeight:800,padding:"2px 8px",borderRadius:10,border:"2px solid #fff"}}>FOR RENT</span>
+                  <span style={{background:"#C8102E",color:"#fff",fontSize:9,fontWeight:800,padding:"2px 8px",borderRadius:10,border:"2px solid #fff"}}>FOR SALE</span>
+                </div>
+                <button onClick={()=>setViewMode("list")} style={{background:"rgba(255,255,255,0.2)",border:"none",borderRadius:20,padding:"5px 12px",color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer"}}>← List View</button>
+              </div>
+            </div>
+            {/* Leaflet map */}
+            <LeafletMap
+              properties={filtered}
+              onSelect={setSelected}
+              savedIds={savedIds}
+              onSaveToggle={handleSaveToggle}
+            />
           </div>
         )}
 
-        {/* ── FIX: Map panel — renders when showMap is true ── */}
-        {showMap && (
-          <div style={{marginTop:32,borderRadius:16,overflow:"hidden",border:`1px solid ${T.border}`,boxShadow:"0 4px 20px rgba(0,0,0,0.08)"}}>
-            <div style={{background:T.green,padding:"12px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{color:"#fff",fontWeight:800,fontSize:14}}>🗺 Property Map — Bangladesh</div>
-              <button onClick={()=>setShowMap(false)} style={{background:"rgba(255,255,255,0.2)",border:"none",borderRadius:"50%",width:28,height:28,color:"#fff",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
-            </div>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d233668.3088990767!2d90.3938010894898!3d23.780573498435997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1716000000000!5m2!1sen!2sbd"
-              width="100%" height="420" style={{border:"none",display:"block"}}
-              allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-              title="Bangladesh Property Map"
-            />
-          </div>
+        {/* LIST VIEW */}
+        {viewMode==="list" && (
+          <>
+            {filtered.length>0?(
+              <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"repeat(auto-fill,minmax(280px,1fr))",gap:isMobile?14:18}}>
+                {filtered.map(p=><Card key={p.id} p={p} onSelect={setSelected} savedIds={savedIds} onSaveToggle={handleSaveToggle}/>)}
+              </div>
+            ):(
+              <div style={{textAlign:"center",padding:"56px 0",color:T.muted}}>
+                <div style={{fontSize:48,marginBottom:10}}>🏚</div>
+                <div style={{fontSize:17,fontWeight:700}}>No properties match your search</div>
+                <button onClick={()=>{setSearch("");setActiveQ([]);setBudgetMax("");setStatus("all");}} style={{marginTop:12,background:T.red,color:"#fff",border:"none",padding:"9px 22px",borderRadius:18,fontWeight:700,cursor:"pointer"}}>Clear Filters</button>
+              </div>
+            )}
+          </>
         )}
 
         {/* Popular Areas */}
