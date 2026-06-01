@@ -21,7 +21,7 @@ const T = {
 /* ── TRANSLATIONS ─────────────────────────────── */
 const LANG = {
   en:{
-    topBar:"🇧🇩 Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust Basha.app",
+    topBar:"Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust Basha.app",
     signIn:"Sign In", register:"Register", agentLogin:"Agent Login", langBtn:"বাংলা 🇧🇩",
     listBtn:"+ List Property Free",
     tenantMode:"🔍 I'm Looking to Rent", ownerMode:"🏠 I Have a Property to List",
@@ -44,7 +44,7 @@ const LANG = {
     bookedTitle:"🎉 Booked!", noInspMsg:"No inspection times yet.",
   },
   bn:{
-    topBar:"🇧🇩 বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী · Basha.app",
+    topBar:"বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী · Basha.app",
     signIn:"সাইন ইন", register:"নিবন্ধন", agentLogin:"এজেন্ট লগইন", langBtn:"English 🇬🇧",
     listBtn:"+ বিনামূল্যে তালিকা দিন",
     tenantMode:"🔍 আমি ভাড়া খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
@@ -84,7 +84,1018 @@ const PROPERTIES = [
 
 const DIVISIONS = ["All Divisions","Dhaka","Chittagong","Sylhet","Rajshahi","Khulna","Barishal","Rangpur","Mymensingh"];
 const PTYPES    = ["All Types","Apartment","Room","House","Commercial","Land"];
-const AREAS     = ["Gulshan","Banani","Dhanmondi","Bashundhara","Uttara","Mirpur","Baridhara","Motijheel","Wari","Mohakhali"];
+const AREAS = ["Gulshan","Banani","Dhanmondi","Bashundhara","Uttara","Mirpur","Baridhara","Motijheel","Wari","Mohakhali"];
+
+// Full area + postcode list for autocomplete — 400+ areas
+const AREA_SUGGESTIONS = [
+  // ── MIRPUR & NORTH WEST ──
+  {label:"Mirpur",sub:"Dhaka · 1216"},
+  {label:"Mirpur 1",sub:"Dhaka · 1216"},
+  {label:"Mirpur 2",sub:"Dhaka · 1216"},
+  {label:"Mirpur 6",sub:"Dhaka · 1216"},
+  {label:"Mirpur 7",sub:"Dhaka · 1216"},
+  {label:"Mirpur 10",sub:"Dhaka · 1216"},
+  {label:"Mirpur 11",sub:"Dhaka · 1216"},
+  {label:"Mirpur 12",sub:"Dhaka · 1212"},
+  {label:"Mirpur 13",sub:"Dhaka · 1216"},
+  {label:"Mirpur 14",sub:"Dhaka · 1206"},
+  {label:"Mirhajirbag",sub:"Dhaka · 1209"},
+  {label:"Pallabi",sub:"Dhaka · 1216"},
+  {label:"Rupnagar",sub:"Dhaka · 1216"},
+  {label:"Kafrul",sub:"Dhaka · 1206"},
+  {label:"Kazipara",sub:"Dhaka · 1216"},
+  {label:"Shewrapara",sub:"Dhaka · 1216"},
+  {label:"Agargaon",sub:"Dhaka · 1207"},
+  {label:"Sher-e-Bangla Nagar",sub:"Dhaka · 1207"},
+  {label:"Paikpara",sub:"Dhaka · 1216"},
+  {label:"Duaripara",sub:"Dhaka · 1216"},
+  {label:"Ibrahimpur",sub:"Dhaka · 1206"},
+  {label:"Cantonment",sub:"Dhaka · 1206"},
+
+  // ── UTTARA & NORTH ──
+  {label:"Uttara",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 1",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 2",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 3",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 4",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 5",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 6",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 7",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 9",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 10",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 11",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 12",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 13",sub:"Dhaka · 1230"},
+  {label:"Uttara West",sub:"Dhaka · 1230"},
+  {label:"Uttara East",sub:"Dhaka · 1230"},
+  {label:"Diabari",sub:"Dhaka · 1230"},
+  {label:"Turag",sub:"Dhaka · 1230"},
+  {label:"Dakshinkhan",sub:"Dhaka · 1230"},
+  {label:"Uttarkhan",sub:"Dhaka · 1230"},
+  {label:"Ashkona",sub:"Dhaka · 1229"},
+  {label:"Khilkhet",sub:"Dhaka · 1229"},
+  {label:"Nikunja",sub:"Dhaka · 1229"},
+  {label:"Airport",sub:"Dhaka · 1229"},
+
+  // ── GULSHAN, BANANI, BARIDHARA ──
+  {label:"Gulshan",sub:"Dhaka · 1212"},
+  {label:"Gulshan 1",sub:"Dhaka · 1212"},
+  {label:"Gulshan 2",sub:"Dhaka · 1212"},
+  {label:"Banani",sub:"Dhaka · 1213"},
+  {label:"Banani DOHS",sub:"Dhaka · 1206"},
+  {label:"Baridhara",sub:"Dhaka · 1212"},
+  {label:"Baridhara DOHS",sub:"Dhaka · 1206"},
+  {label:"Bashundhara R/A",sub:"Dhaka · 1229"},
+  {label:"Mohakhali",sub:"Dhaka · 1212"},
+  {label:"Niketan",sub:"Dhaka · 1212"},
+  {label:"Shahjadpur",sub:"Dhaka · 1212"},
+  {label:"Norda",sub:"Dhaka · 1212"},
+  {label:"Aftabnagar",sub:"Dhaka · 1212"},
+  {label:"Natun Bazar",sub:"Dhaka · 1212"},
+
+  // ── DHANMONDI, MOHAMMADPUR, WEST ──
+  {label:"Dhanmondi",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 27",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 32",sub:"Dhaka · 1209"},
+  {label:"Mohammadpur",sub:"Dhaka · 1207"},
+  {label:"Shyamoli",sub:"Dhaka · 1207"},
+  {label:"Adabor",sub:"Dhaka · 1207"},
+  {label:"Rayer Bazar",sub:"Dhaka · 1209"},
+  {label:"Kalabagan",sub:"Dhaka · 1205"},
+  {label:"Lalmatia",sub:"Dhaka · 1207"},
+  {label:"Zigatola",sub:"Dhaka · 1209"},
+  {label:"Jigatola",sub:"Dhaka · 1209"},
+  {label:"Hazaribagh",sub:"Dhaka · 1209"},
+  {label:"Sat Masjid Road",sub:"Dhaka · 1207"},
+  {label:"Ring Road",sub:"Dhaka · 1207"},
+  {label:"Bosila",sub:"Dhaka · 1207"},
+
+  // ── FARMGATE, TEJGAON, CENTRAL ──
+  {label:"Farmgate",sub:"Dhaka · 1215"},
+  {label:"Tejgaon",sub:"Dhaka · 1208"},
+  {label:"Tejgaon Industrial",sub:"Dhaka · 1208"},
+  {label:"Bijoy Nagar",sub:"Dhaka · 1000"},
+  {label:"Karwan Bazar",sub:"Dhaka · 1215"},
+  {label:"Panthapath",sub:"Dhaka · 1205"},
+  {label:"Elephant Road",sub:"Dhaka · 1205"},
+  {label:"New Market",sub:"Dhaka · 1205"},
+  {label:"Nilkhet",sub:"Dhaka · 1205"},
+  {label:"Azimpur",sub:"Dhaka · 1205"},
+  {label:"Hatirjheel",sub:"Dhaka · 1217"},
+
+  // ── MOTIJHEEL, PALTAN, CENTRAL BUSINESS ──
+  {label:"Motijheel",sub:"Dhaka · 1000"},
+  {label:"Paltan",sub:"Dhaka · 1000"},
+  {label:"Kakrail",sub:"Dhaka · 1000"},
+  {label:"Eskaton",sub:"Dhaka · 1000"},
+  {label:"Segunbagicha",sub:"Dhaka · 1000"},
+  {label:"Ramna",sub:"Dhaka · 1000"},
+  {label:"Matsya Bhaban",sub:"Dhaka · 1000"},
+  {label:"Dilkusha",sub:"Dhaka · 1000"},
+  {label:"Topkhana",sub:"Dhaka · 1000"},
+  {label:"Purana Paltan",sub:"Dhaka · 1000"},
+  {label:"Naya Paltan",sub:"Dhaka · 1000"},
+  {label:"Shantinagar",sub:"Dhaka · 1217"},
+  {label:"Mouchak",sub:"Dhaka · 1217"},
+  {label:"Siddheshwari",sub:"Dhaka · 1217"},
+  {label:"Shahjanpur",sub:"Dhaka · 1217"},
+
+  // ── BADDA, RAMPURA, EAST ──
+  {label:"Badda",sub:"Dhaka · 1212"},
+  {label:"North Badda",sub:"Dhaka · 1212"},
+  {label:"South Badda",sub:"Dhaka · 1212"},
+  {label:"Rampura",sub:"Dhaka · 1219"},
+  {label:"East Rampura",sub:"Dhaka · 1219"},
+  {label:"Malibagh",sub:"Dhaka · 1217"},
+  {label:"Malibagh Chowdhurypara",sub:"Dhaka · 1217"},
+  {label:"Khilgaon",sub:"Dhaka · 1219"},
+  {label:"Mugda",sub:"Dhaka · 1214"},
+  {label:"North Mugda",sub:"Dhaka · 1214"},
+  {label:"South Mugda",sub:"Dhaka · 1214"},
+  {label:"Tilpapara",sub:"Dhaka · 1214"},
+  {label:"Basabo",sub:"Dhaka · 1214"},
+  {label:"Sabujbagh",sub:"Dhaka · 1214"},
+  {label:"Manikdi",sub:"Dhaka · 1206"},
+
+  // ── JATRABARI, SOUTH EAST ──
+  {label:"Jatrabari",sub:"Dhaka · 1204"},
+  {label:"North Jatrabari",sub:"Dhaka · 1204"},
+  {label:"South Jatrabari",sub:"Dhaka · 1204"},
+  {label:"Dhonia",sub:"Dhaka · 1236"},
+  {label:"Matuail",sub:"Dhaka · 1362"},
+  {label:"Shyampur",sub:"Dhaka · 1204"},
+  {label:"Kadamtali",sub:"Dhaka · 1204"},
+  {label:"Rayerbag",sub:"Dhaka · 1204"},
+  {label:"Demra",sub:"Dhaka · 1361"},
+  {label:"Saidabad",sub:"Dhaka · 1204"},
+  {label:"Jurain",sub:"Dhaka · 1204"},
+  {label:"Kutubkhali",sub:"Dhaka · 1204"},
+  {label:"Dholaipar",sub:"Dhaka · 1204"},
+  {label:"Katherpool",sub:"Dhaka · 1204"},
+  {label:"Pagla",sub:"Dhaka · 1362"},
+  {label:"Postogola",sub:"Dhaka · 1204"},
+  {label:"Shonirakhra",sub:"Dhaka · 1204"},
+  {label:"Narayanganj",sub:"Dhaka Div · 1400"},
+
+  // ── WARI, GOPIBAGH, OLD DHAKA EAST ──
+  {label:"Wari",sub:"Dhaka · 1203"},
+  {label:"Gopibagh",sub:"Dhaka · 1203"},
+  {label:"Narinda",sub:"Dhaka · 1100"},
+  {label:"Bangshal",sub:"Dhaka · 1100"},
+  {label:"Sutrapur",sub:"Dhaka · 1100"},
+  {label:"Gandaria",sub:"Dhaka · 1100"},
+  {label:"Tipu Sultan Road",sub:"Dhaka · 1100"},
+  {label:"Islampur",sub:"Dhaka · 1100"},
+  {label:"Patuatuli",sub:"Dhaka · 1100"},
+  {label:"Rankin Street",sub:"Dhaka · 1203"},
+  {label:"Johnson Road",sub:"Dhaka · 1100"},
+
+  // ── LALBAGH, OLD DHAKA WEST ──
+  {label:"Lalbagh",sub:"Dhaka · 1211"},
+  {label:"Lalbagh Fort Area",sub:"Dhaka · 1211"},
+  {label:"Chawkbazar",sub:"Dhaka · 1211"},
+  {label:"Chowk Bazar",sub:"Dhaka · 1211"},
+  {label:"Nawabpur",sub:"Dhaka · 1100"},
+  {label:"Urdu Road",sub:"Dhaka · 1211"},
+  {label:"Nazira Bazar",sub:"Dhaka · 1211"},
+  {label:"Tanti Bazar",sub:"Dhaka · 1100"},
+  {label:"Shankhari Bazar",sub:"Dhaka · 1100"},
+  {label:"Mitford",sub:"Dhaka · 1100"},
+  {label:"Sadarghat",sub:"Dhaka · 1100"},
+  {label:"Farashganj",sub:"Dhaka · 1100"},
+  {label:"Nababganj",sub:"Dhaka · 1211"},
+  {label:"Imamganj",sub:"Dhaka · 1100"},
+  {label:"Zigatola",sub:"Dhaka · 1209"},
+
+  // ── KAMRANGIRCHAR, SOUTH WEST ──
+  {label:"Kamrangirchar",sub:"Dhaka · 1211"},
+  {label:"Keraniganj",sub:"Dhaka · 1310"},
+  {label:"Malibaghbazar",sub:"Dhaka · 1217"},
+
+  // ── SOUTH CITY / BURIGANGA ──
+  {label:"Lakshmibazar",sub:"Dhaka · 1100"},
+  {label:"Kathalbagan",sub:"Dhaka · 1205"},
+  {label:"Doyaganj",sub:"Dhaka · 1204"},
+  {label:"Swamibagh",sub:"Dhaka · 1203"},
+  {label:"Rahmatganj",sub:"Dhaka · 1211"},
+  {label:"Hajaribagh",sub:"Dhaka · 1209"},
+
+  // ── PURBACHAL, OUTER EAST ──
+  {label:"Purbachal",sub:"Dhaka · 1461"},
+  {label:"Purbachal New Town",sub:"Dhaka · 1461"},
+  {label:"300 Feet",sub:"Dhaka · 1229"},
+  {label:"Vatara",sub:"Dhaka · 1212"},
+  {label:"Bhatara",sub:"Dhaka · 1212"},
+  {label:"Kanchpur",sub:"Narayanganj · 1461"},
+
+  // ── SAVAR, OUTER WEST ──
+  {label:"Savar",sub:"Dhaka · 1340"},
+  {label:"Ashulia",sub:"Dhaka · 1345"},
+  {label:"Hemayetpur",sub:"Dhaka · 1340"},
+  {label:"Dhamrai",sub:"Dhaka · 1350"},
+  {label:"Gazipur",sub:"Dhaka Div · 1700"},
+  {label:"Tongi",sub:"Gazipur · 1712"},
+  {label:"Joydebpur",sub:"Gazipur · 1700"},
+  {label:"Board Bazar",sub:"Gazipur · 1703"},
+
+  // ── CHITTAGONG ──
+  {label:"Panchlaish",sub:"Chittagong · 4203"},
+  {label:"Khulshi",sub:"Chittagong · 4225"},
+  {label:"Agrabad",sub:"Chittagong · 4100"},
+  {label:"Nasirabad",sub:"Chittagong · 4210"},
+  {label:"Halishahar",sub:"Chittagong · 4216"},
+  {label:"Pahartali",sub:"Chittagong · 4202"},
+  {label:"Oxygen",sub:"Chittagong · 4209"},
+  {label:"GEC Circle",sub:"Chittagong · 4203"},
+  {label:"Chawkbazar Ctg",sub:"Chittagong · 4000"},
+  {label:"Muradpur",sub:"Chittagong · 4210"},
+  {label:"Bahaddarhat",sub:"Chittagong · 4210"},
+  {label:"Kalurghat",sub:"Chittagong · 4210"},
+  {label:"Dewanhat",sub:"Chittagong · 4000"},
+  {label:"Kotwali Ctg",sub:"Chittagong · 4000"},
+  {label:"Double Mooring",sub:"Chittagong · 4100"},
+  {label:"Bandar",sub:"Chittagong · 4100"},
+  {label:"Bayezid",sub:"Chittagong · 4209"},
+  {label:"Chandgaon",sub:"Chittagong · 4212"},
+  {label:"Bakalia",sub:"Chittagong · 4000"},
+  {label:"Sadarghat Ctg",sub:"Chittagong · 4000"},
+  {label:"Lalkhan Bazar",sub:"Chittagong · 4000"},
+  {label:"Enayet Bazar",sub:"Chittagong · 4000"},
+  {label:"CDA Avenue",sub:"Chittagong · 4203"},
+  {label:"Dampara",sub:"Chittagong · 4000"},
+  {label:"Patharghata",sub:"Chittagong · 4000"},
+  {label:"Sholoshohor",sub:"Chittagong · 4210"},
+
+  // ── SYLHET ──
+  {label:"Sylhet Sadar",sub:"Sylhet · 3100"},
+  {label:"Zindabazar",sub:"Sylhet · 3100"},
+  {label:"Amberkhana",sub:"Sylhet · 3100"},
+  {label:"Subhanighat",sub:"Sylhet · 3100"},
+  {label:"Kumarpara",sub:"Sylhet · 3100"},
+  {label:"Tilagarh",sub:"Sylhet · 3100"},
+  {label:"Shibganj",sub:"Sylhet · 3100"},
+  {label:"Modina Market",sub:"Sylhet · 3100"},
+  {label:"Upashahar",sub:"Sylhet · 3100"},
+  {label:"Shahjalal Upashahar",sub:"Sylhet · 3100"},
+
+  // ── RAJSHAHI ──
+  {label:"Rajshahi Sadar",sub:"Rajshahi · 6000"},
+  {label:"Boalia",sub:"Rajshahi · 6000"},
+  {label:"Shaheb Bazar",sub:"Rajshahi · 6000"},
+  {label:"Uposhohor",sub:"Rajshahi · 6000"},
+  {label:"Kazla",sub:"Rajshahi · 6000"},
+  {label:"Talaimari",sub:"Rajshahi · 6203"},
+
+  // ── KHULNA ──
+  {label:"Khulna Sadar",sub:"Khulna · 9000"},
+  {label:"Sonadanga",sub:"Khulna · 9100"},
+  {label:"Khalishpur",sub:"Khulna · 9000"},
+  {label:"Daulatpur",sub:"Khulna · 9000"},
+  {label:"Boyra",sub:"Khulna · 9000"},
+  {label:"Nirala",sub:"Khulna · 9100"},
+
+  // ── BARISHAL ──
+  {label:"Barishal Sadar",sub:"Barishal · 8200"},
+  {label:"Natullabad",sub:"Barishal · 8200"},
+  {label:"Ruplal",sub:"Barishal · 8200"},
+  {label:"Band Road",sub:"Barishal · 8200"},
+
+  // ── RANGPUR ──
+  {label:"Rangpur Sadar",sub:"Rangpur · 5400"},
+  {label:"Shapla Chottor",sub:"Rangpur · 5400"},
+  {label:"Dhap",sub:"Rangpur · 5400"},
+
+  // ── MYMENSINGH ──
+  {label:"Mymensingh Sadar",sub:"Mymensingh · 2200"},
+  {label:"Ganginar Par",sub:"Mymensingh · 2200"},
+  {label:"Chorpara",sub:"Mymensingh · 2200"},
+
+  // ── MOHAMMADPUR DETAIL (from photo 9) ──
+  {label:"Mohammadpur Housing",sub:"Dhaka · 1207"},
+  {label:"Mohammadia Housing Society",sub:"Dhaka · 1207"},
+  {label:"Mohammadia Housing",sub:"Dhaka · 1207"},
+  {label:"Katpur",sub:"Dhaka · 1207"},
+  {label:"Kaderabad Housing",sub:"Dhaka · 1207"},
+  {label:"Nabinpur Housing",sub:"Dhaka · 1207"},
+  {label:"Chand Uddan",sub:"Dhaka · 1207"},
+  {label:"Cha Uddan",sub:"Dhaka · 1207"},
+  {label:"Dhaka Uddan",sub:"Dhaka · 1207"},
+  {label:"Ramchandrapur",sub:"Dhaka · 1207"},
+  {label:"Bosila",sub:"Dhaka · 1207"},
+  {label:"Bosila Garden City",sub:"Dhaka · 1207"},
+  {label:"Biswas Garden City",sub:"Dhaka · 1207"},
+  {label:"Avenue Road 2",sub:"Dhaka · 1207"},
+  {label:"Zafarabad",sub:"Dhaka · 1207"},
+  {label:"Shankar",sub:"Dhaka · 1207"},
+  {label:"Santangor",sub:"Dhaka · 1207"},
+  {label:"Waspur",sub:"Dhaka · 1207"},
+  {label:"Gazimohol",sub:"Dhaka · 1207"},
+  {label:"Aud Char",sub:"Dhaka · 1207"},
+  {label:"Natarchor",sub:"Dhaka · 1207"},
+  {label:"Shaymoli Housing",sub:"Dhaka · 1207"},
+  {label:"Pashchim Shyamoli",sub:"Dhaka · 1207"},
+
+  // ── DHANMONDI DETAIL ──
+  {label:"Dhanmondi",sub:"Dhaka · 1209"},
+  {label:"West Dhanmondi",sub:"Dhaka · 1209"},
+  {label:"Pashchim Dhanmondi",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 1",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 2",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 3",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 4",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 5",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 6",sub:"Dhaka · 1205"},
+  {label:"Dhanmondi 7",sub:"Dhaka · 1205"},
+  {label:"Dhanmondi 8",sub:"Dhaka · 1205"},
+  {label:"Dhanmondi 9",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 10",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 11",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 12",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 13",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 15",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 27",sub:"Dhaka · 1209"},
+  {label:"Dhanmondi 32",sub:"Dhaka · 1209"},
+  {label:"Road 16 Dhanmondi",sub:"Dhaka · 1209"},
+  {label:"Sobhanbagh",sub:"Dhaka · 1207"},
+  {label:"Rajabazar",sub:"Dhaka · 1215"},
+  {label:"Lalmatia",sub:"Dhaka · 1207"},
+  {label:"Kathabagan",sub:"Dhaka · 1205"},
+  {label:"Katalbagan",sub:"Dhaka · 1205"},
+  {label:"Panthapath",sub:"Dhaka · 1205"},
+  {label:"Pashchim Panthapath",sub:"Dhaka · 1205"},
+  {label:"Lakshmibazar Dhanmondi",sub:"Dhaka · 1205"},
+  {label:"Lake Circus",sub:"Dhaka · 1205"},
+  {label:"Pashchim Panta Path",sub:"Dhaka · 1205"},
+  {label:"Jigatola",sub:"Dhaka · 1209"},
+  {label:"Zigatola",sub:"Dhaka · 1209"},
+  {label:"Nilkhet",sub:"Dhaka · 1205"},
+  {label:"Neel khet",sub:"Dhaka · 1205"},
+
+  // ── KALABAGAN AREA ──
+  {label:"Kalabagan",sub:"Dhaka · 1205"},
+  {label:"Indira Road",sub:"Dhaka · 1215"},
+  {label:"Mazar Road",sub:"Dhaka · 1207"},
+  {label:"Asad Avenue",sub:"Dhaka · 1207"},
+  {label:"Manik Mia Avenue",sub:"Dhaka · 1207"},
+  {label:"Sher-e-Bangla Nagar",sub:"Dhaka · 1207"},
+
+  // ── FARMGATE / TEJGAON / CENTRAL ──
+  {label:"Farmgate",sub:"Dhaka · 1215"},
+  {label:"Karwan Bazar",sub:"Dhaka · 1215"},
+  {label:"Tejgaon",sub:"Dhaka · 1208"},
+  {label:"Tejgaon Industrial Area",sub:"Dhaka · 1208"},
+  {label:"Nakhalpara",sub:"Dhaka · 1215"},
+  {label:"Bijoy Nagar",sub:"Dhaka · 1000"},
+  {label:"Bijoy Sarani",sub:"Dhaka · 1000"},
+  {label:"Bijoy Sarani Metro",sub:"Dhaka · 1000"},
+  {label:"Manipuri Para",sub:"Dhaka · 1215"},
+  {label:"Monipur",sub:"Dhaka · 1216"},
+
+  // ── GULSHAN / BANANI / BARIDHARA DETAIL ──
+  {label:"Gulshan",sub:"Dhaka · 1212"},
+  {label:"Gulshan 1",sub:"Dhaka · 1212"},
+  {label:"Gulshan 2",sub:"Dhaka · 1212"},
+  {label:"Gulshan Avenue",sub:"Dhaka · 1212"},
+  {label:"Gulshan Circle 1",sub:"Dhaka · 1212"},
+  {label:"Gulshan Circle 2",sub:"Dhaka · 1212"},
+  {label:"Niketon",sub:"Dhaka · 1212"},
+  {label:"Niketon Society",sub:"Dhaka · 1212"},
+  {label:"Banani",sub:"Dhaka · 1213"},
+  {label:"Banani DOHS",sub:"Dhaka · 1206"},
+  {label:"Banani Road 1",sub:"Dhaka · 1213"},
+  {label:"Banani Road 11",sub:"Dhaka · 1213"},
+  {label:"Baridhara",sub:"Dhaka · 1212"},
+  {label:"Baridhara DOHS",sub:"Dhaka · 1206"},
+  {label:"Bashundhara R/A",sub:"Dhaka · 1229"},
+  {label:"Mohakhali",sub:"Dhaka · 1212"},
+  {label:"Mohakhali DOHS",sub:"Dhaka · 1206"},
+  {label:"Shahjadpur",sub:"Dhaka · 1212"},
+  {label:"Natun Bazar",sub:"Dhaka · 1212"},
+  {label:"Norda",sub:"Dhaka · 1212"},
+  {label:"Aftabnagar",sub:"Dhaka · 1212"},
+  {label:"Halirjheel Link Road",sub:"Dhaka · 1212"},
+  {label:"Tejgaon-Gulshan Link Road",sub:"Dhaka · 1208"},
+
+  // ── UTTARA FULL SECTORS ──
+  {label:"Uttara",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 1",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 2",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 3",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 4",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 5",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 6",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 7",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 8",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 9",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 10",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 11",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 12",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 13",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 14",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 15",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 16",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 17",sub:"Dhaka · 1230"},
+  {label:"Uttara Sector 18",sub:"Dhaka · 1230"},
+  {label:"Uttara West",sub:"Dhaka · 1230"},
+  {label:"Uttara East",sub:"Dhaka · 1230"},
+  {label:"Uttara Model Town",sub:"Dhaka · 1230"},
+  {label:"Diabari",sub:"Dhaka · 1230"},
+  {label:"Abdullahpur",sub:"Dhaka · 1230"},
+  {label:"Rajlakshmi",sub:"Dhaka · 1230"},
+  {label:"Azampur",sub:"Dhaka · 1230"},
+  {label:"South Azampur",sub:"Dhaka · 1230"},
+  {label:"Pakuria",sub:"Dhaka · 1230"},
+  {label:"Dhalnagar",sub:"Dhaka · 1230"},
+  {label:"Sonargaon Janapath",sub:"Dhaka · 1230"},
+  {label:"Rajia Sultana Road",sub:"Dhaka · 1230"},
+  {label:"Azampur",sub:"Dhaka · 1230"},
+  {label:"Gawair",sub:"Dhaka · 1230"},
+  {label:"Nabeen",sub:"Dhaka · 1230"},
+  {label:"Gulbari",sub:"Dhaka · 1230"},
+  {label:"Baraidha",sub:"Dhaka · 1230"},
+
+  // ── TONGI / NORTH OF UTTARA (photo 8) ──
+  {label:"Tongi",sub:"Gazipur · 1712"},
+  {label:"Tongi Station",sub:"Gazipur · 1712"},
+  {label:"Cheba Ali",sub:"Gazipur · 1712"},
+  {label:"Cherabari",sub:"Gazipur · 1712"},
+  {label:"Vatuliya",sub:"Gazipur · 1712"},
+  {label:"Kamarjora",sub:"Gazipur · 1712"},
+  {label:"Banarctek",sub:"Gazipur · 1712"},
+  {label:"Brangatek",sub:"Gazipur · 1712"},
+  {label:"Ghorer",sub:"Gazipur · 1712"},
+  {label:"Rambhola",sub:"Gazipur · 1712"},
+  {label:"Naya Nagar",sub:"Gazipur · 1712"},
+  {label:"Nalchira",sub:"Gazipur · 1712"},
+  {label:"KBM Road Tongi",sub:"Gazipur · 1712"},
+  {label:"Joydebpur",sub:"Gazipur · 1700"},
+  {label:"Board Bazar",sub:"Gazipur · 1703"},
+  {label:"Gazipur Sadar",sub:"Gazipur · 1700"},
+  {label:"Metro Rail Depot",sub:"Gazipur · 1712"},
+
+  // ── MIRPUR FULL DETAIL (photo 6) ──
+  {label:"Mirpur",sub:"Dhaka · 1216"},
+  {label:"Mirpur 1",sub:"Dhaka · 1216"},
+  {label:"Mirpur 2",sub:"Dhaka · 1216"},
+  {label:"Mirpur 6",sub:"Dhaka · 1216"},
+  {label:"Mirpur 7",sub:"Dhaka · 1216"},
+  {label:"Mirpur 9",sub:"Dhaka · 1216"},
+  {label:"Mirpur 10",sub:"Dhaka · 1216"},
+  {label:"Mirpur 10 Road",sub:"Dhaka · 1216"},
+  {label:"Mirpur 11",sub:"Dhaka · 1216"},
+  {label:"Mirpur 11.5",sub:"Dhaka · 1216"},
+  {label:"Mirpur 12",sub:"Dhaka · 1212"},
+  {label:"Mirpur 13",sub:"Dhaka · 1216"},
+  {label:"Mirpur 14",sub:"Dhaka · 1206"},
+  {label:"Mirpur DOHS",sub:"Dhaka · 1216"},
+  {label:"Mirpur Cantonment",sub:"Dhaka · 1216"},
+  {label:"South Mirpur",sub:"Dhaka · 1216"},
+  {label:"Dakshinkhan Mirpur",sub:"Dhaka · 1216"},
+  {label:"Mirhajirbag",sub:"Dhaka · 1209"},
+  {label:"Pallabi",sub:"Dhaka · 1216"},
+  {label:"Rupnagar",sub:"Dhaka · 1216"},
+  {label:"Paikpara",sub:"Dhaka · 1216"},
+  {label:"Kafrul",sub:"Dhaka · 1206"},
+  {label:"Kazipara",sub:"Dhaka · 1216"},
+  {label:"Shewrapara",sub:"Dhaka · 1216"},
+  {label:"Agargaon",sub:"Dhaka · 1207"},
+  {label:"Palash Nagar",sub:"Dhaka · 1216"},
+  {label:"East Matikata",sub:"Dhaka · 1206"},
+  {label:"West Matikata",sub:"Dhaka · 1206"},
+  {label:"Matikata",sub:"Dhaka · 1206"},
+  {label:"Eastern Housing",sub:"Dhaka · 1216"},
+  {label:"Pirerbag",sub:"Dhaka · 1216"},
+  {label:"North Pirerbag",sub:"Dhaka · 1216"},
+  {label:"South Pirerbag",sub:"Dhaka · 1216"},
+  {label:"West Kafrul",sub:"Dhaka · 1206"},
+  {label:"Ibrahimpur",sub:"Dhaka · 1206"},
+  {label:"Cantonment",sub:"Dhaka · 1206"},
+  {label:"Duaripara",sub:"Dhaka · 1216"},
+  {label:"Goldan Chowkbazi",sub:"Dhaka · 1216"},
+
+  // ── KHILKHET / NIKUNJA / AIRPORT (photo 7) ──
+  {label:"Khilkhet",sub:"Dhaka · 1229"},
+  {label:"Nikunja",sub:"Dhaka · 1229"},
+  {label:"Nikunja 1",sub:"Dhaka · 1229"},
+  {label:"Nikunja 2",sub:"Dhaka · 1229"},
+  {label:"Airport",sub:"Dhaka · 1229"},
+  {label:"Airport Road",sub:"Dhaka · 1229"},
+  {label:"Ashkona",sub:"Dhaka · 1229"},
+  {label:"Kurmitola",sub:"Dhaka · 1229"},
+  {label:"Cantonment Dhaka",sub:"Dhaka · 1206"},
+  {label:"Aniyaan City",sub:"Dhaka · 1229"},
+  {label:"Canal Para",sub:"Dhaka · 1229"},
+
+  // ── RAYER BAZAR / WEST DHAKA (photo 9) ──
+  {label:"Rayer Bazar",sub:"Dhaka · 1209"},
+  {label:"West Rayer Bazar",sub:"Dhaka · 1209"},
+  {label:"Pashchim Rayer Bazar",sub:"Dhaka · 1209"},
+  {label:"Hajaribagh",sub:"Dhaka · 1209"},
+  {label:"Hazaribagh",sub:"Dhaka · 1209"},
+  {label:"Kamrangirchar",sub:"Dhaka · 1211"},
+  {label:"Lalbagh",sub:"Dhaka · 1211"},
+  {label:"Lalbagh Fort",sub:"Dhaka · 1211"},
+  {label:"Chawkbazar",sub:"Dhaka · 1211"},
+  {label:"Nababpur",sub:"Dhaka · 1100"},
+  {label:"Islamnagar",sub:"Dhaka · 1207"},
+  {label:"Islamabad",sub:"Dhaka · 1207"},
+  {label:"Nurjahan Road",sub:"Dhaka · 1207"},
+  {label:"Adarsha Nagar",sub:"Dhaka · 1207"},
+  {label:"Iqbalpur",sub:"Dhaka · 1207"},
+
+  // ── JATRABARI / SOUTH EAST DETAIL (photo 1) ──
+  {label:"Jatrabari",sub:"Dhaka · 1204"},
+  {label:"North Jatrabari",sub:"Dhaka · 1204"},
+  {label:"South Jatrabari",sub:"Dhaka · 1204"},
+  {label:"Uttar Jatrabari",sub:"Dhaka · 1204"},
+  {label:"Dakhin Jatrabari",sub:"Dhaka · 1204"},
+  {label:"Jatrabari Bazar",sub:"Dhaka · 1204"},
+  {label:"Saidabad",sub:"Dhaka · 1204"},
+  {label:"Shyampur",sub:"Dhaka · 1204"},
+  {label:"Kadamtali",sub:"Dhaka · 1204"},
+  {label:"Rayerbag",sub:"Dhaka · 1204"},
+  {label:"Dhonia",sub:"Dhaka · 1236"},
+  {label:"Matuail",sub:"Dhaka · 1362"},
+  {label:"Matuail New Town",sub:"Dhaka · 1362"},
+  {label:"Demra",sub:"Dhaka · 1361"},
+  {label:"Jurain",sub:"Dhaka · 1204"},
+  {label:"Dholaipar",sub:"Dhaka · 1204"},
+  {label:"Kutubkhali",sub:"Dhaka · 1204"},
+  {label:"Postogola",sub:"Dhaka · 1204"},
+  {label:"Shonirakhra",sub:"Dhaka · 1204"},
+  {label:"Kazla",sub:"Dhaka · 1204"},
+  {label:"Shekdi",sub:"Dhaka · 1204"},
+  {label:"Pagla",sub:"Dhaka · 1362"},
+  {label:"Mur Hajirbag",sub:"Dhaka · 1204"},
+  {label:"Mir Hajirbag",sub:"Dhaka · 1204"},
+  {label:"Manda",sub:"Dhaka · 1219"},
+  {label:"South Manda",sub:"Dhaka · 1219"},
+  {label:"R110 Area",sub:"Dhaka · 1204"},
+  {label:"Padadogar",sub:"Dhaka · 1204"},
+  {label:"Konabari",sub:"Gazipur · 1346"},
+
+  // ── WARI / OLD DHAKA EAST ──
+  {label:"Wari",sub:"Dhaka · 1203"},
+  {label:"Gopibagh",sub:"Dhaka · 1203"},
+  {label:"Narinda",sub:"Dhaka · 1100"},
+  {label:"Bangshal",sub:"Dhaka · 1100"},
+  {label:"Sutrapur",sub:"Dhaka · 1100"},
+  {label:"Gandaria",sub:"Dhaka · 1100"},
+  {label:"Islampur",sub:"Dhaka · 1100"},
+  {label:"Patuatuli",sub:"Dhaka · 1100"},
+  {label:"Johnson Road",sub:"Dhaka · 1100"},
+  {label:"Tipu Sultan Road",sub:"Dhaka · 1100"},
+  {label:"Rankin Street",sub:"Dhaka · 1203"},
+  {label:"Tanti Bazar",sub:"Dhaka · 1100"},
+  {label:"Shankhari Bazar",sub:"Dhaka · 1100"},
+  {label:"Mitford",sub:"Dhaka · 1100"},
+  {label:"Sadarghat",sub:"Dhaka · 1100"},
+  {label:"Farashganj",sub:"Dhaka · 1100"},
+  {label:"Nababganj",sub:"Dhaka · 1211"},
+  {label:"Armanitola",sub:"Dhaka · 1100"},
+
+  // ── MOTIJHEEL / PALTAN / CBD ──
+  {label:"Motijheel",sub:"Dhaka · 1000"},
+  {label:"Paltan",sub:"Dhaka · 1000"},
+  {label:"Purana Paltan",sub:"Dhaka · 1000"},
+  {label:"Naya Paltan",sub:"Dhaka · 1000"},
+  {label:"Kakrail",sub:"Dhaka · 1000"},
+  {label:"Eskaton",sub:"Dhaka · 1000"},
+  {label:"Segunbagicha",sub:"Dhaka · 1000"},
+  {label:"Ramna",sub:"Dhaka · 1000"},
+  {label:"Dilkusha",sub:"Dhaka · 1000"},
+  {label:"Topkhana Road",sub:"Dhaka · 1000"},
+  {label:"Matsya Bhaban",sub:"Dhaka · 1000"},
+  {label:"Mouchak",sub:"Dhaka · 1217"},
+  {label:"Shantinagar",sub:"Dhaka · 1217"},
+  {label:"Siddheshwari",sub:"Dhaka · 1217"},
+  {label:"Shahjanpur",sub:"Dhaka · 1217"},
+  {label:"Malibagh",sub:"Dhaka · 1217"},
+  {label:"Malibagh Chowdhurypara",sub:"Dhaka · 1217"},
+  {label:"Rajarbagh",sub:"Dhaka · 1217"},
+  {label:"Khilgaon",sub:"Dhaka · 1219"},
+  {label:"Tilpapara",sub:"Dhaka · 1214"},
+  {label:"Mugda",sub:"Dhaka · 1214"},
+  {label:"North Mugda",sub:"Dhaka · 1214"},
+  {label:"South Mugda",sub:"Dhaka · 1214"},
+  {label:"Basabo",sub:"Dhaka · 1214"},
+  {label:"Sabujbagh",sub:"Dhaka · 1214"},
+  {label:"Rampura",sub:"Dhaka · 1219"},
+  {label:"East Rampura",sub:"Dhaka · 1219"},
+  {label:"Badda",sub:"Dhaka · 1212"},
+  {label:"North Badda",sub:"Dhaka · 1212"},
+  {label:"South Badda",sub:"Dhaka · 1212"},
+  {label:"Vatara",sub:"Dhaka · 1212"},
+  {label:"Bhatara",sub:"Dhaka · 1212"},
+  {label:"Aftabnagar",sub:"Dhaka · 1212"},
+  {label:"Hatirjheel",sub:"Dhaka · 1217"},
+
+  // ── KERANIGANJ / SOUTH WEST (photo 3) ──
+  {label:"Keraniganj",sub:"Dhaka · 1310"},
+  {label:"Zinzira",sub:"Dhaka · 1310"},
+  {label:"Zinzira Dhaka",sub:"Dhaka · 1310"},
+  {label:"Razakhali",sub:"Dhaka · 1310"},
+  {label:"Aganagar",sub:"Dhaka · 1310"},
+  {label:"Islamabad Keraniganj",sub:"Dhaka · 1310"},
+  {label:"Bolayer Mohol",sub:"Dhaka · 1310"},
+  {label:"Hasnahabad",sub:"Dhaka · 1310"},
+  {label:"Azizur Rahman",sub:"Dhaka · 1310"},
+  {label:"Atibazar",sub:"Dhaka · 1310"},
+  {label:"Nazirabag",sub:"Dhaka · 1310"},
+  {label:"Ghatabari",sub:"Dhaka · 1310"},
+  {label:"Gobra",sub:"Dhaka · 1310"},
+  {label:"Choddar Gaon",sub:"Dhaka · 1310"},
+  {label:"Heyjazbag",sub:"Dhaka · 1310"},
+  {label:"Bansholay",sub:"Dhaka · 1310"},
+  {label:"Kalunagar",sub:"Dhaka · 1310"},
+  {label:"Mil Barak",sub:"Dhaka · 1310"},
+  {label:"Mombartoli",sub:"Dhaka · 1310"},
+  {label:"Ranirbazar",sub:"Dhaka · 1310"},
+  {label:"Birulia",sub:"Dhaka · 1310"},
+  {label:"Kodomtoli",sub:"Dhaka · 1310"},
+  {label:"Yunusbag",sub:"Dhaka · 1310"},
+
+  // ── SAVAR / ASHULIA / OUTER ──
+  {label:"Savar",sub:"Dhaka · 1340"},
+  {label:"Ashulia",sub:"Dhaka · 1345"},
+  {label:"Hemayetpur",sub:"Dhaka · 1340"},
+  {label:"Dhamrai",sub:"Dhaka · 1350"},
+  {label:"Narayanganj",sub:"Dhaka Div · 1400"},
+  {label:"Purbachal",sub:"Dhaka · 1461"},
+  {label:"Purbachal New Town",sub:"Dhaka · 1461"},
+  {label:"300 Feet Purbachal",sub:"Dhaka · 1229"},
+  {label:"Kanchpur",sub:"Narayanganj · 1461"},
+
+  // ── CHITTAGONG FULL ──
+  {label:"Panchlaish",sub:"Chittagong · 4203"},
+  {label:"Khulshi",sub:"Chittagong · 4225"},
+  {label:"Khulshi Hill",sub:"Chittagong · 4225"},
+  {label:"Agrabad",sub:"Chittagong · 4100"},
+  {label:"Nasirabad",sub:"Chittagong · 4210"},
+  {label:"Halishahar",sub:"Chittagong · 4216"},
+  {label:"Pahartali",sub:"Chittagong · 4202"},
+  {label:"Oxygen",sub:"Chittagong · 4209"},
+  {label:"GEC Circle",sub:"Chittagong · 4203"},
+  {label:"CDA Avenue",sub:"Chittagong · 4203"},
+  {label:"Muradpur",sub:"Chittagong · 4210"},
+  {label:"Bahaddarhat",sub:"Chittagong · 4210"},
+  {label:"Kalurghat",sub:"Chittagong · 4210"},
+  {label:"Dewanhat",sub:"Chittagong · 4000"},
+  {label:"Kotwali Ctg",sub:"Chittagong · 4000"},
+  {label:"Double Mooring",sub:"Chittagong · 4100"},
+  {label:"Bandar Ctg",sub:"Chittagong · 4100"},
+  {label:"Bayezid",sub:"Chittagong · 4209"},
+  {label:"Chandgaon",sub:"Chittagong · 4212"},
+  {label:"Bakalia",sub:"Chittagong · 4000"},
+  {label:"Sadarghat Ctg",sub:"Chittagong · 4000"},
+  {label:"Lalkhan Bazar",sub:"Chittagong · 4000"},
+  {label:"Enayet Bazar",sub:"Chittagong · 4000"},
+  {label:"Sholoshohor",sub:"Chittagong · 4210"},
+  {label:"Dampara",sub:"Chittagong · 4000"},
+  {label:"Patharghata",sub:"Chittagong · 4000"},
+  {label:"Anderkilla",sub:"Chittagong · 4000"},
+  {label:"Chawkbazar Ctg",sub:"Chittagong · 4000"},
+  {label:"Jamalkhan",sub:"Chittagong · 4000"},
+  {label:"Mohra",sub:"Chittagong · 4217"},
+  {label:"Sitakundu",sub:"Chittagong · 4310"},
+  {label:"Fatikchari",sub:"Chittagong · 4380"},
+  {label:"Hathazari",sub:"Chittagong · 4330"},
+
+  // ── SYLHET FULL ──
+  {label:"Sylhet Sadar",sub:"Sylhet · 3100"},
+  {label:"Zindabazar",sub:"Sylhet · 3100"},
+  {label:"Amberkhana",sub:"Sylhet · 3100"},
+  {label:"Subhanighat",sub:"Sylhet · 3100"},
+  {label:"Kumarpara",sub:"Sylhet · 3100"},
+  {label:"Tilagarh",sub:"Sylhet · 3100"},
+  {label:"Shibganj Sylhet",sub:"Sylhet · 3100"},
+  {label:"Modina Market",sub:"Sylhet · 3100"},
+  {label:"Upashahar",sub:"Sylhet · 3100"},
+  {label:"Shahjalal Upashahar",sub:"Sylhet · 3100"},
+  {label:"Akhalia",sub:"Sylhet · 3114"},
+  {label:"Mirer Maidan",sub:"Sylhet · 3100"},
+  {label:"Bondor Bazar",sub:"Sylhet · 3100"},
+  {label:"Chowhatta",sub:"Sylhet · 3100"},
+
+  // ── RAJSHAHI ──
+  {label:"Rajshahi Sadar",sub:"Rajshahi · 6000"},
+  {label:"Boalia",sub:"Rajshahi · 6000"},
+  {label:"Shaheb Bazar",sub:"Rajshahi · 6000"},
+  {label:"Uposhohor Rajshahi",sub:"Rajshahi · 6000"},
+  {label:"Kazla Rajshahi",sub:"Rajshahi · 6000"},
+  {label:"Talaimari",sub:"Rajshahi · 6203"},
+  {label:"Padma Residential",sub:"Rajshahi · 6000"},
+  {label:"New Market Rajshahi",sub:"Rajshahi · 6000"},
+
+  // ── KHULNA ──
+  {label:"Khulna Sadar",sub:"Khulna · 9000"},
+  {label:"Sonadanga",sub:"Khulna · 9100"},
+  {label:"Khalishpur",sub:"Khulna · 9000"},
+  {label:"Daulatpur",sub:"Khulna · 9000"},
+  {label:"Boyra",sub:"Khulna · 9000"},
+  {label:"Nirala",sub:"Khulna · 9100"},
+  {label:"Shibbari",sub:"Khulna · 9000"},
+  {label:"KDA Avenue Khulna",sub:"Khulna · 9100"},
+  {label:"Rupsha",sub:"Khulna · 9000"},
+
+  // ── BARISHAL ──
+  {label:"Barishal Sadar",sub:"Barishal · 8200"},
+  {label:"Natullabad",sub:"Barishal · 8200"},
+  {label:"Band Road",sub:"Barishal · 8200"},
+  {label:"Ruplal",sub:"Barishal · 8200"},
+  {label:"Sadar Road Barishal",sub:"Barishal · 8200"},
+  {label:"Kaunia",sub:"Barishal · 8200"},
+
+  // ── RANGPUR ──
+  {label:"Rangpur Sadar",sub:"Rangpur · 5400"},
+  {label:"Shapla Chottor",sub:"Rangpur · 5400"},
+  {label:"Dhap",sub:"Rangpur · 5400"},
+  {label:"Lalbag Rangpur",sub:"Rangpur · 5400"},
+  {label:"Jail Road Rangpur",sub:"Rangpur · 5400"},
+
+  // ── MYMENSINGH ──
+  {label:"Mymensingh Sadar",sub:"Mymensingh · 2200"},
+  {label:"Ganginar Par",sub:"Mymensingh · 2200"},
+  {label:"Chorpara",sub:"Mymensingh · 2200"},
+  {label:"Kewatkhali",sub:"Mymensingh · 2200"},
+  {label:"Masua",sub:"Mymensingh · 2200"},
+  {label:"Town Hall Mymensingh",sub:"Mymensingh · 2200"},
+
+  // ── DSCC WARD AREAS (official Dhaka South areas) ──
+  {label:"Goran",sub:"Dhaka · 1219"},
+  {label:"Meradia",sub:"Dhaka · 1219"},
+  {label:"Madartek",sub:"Dhaka · 1219"},
+  {label:"Mayakanon",sub:"Dhaka · 1214"},
+  {label:"Ahmed Bagh",sub:"Dhaka · 1214"},
+  {label:"Kodomtola",sub:"Dhaka · 1214"},
+  {label:"Tallabagh",sub:"Dhaka · 1205"},
+  {label:"Shukrabad",sub:"Dhaka · 1207"},
+  {label:"Green Road",sub:"Dhaka · 1205"},
+  {label:"Free School Street",sub:"Dhaka · 1205"},
+  {label:"Crescent Road",sub:"Dhaka · 1205"},
+  {label:"Central Road",sub:"Dhaka · 1000"},
+  {label:"Bailey Road",sub:"Dhaka · 1000"},
+  {label:"Bailey Square",sub:"Dhaka · 1000"},
+  {label:"Maghbazar",sub:"Dhaka · 1217"},
+  {label:"Mogbazar",sub:"Dhaka · 1217"},
+  {label:"Ispahani Colony",sub:"Dhaka · 1217"},
+  {label:"New Eskaton",sub:"Dhaka · 1000"},
+  {label:"Iskaton Garden",sub:"Dhaka · 1000"},
+  {label:"Circuit House Road",sub:"Dhaka · 1000"},
+  {label:"Mintu Road",sub:"Dhaka · 1000"},
+  {label:"Siddeshwari",sub:"Dhaka · 1217"},
+  {label:"Siddeshwari Road",sub:"Dhaka · 1217"},
+  {label:"DIT Colony",sub:"Dhaka · 1217"},
+  {label:"Shahbagh",sub:"Dhaka · 1000"},
+  {label:"TSC Area",sub:"Dhaka · 1000"},
+  {label:"Dhaka University Area",sub:"Dhaka · 1000"},
+  {label:"Nilkhet Babupara",sub:"Dhaka · 1205"},
+  {label:"Azimpur",sub:"Dhaka · 1205"},
+  {label:"Azimpur Colony",sub:"Dhaka · 1205"},
+  {label:"Elephant Road",sub:"Dhaka · 1205"},
+  {label:"New Elephant Road",sub:"Dhaka · 1205"},
+  {label:"Pilkhana",sub:"Dhaka · 1205"},
+  {label:"Mirpur Road",sub:"Dhaka · 1216"},
+  {label:"Kamalapur",sub:"Dhaka · 1000"},
+  {label:"Kamalapur Railway",sub:"Dhaka · 1000"},
+  {label:"RK Mission Road",sub:"Dhaka · 1203"},
+  {label:"Gopibagh",sub:"Dhaka · 1203"},
+  {label:"Golapbagh",sub:"Dhaka · 1214"},
+  {label:"Juribari",sub:"Dhaka · 1214"},
+  {label:"Razarbagh",sub:"Dhaka · 1217"},
+  {label:"Rajarbagh Police Lines",sub:"Dhaka · 1217"},
+  {label:"Bangshal Road",sub:"Dhaka · 1100"},
+  {label:"English Road",sub:"Dhaka · 1100"},
+  {label:"Nawab Katara",sub:"Dhaka · 1100"},
+  {label:"Siddique Bazar",sub:"Dhaka · 1100"},
+  {label:"Kazi Alauddin Road",sub:"Dhaka · 1100"},
+  {label:"Islampur Road",sub:"Dhaka · 1100"},
+  {label:"Ahsan Manzil",sub:"Dhaka · 1100"},
+  {label:"Lalmohan Poddar Lane",sub:"Dhaka · 1204"},
+  {label:"Postagola Bridge",sub:"Dhaka · 1204"},
+  {label:"Khalpar",sub:"Dhaka · 1204"},
+
+  // ── DNCC WARD AREAS (Dhaka North) ──
+  {label:"WAPDA Colony",sub:"Dhaka · 1216"},
+  {label:"Rupnagar Tin Shed",sub:"Dhaka · 1216"},
+  {label:"Pallabi WAPDA",sub:"Dhaka · 1216"},
+  {label:"Satarkul",sub:"Dhaka · 1212"},
+  {label:"Beraid",sub:"Dhaka · 1212"},
+  {label:"Banasree",sub:"Dhaka · 1212"},
+  {label:"Gabtali",sub:"Dhaka · 1207"},
+  {label:"Jhilmil",sub:"Dhaka · 1362"},
+  {label:"Jhilmil Residential",sub:"Dhaka · 1362"},
+  {label:"Tegharia",sub:"Dhaka · 1362"},
+  {label:"Hasnabad",sub:"Dhaka · 1204"},
+  {label:"Jinjira",sub:"Dhaka · 1310"},
+
+  // ── ADDITIONAL DHAKA AREAS FROM MAPS ──
+  {label:"Kuril",sub:"Dhaka · 1229"},
+  {label:"Kuril Bishwa Road",sub:"Dhaka · 1229"},
+  {label:"Progati Sarani",sub:"Dhaka · 1229"},
+  {label:"Notun Bazar",sub:"Dhaka · 1212"},
+  {label:"Merul Badda",sub:"Dhaka · 1212"},
+  {label:"Boro Beraid",sub:"Dhaka · 1212"},
+  {label:"Choto Beraid",sub:"Dhaka · 1212"},
+  {label:"Shajahanpur",sub:"Dhaka · 1217"},
+  {label:"Shahjahanpur",sub:"Dhaka · 1217"},
+  {label:"North Shahjahanpur",sub:"Dhaka · 1217"},
+  {label:"South Shahjahanpur",sub:"Dhaka · 1217"},
+  {label:"Maniknagar",sub:"Dhaka · 1203"},
+  {label:"North Maniknagar",sub:"Dhaka · 1203"},
+  {label:"South Maniknagar",sub:"Dhaka · 1203"},
+  {label:"East Maniknagar",sub:"Dhaka · 1203"},
+  {label:"Dholpur",sub:"Dhaka · 1203"},
+  {label:"Shyampur Bazar",sub:"Dhaka · 1204"},
+  {label:"Muktijoddha Nagar",sub:"Dhaka · 1204"},
+  {label:"Habib Nagar",sub:"Dhaka · 1204"},
+  {label:"Merojnagar",sub:"Dhaka · 1204"},
+  {label:"Mohammadnagar",sub:"Dhaka · 1204"},
+  {label:"Yunusnagar",sub:"Dhaka · 1204"},
+  {label:"Sirajnagar",sub:"Dhaka · 1204"},
+  {label:"Sarnai",sub:"Dhaka · 1310"},
+  {label:"Sayedabad Bus Terminal",sub:"Dhaka · 1204"},
+  {label:"Konapara",sub:"Dhaka · 1204"},
+  {label:"Mandail",sub:"Dhaka · 1204"},
+  {label:"Green Model Town",sub:"Dhaka · 1219"},
+  {label:"Paity",sub:"Dhaka · 1219"},
+  {label:"Choto Paity",sub:"Dhaka · 1219"},
+  {label:"Block A Mirpur",sub:"Dhaka · 1216"},
+  {label:"Block B Mirpur",sub:"Dhaka · 1216"},
+  {label:"Block C Mirpur",sub:"Dhaka · 1216"},
+  {label:"Block D Mirpur",sub:"Dhaka · 1216"},
+  {label:"Block E Mirpur",sub:"Dhaka · 1216"},
+  {label:"Senpara Parbata",sub:"Dhaka · 1216"},
+  {label:"Bauniabadh",sub:"Dhaka · 1216"},
+  {label:"Bawnia",sub:"Dhaka · 1216"},
+  {label:"Kallyanpur",sub:"Dhaka · 1207"},
+  {label:"North Kallyanpur",sub:"Dhaka · 1207"},
+  {label:"West Kallyanpur",sub:"Dhaka · 1207"},
+  {label:"South Kallyanpur",sub:"Dhaka · 1207"},
+  {label:"Pirerbag",sub:"Dhaka · 1216"},
+  {label:"Tolarbag",sub:"Dhaka · 1207"},
+  {label:"Senpara",sub:"Dhaka · 1216"},
+  {label:"East Senpara",sub:"Dhaka · 1216"},
+  {label:"Paikpara",sub:"Dhaka · 1216"},
+  {label:"Santibag",sub:"Dhaka · 1217"},
+  {label:"Khilbaristek",sub:"Dhaka · 1229"},
+  {label:"Vatara Bazar",sub:"Dhaka · 1212"},
+  {label:"Nadda",sub:"Dhaka · 1212"},
+  {label:"Kalachandpur",sub:"Dhaka · 1212"},
+  {label:"Nortun Bazar Gulshan",sub:"Dhaka · 1212"},
+  {label:"Shahjadpur Bazar",sub:"Dhaka · 1212"},
+  {label:"East Nakhalpara",sub:"Dhaka · 1215"},
+  {label:"West Nakhalpara",sub:"Dhaka · 1215"},
+  {label:"Tejturi Bazar",sub:"Dhaka · 1215"},
+  {label:"Tejgaon Shilpa Elaka",sub:"Dhaka · 1208"},
+  {label:"Monipuripara",sub:"Dhaka · 1215"},
+  {label:"Aminbazar",sub:"Dhaka · 1340"},
+  {label:"Mirpur Zoo",sub:"Dhaka · 1216"},
+  {label:"National Zoo",sub:"Dhaka · 1216"},
+  {label:"Shia Mosque Area",sub:"Dhaka · 1000"},
+  {label:"Thathari Bazar",sub:"Dhaka · 1100"},
+  {label:"Tantibazar",sub:"Dhaka · 1100"},
+  {label:"Shankharibazar",sub:"Dhaka · 1100"},
+  {label:"Badamtali",sub:"Dhaka · 1100"},
+  {label:"Dhupkhola",sub:"Dhaka · 1204"},
+  {label:"Rayer Bazar Beribadh",sub:"Dhaka · 1209"},
+  {label:"Pirerbag Slum",sub:"Dhaka · 1216"},
+  {label:"Vashantek",sub:"Dhaka · 1216"},
+  {label:"Diabari Turag",sub:"Dhaka · 1230"},
+
+  // ── CHITTAGONG MISSING AREAS ──
+  {label:"Iqbal Park",sub:"Chittagong · 4365"},
+  {label:"Kanungo Para",sub:"Chittagong · 4363"},
+  {label:"Firingee Bazar",sub:"Chittagong · 4000"},
+  {label:"Kobi Nazrul Road",sub:"Chittagong · 4000"},
+  {label:"Station Road Ctg",sub:"Chittagong · 4000"},
+  {label:"Wazedia",sub:"Chittagong · 4203"},
+  {label:"Kaptai Rasta",sub:"Chittagong · 4209"},
+  {label:"Fatehabad",sub:"Chittagong · 4210"},
+  {label:"Bohaddarhat",sub:"Chittagong · 4210"},
+  {label:"Chander Hat",sub:"Chittagong · 4366"},
+  {label:"EPZ Chittagong",sub:"Chittagong · 4223"},
+  {label:"Shah Amanat Bridge",sub:"Chittagong · 4210"},
+  {label:"Kumira",sub:"Chittagong · 4314"},
+  {label:"Mirsharai",sub:"Chittagong · 4320"},
+  {label:"Banskhali",sub:"Chittagong · 4390"},
+  {label:"Patiya",sub:"Chittagong · 4370"},
+  {label:"Anwara",sub:"Chittagong · 4376"},
+  {label:"Raozan",sub:"Chittagong · 4340"},
+  {label:"Sandwip",sub:"Chittagong · 4351"},
+  {label:"Cox's Bazar",sub:"Cox's Bazar · 4700"},
+  {label:"Cox's Bazar Sadar",sub:"Cox's Bazar · 4700"},
+  {label:"Teknaf",sub:"Cox's Bazar · 4761"},
+  {label:"Ukhia",sub:"Cox's Bazar · 4750"},
+
+  // ── SYLHET MISSING ──
+  {label:"Shahporan",sub:"Sylhet · 3114"},
+  {label:"Bishwanath",sub:"Sylhet · 3130"},
+  {label:"Osmani Nagar",sub:"Sylhet · 3114"},
+  {label:"Dakshin Surma",sub:"Sylhet · 3100"},
+  {label:"Golapganj",sub:"Sylhet · 3140"},
+  {label:"Jalalabad",sub:"Sylhet · 3100"},
+  {label:"Sylhet DOHS",sub:"Sylhet · 3100"},
+  {label:"Moulvibazar",sub:"Moulvibazar · 3200"},
+  {label:"Sreemangal",sub:"Moulvibazar · 3210"},
+  {label:"Habiganj",sub:"Habiganj · 3300"},
+  {label:"Sunamganj",sub:"Sunamganj · 3000"},
+
+  // ── RAJSHAHI MISSING ──
+  {label:"Rajshahi Medical",sub:"Rajshahi · 6000"},
+  {label:"Sahebbazar",sub:"Rajshahi · 6000"},
+  {label:"Ghoramara",sub:"Rajshahi · 6000"},
+  {label:"Binodpur",sub:"Rajshahi · 6203"},
+  {label:"Rajpara",sub:"Rajshahi · 6000"},
+  {label:"Motihar",sub:"Rajshahi · 6000"},
+  {label:"Paba",sub:"Rajshahi · 6260"},
+  {label:"Godagari",sub:"Rajshahi · 6280"},
+  {label:"Chapai Nawabganj",sub:"Chapai Nawabganj · 6300"},
+  {label:"Natore",sub:"Natore · 6400"},
+  {label:"Bogura",sub:"Bogura · 5800"},
+  {label:"Bogura Sadar",sub:"Bogura · 5800"},
+  {label:"Sherpur Bogura",sub:"Bogura · 5840"},
+
+  // ── KHULNA MISSING ──
+  {label:"Khulna Medical",sub:"Khulna · 9000"},
+  {label:"Ferryghata",sub:"Khulna · 9000"},
+  {label:"Shib Bari",sub:"Khulna · 9000"},
+  {label:"Khan A Sabur Road",sub:"Khulna · 9100"},
+  {label:"Jessore Road Khulna",sub:"Khulna · 9100"},
+  {label:"Mongla",sub:"Khulna · 9350"},
+  {label:"Bagerhat",sub:"Bagerhat · 9300"},
+  {label:"Satkhira",sub:"Satkhira · 9400"},
+  {label:"Jashore",sub:"Jashore · 7400"},
+  {label:"Jashore Sadar",sub:"Jashore · 7400"},
+  {label:"Benapole",sub:"Jashore · 7431"},
+  {label:"Kushtia",sub:"Kushtia · 7000"},
+
+  // ── BARISHAL MISSING ──
+  {label:"Barishal Medical",sub:"Barishal · 8200"},
+  {label:"Chawkbazar Barishal",sub:"Barishal · 8200"},
+  {label:"Amtala",sub:"Barishal · 8200"},
+  {label:"Notullabad",sub:"Barishal · 8200"},
+  {label:"Rupatali",sub:"Barishal · 8200"},
+  {label:"Airport Road Barishal",sub:"Barishal · 8200"},
+  {label:"Patuakhali",sub:"Patuakhali · 8600"},
+  {label:"Bhola",sub:"Bhola · 8300"},
+  {label:"Barguna",sub:"Barguna · 8700"},
+
+  // ── RANGPUR MISSING ──
+  {label:"Rangpur Medical",sub:"Rangpur · 5400"},
+  {label:"Modern More",sub:"Rangpur · 5400"},
+  {label:"Jahaj Company More",sub:"Rangpur · 5400"},
+  {label:"Khamar More",sub:"Rangpur · 5400"},
+  {label:"Dinajpur",sub:"Dinajpur · 5200"},
+  {label:"Dinajpur Sadar",sub:"Dinajpur · 5200"},
+  {label:"Thakurgaon",sub:"Thakurgaon · 5100"},
+  {label:"Panchagarh",sub:"Panchagarh · 5000"},
+  {label:"Nilphamari",sub:"Nilphamari · 5300"},
+  {label:"Lalmonirhat",sub:"Lalmonirhat · 5500"},
+  {label:"Kurigram",sub:"Kurigram · 5600"},
+  {label:"Gaibandha",sub:"Gaibandha · 5700"},
+
+  // ── MYMENSINGH MISSING ──
+  {label:"Mymensingh Medical",sub:"Mymensingh · 2200"},
+  {label:"Notun Bazar Mymensingh",sub:"Mymensingh · 2200"},
+  {label:"Brahmaputra River Bank",sub:"Mymensingh · 2200"},
+  {label:"Jamalpure",sub:"Jamalpur · 2000"},
+  {label:"Sherpur",sub:"Sherpur · 2100"},
+  {label:"Netrokona",sub:"Netrokona · 2400"},
+  {label:"Kishoreganj",sub:"Kishoreganj · 2300"},
+
+  // ── NARAYANGANJ FULL ──
+  {label:"Narayanganj Sadar",sub:"Narayanganj · 1400"},
+  {label:"Fatullah",sub:"Narayanganj · 1421"},
+  {label:"Siddhirganj",sub:"Narayanganj · 1430"},
+  {label:"Sonargaon",sub:"Narayanganj · 1440"},
+  {label:"Rupganj",sub:"Narayanganj · 1461"},
+  {label:"Bandar Narayanganj",sub:"Narayanganj · 1410"},
+  {label:"Araihazar",sub:"Narayanganj · 1450"},
+
+  // ── GAZIPUR FULL ──
+  {label:"Gazipur Sadar",sub:"Gazipur · 1700"},
+  {label:"Joydebpur",sub:"Gazipur · 1700"},
+  {label:"Tongi",sub:"Gazipur · 1712"},
+  {label:"Sreepur",sub:"Gazipur · 1740"},
+  {label:"Kaliakoir",sub:"Gazipur · 1750"},
+  {label:"Kapasia",sub:"Gazipur · 1730"},
+  {label:"Board Bazar",sub:"Gazipur · 1703"},
+  {label:"Chandra",sub:"Gazipur · 1751"},
+  {label:"Bhawal",sub:"Gazipur · 1700"},
+  {label:"Mawna",sub:"Gazipur · 1741"},
+
+  // ── COMILLA / CUMILLA ──
+  {label:"Comilla Sadar",sub:"Cumilla · 3500"},
+  {label:"Cumilla",sub:"Cumilla · 3500"},
+  {label:"Kotbari",sub:"Cumilla · 3503"},
+  {label:"Brahmanpara",sub:"Cumilla · 3550"},
+  {label:"Chandpur",sub:"Chandpur · 3600"},
+  {label:"Laksmipur",sub:"Lakshmipur · 3700"},
+  {label:"Noakhali",sub:"Noakhali · 3800"},
+  {label:"Feni",sub:"Feni · 3900"},
+  {label:"Brahmanbaria",sub:"Brahmanbaria · 3400"},
+];
 const GOV_LINKS = [
   {label:"RAJUK",url:"https://rajuk.gov.bd",icon:"🏛"},{label:"Land Ministry",url:"https://minland.gov.bd",icon:"📜"},
   {label:"e-Porcha",url:"https://eporcha.gov.bd",icon:"🗺"},{label:"NHA",url:"https://nha.gov.bd",icon:"🏠"},
@@ -886,10 +1897,11 @@ function DetailModal({p, onClose, L}){
 }
 
 /* ── LISTING WIZARD ───────────────────────────── */
-function ListWizard({onClose}){
+function ListWizard({onClose, onAddArea, customAreas=[]}){
   const isMobile = useIsMobile();
   const [step,setStep]=useState(0);
-  const [form,setForm]=useState({type:"apartment",status:"for-rent",title:"",address:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:"",photos:[],coverIdx:0});
+  const [form,setForm]=useState({type:"apartment",status:"for-rent",title:"",address:"",areaName:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:"",photos:[],coverIdx:0});
+  const [areaSugg, setAreaSugg] = useState(false);
   const upd=(k,v)=>setForm(f=>({...f,[k]:v}));
   const toggleArr=(k,v)=>setForm(f=>({...f,[k]:f[k].includes(v)?f[k].filter(x=>x!==v):[...f[k],v]}));
   const addSlot=()=>setForm(f=>({...f,inspSlots:[...f.inspSlots,{day:"",time:""}]}));
@@ -937,6 +1949,85 @@ function ListWizard({onClose}){
           {step===1&&(
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               <div><div style={{fontSize:11,fontWeight:800,color:T.muted,marginBottom:4}}>PROPERTY TITLE *</div>{inp("e.g. Spacious 3-Bed Flat in Bashundhara R/A","title")}</div>
+
+              {/* ── AREA NAME with live autocomplete + add new ── */}
+              <div>
+                <div style={{fontSize:11,fontWeight:800,color:T.muted,marginBottom:4}}>AREA NAME *
+                  <span style={{fontWeight:500,color:T.green,marginLeft:6,fontSize:10}}>— type to search or add a new area</span>
+                </div>
+                <div style={{position:"relative"}}>
+                  <input
+                    value={form.areaName}
+                    onChange={e=>{ upd("areaName",e.target.value); setAreaSugg(true); }}
+                    onFocus={()=>setAreaSugg(true)}
+                    onBlur={()=>setTimeout(()=>setAreaSugg(false),200)}
+                    placeholder="e.g. Mirpur 10, Dhanmondi, Bashundhara R/A…"
+                    style={{width:"100%",padding:"11px 14px",border:`1.5px solid ${form.areaName?T.green:T.border}`,borderRadius:9,fontSize:13,outline:"none",boxSizing:"border-box"}}
+                  />
+                  {/* Dropdown */}
+                  {areaSugg && form.areaName.length>=1 && (()=>{
+                    const allAreas = [
+                      ...AREA_SUGGESTIONS,
+                      ...customAreas.map(a=>({label:a.label,sub:a.sub,isCustom:true}))
+                    ];
+                    const matches = allAreas.filter(a=>
+                      a.label.toLowerCase().includes(form.areaName.toLowerCase()) ||
+                      (a.sub||"").toLowerCase().includes(form.areaName.toLowerCase())
+                    ).slice(0,7);
+                    const exactMatch = allAreas.some(a=>a.label.toLowerCase()===form.areaName.toLowerCase());
+                    return (
+                      <div style={{position:"absolute",top:"calc(100% + 4px)",left:0,right:0,background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:10,boxShadow:"0 8px 30px rgba(0,0,0,0.12)",zIndex:999,overflow:"hidden"}}>
+                        {matches.map((a,i)=>(
+                          <div key={i}
+                            onMouseDown={()=>{ upd("areaName",a.label); setAreaSugg(false); }}
+                            style={{padding:"10px 14px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:`1px solid ${T.border}`,background:"#fff"}}
+                            onMouseEnter={e=>e.currentTarget.style.background=T.greenL}
+                            onMouseLeave={e=>e.currentTarget.style.background="#fff"}>
+                            <div style={{display:"flex",alignItems:"center",gap:8}}>
+                              <span style={{fontSize:13}}>{a.isCustom?"🆕":"📍"}</span>
+                              <span style={{fontSize:13,fontWeight:700,color:T.text}}>{a.label}</span>
+                            </div>
+                            <span style={{fontSize:11,color:T.muted}}>{a.sub}{a.isCustom&&<span style={{marginLeft:6,background:T.greenL,color:T.green,fontSize:9,fontWeight:800,padding:"1px 5px",borderRadius:8}}>USER ADDED</span>}</span>
+                          </div>
+                        ))}
+                        {/* Add new area button */}
+                        {!exactMatch && form.areaName.trim().length>=3 && (
+                          <div
+                            onMouseDown={()=>{
+                              const newArea = {
+                                label: form.areaName.trim(),
+                                sub: `${form.division} · User Added`,
+                                isCustom: true,
+                                addedAt: new Date().toISOString(),
+                              };
+                              onAddArea(newArea);
+                              setAreaSugg(false);
+                            }}
+                            style={{padding:"11px 14px",cursor:"pointer",background:T.greenL,display:"flex",alignItems:"center",gap:10,borderTop:`1px solid ${T.greenM}`}}
+                            onMouseEnter={e=>e.currentTarget.style.background=T.greenM}
+                            onMouseLeave={e=>e.currentTarget.style.background=T.greenL}>
+                            <span style={{fontSize:16}}>➕</span>
+                            <div>
+                              <div style={{fontSize:13,fontWeight:800,color:T.green}}>Add "{form.areaName.trim()}" as a new area</div>
+                              <div style={{fontSize:11,color:"#4d7a5f"}}>This area will be saved and appear in search suggestions for everyone</div>
+                            </div>
+                          </div>
+                        )}
+                        {matches.length===0 && form.areaName.trim().length<3 && (
+                          <div style={{padding:"12px 14px",fontSize:12,color:T.muted}}>Keep typing to search or add a new area…</div>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+                {/* Confirmation badge */}
+                {form.areaName && customAreas.some(a=>a.label.toLowerCase()===form.areaName.toLowerCase()) && (
+                  <div style={{marginTop:6,background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:8,padding:"6px 10px",fontSize:11,color:T.green,fontWeight:700,display:"flex",alignItems:"center",gap:6}}>
+                    🆕 New area — will be added to search suggestions automatically
+                  </div>
+                )}
+              </div>
+
               <div><div style={{fontSize:11,fontWeight:800,color:T.muted,marginBottom:4}}>FULL ADDRESS *</div>{inp("House no, Road no, Area, City","address")}</div>
               <div>
                 <div style={{fontSize:11,fontWeight:800,color:T.muted,marginBottom:4}}>DIVISION</div>
@@ -1319,6 +2410,7 @@ export default function App(){
   const [sortBy,setSortBy]       = useState("featured");
   const [budgetMax,setBudgetMax] = useState("");
   const [showAdv,setShowAdv]     = useState(false);
+  const [showSugg,setShowSugg]   = useState(false);
   const [mainTab,setMainTab]     = useState("tenant");
   // Auth
   const [user,setUser]           = useState(null);
@@ -1329,6 +2421,22 @@ export default function App(){
   // ── FIX: showMap state (was missing — caused "Can't find variable: showMap") ──
   const [showMap,setShowMap]     = useState(false);
   const [viewMode,setViewMode]   = useState("list"); // "list" | "map"
+  // Custom areas added by property listers — persisted in localStorage
+  const [customAreas, setCustomAreas] = useState(()=>{
+    try {
+      const saved = localStorage.getItem("basha_custom_areas");
+      return saved ? JSON.parse(saved) : [];
+    } catch(e){ return []; }
+  });
+  const handleAddArea = (newArea) => {
+    setCustomAreas(prev => {
+      const already = prev.some(a=>a.label.toLowerCase()===newArea.label.toLowerCase());
+      if(already) return prev;
+      const updated = [...prev, newArea];
+      try { localStorage.setItem("basha_custom_areas", JSON.stringify(updated)); } catch(e){}
+      return updated;
+    });
+  };
   // Saved & history
   const [savedIds,setSavedIds]   = useState([1,6]);
   const [searchHistory,setSearchHistory] = useState([
@@ -1508,8 +2616,52 @@ export default function App(){
                   <button onClick={()=>setShowAdv(!showAdv)} style={{marginLeft:"auto",padding:"6px 13px",border:`1.5px solid ${T.border}`,borderRadius:8,background:"#fff",cursor:"pointer",fontSize:12,fontWeight:600,color:T.muted}}>{L.filtersBtn} {showAdv?"▲":"▼"}</button>
                 </div>
                 <div style={{display:"flex",gap:9,flexWrap:"wrap"}}>
-                  <input value={search} onChange={e=>setSearch(e.target.value)} placeholder={L.searchPh}
-                    style={{flex:"2 1 180px",padding:"11px 14px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none"}}/>
+                  {/* Autocomplete search input */}
+                  <div style={{flex:"2 1 180px",position:"relative"}}>
+                    <input
+                      value={search}
+                      onChange={e=>{setSearch(e.target.value);}}
+                      onFocus={()=>setShowSugg(true)}
+                      onBlur={()=>setTimeout(()=>setShowSugg(false),180)}
+                      placeholder={L.searchPh}
+                      style={{width:"100%",padding:"11px 14px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none",boxSizing:"border-box"}}
+                    />
+                    {/* Autocomplete dropdown */}
+                    {showSugg && search.length>=1 && (()=>{
+                      const allSugg = [
+                        ...AREA_SUGGESTIONS,
+                        ...customAreas.map(a=>({label:a.label,sub:a.sub,isCustom:true}))
+                      ];
+                      const matches = allSugg.filter(a=>
+                        a.label.toLowerCase().includes(search.toLowerCase()) ||
+                        a.sub.toLowerCase().includes(search.toLowerCase())
+                      ).slice(0,8);
+                      return matches.length>0 ? (
+                        <div style={{position:"absolute",top:"calc(100% + 4px)",left:0,right:0,background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:10,boxShadow:"0 8px 30px rgba(0,0,0,0.12)",zIndex:999,overflow:"hidden"}}>
+                          {matches.map((a,i)=>(
+                            <div key={i}
+                              onMouseDown={()=>{setSearch(a.label);setShowSugg(false);}}
+                              style={{padding:"10px 14px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:i<matches.length-1?`1px solid ${T.border}`:"none"}}
+                              onMouseEnter={e=>e.currentTarget.style.background=T.redL}
+                              onMouseLeave={e=>e.currentTarget.style.background="#fff"}>
+                              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                                <span style={{color:a.isCustom?T.green:T.red,fontSize:13}}>{a.isCustom?"🆕":"📍"}</span>
+                                <span style={{fontSize:13,fontWeight:700,color:T.text}}>
+                                  {a.label.toLowerCase().startsWith(search.toLowerCase())
+                                    ? <><strong style={{color:T.red}}>{a.label.slice(0,search.length)}</strong>{a.label.slice(search.length)}</>
+                                    : a.label}
+                                </span>
+                              </div>
+                              <span style={{fontSize:11,color:T.muted,display:"flex",alignItems:"center",gap:4}}>
+                                {a.sub}
+                                {a.isCustom&&<span style={{background:T.greenL,color:T.green,fontSize:9,fontWeight:800,padding:"1px 5px",borderRadius:8}}>NEW</span>}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null;
+                    })()}
+                  </div>
                   <select value={typeF} onChange={e=>setTypeF(e.target.value)} style={{flex:"1 1 110px",padding:"11px 9px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:12,color:"#444",background:"#fff"}}>
                     {PTYPES.map(p=><option key={p}>{p}</option>)}
                   </select>
@@ -1659,23 +2811,6 @@ export default function App(){
           </>
         )}
 
-        {/* Popular Areas */}
-        <div style={{marginTop:44}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:0}}>{L.browseAreas}</h2>
-            <span style={{fontSize:13,color:T.green,fontWeight:700,cursor:"pointer"}}>{L.viewAll}</span>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(auto-fill,minmax(130px,1fr))",gap:8}}>
-            {AREAS.map(area=>(
-              <button key={area} onClick={()=>setSearch(area)} style={{background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:10,padding:"10px 12px",cursor:"pointer",textAlign:"left",fontWeight:600,fontSize:13,color:T.text,transition:"all .18s",display:"flex",alignItems:"center",gap:5}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=T.red;e.currentTarget.style.color=T.red;}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.text;}}>
-                <span style={{color:T.red}}>📍</span>{area}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Tips */}
         <div style={{marginTop:44}}>
           <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:"0 0 16px"}}>Renting Tips for Bangladesh</h2>
@@ -1754,7 +2889,7 @@ export default function App(){
 
       {/* MODALS */}
       <DetailModal p={selected} onClose={()=>setSelected(null)} L={L}/>
-      {showWizard&&<ListWizard onClose={()=>setShowWizard(false)}/>}
+      {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory}/>}
