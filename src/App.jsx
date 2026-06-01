@@ -115,7 +115,7 @@ function affordBadge(price){
 function AuthModal({onClose, onLogin, initialMode="signin"}){
   const isMobile = useIsMobile();
   const [mode,      setMode]      = useState(initialMode);
-  const [loginTab,  setLoginTab]  = useState("email"); // email | phone
+  const [loginTab,  setLoginTab]  = useState("email");
   const [role,      setRole]      = useState("tenant");
   const [name,      setName]      = useState("");
   const [email,     setEmail]     = useState("");
@@ -134,7 +134,6 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
     ...overrides,
   });
 
-  /* Email/Password submit */
   const submit = async () => {
     setError("");
     if(loginTab==="email"){
@@ -151,7 +150,6 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
     onClose();
   };
 
-  /* Send OTP */
   const sendOtp = async () => {
     if(!phone){setError("Please enter your phone number.");return;}
     setError("");
@@ -185,8 +183,6 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:5000,display:"flex",alignItems:isMobile?"flex-end":"center",justifyContent:"center",padding:isMobile?0:12,overflowY:"auto"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:isMobile?"22px 22px 0 0":22,width:"100%",maxWidth:440,maxHeight:isMobile?"95vh":"none",overflowY:isMobile?"auto":"visible",boxShadow:"0 24px 80px rgba(0,0,0,0.3)",overflow:"hidden",margin:isMobile?"0":"auto"}}>
-
-        {/* Header */}
         <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,padding:"22px 26px",position:"relative"}}>
           <button onClick={onClose} style={{position:"absolute",top:14,right:14,background:"rgba(255,255,255,0.2)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
@@ -197,10 +193,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
             {mode==="signin"?"Welcome back! Sign in to continue":"Create your free account"}
           </div>
         </div>
-
         <div style={{padding:"20px 24px"}}>
-
-          {/* Sign In / Register tabs */}
           <div style={{display:"flex",background:"#f3f4f6",borderRadius:10,padding:4,marginBottom:18,gap:4}}>
             {[["signin","Sign In"],["signup","Register"]].map(([m,label])=>(
               <button key={m} onClick={()=>{setMode(m);setError("");setOtpSent(false);}} style={{flex:1,padding:"8px",border:"none",borderRadius:7,cursor:"pointer",fontWeight:700,fontSize:13,transition:"all .15s",background:mode===m?"#fff":"transparent",color:mode===m?T.red:"#666",boxShadow:mode===m?"0 1px 4px rgba(0,0,0,0.1)":"none"}}>
@@ -208,8 +201,6 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               </button>
             ))}
           </div>
-
-          {/* Role selector — signup only */}
           {mode==="signup" && (
             <div style={{marginBottom:14}}>
               <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:7}}>I AM A:</div>
@@ -222,8 +213,6 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               </div>
             </div>
           )}
-
-          {/* Login method tabs — Email or Phone OTP */}
           <div style={{display:"flex",gap:8,marginBottom:14}}>
             {[["email","📧 Email"],["phone","📱 Mobile OTP"]].map(([t,label])=>(
               <button key={t} onClick={()=>{setLoginTab(t);setError("");setOtpSent(false);}} style={{flex:1,padding:"8px",border:"1.5px solid",borderRadius:9,cursor:"pointer",fontWeight:700,fontSize:12,borderColor:loginTab===t?T.red:T.border,background:loginTab===t?T.redL:"#fff",color:loginTab===t?T.red:"#666"}}>
@@ -231,11 +220,8 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               </button>
             ))}
           </div>
-
-          {/* Fields */}
           <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
             {mode==="signup" && inp("Full name *",name,setName)}
-
             {loginTab==="email" ? (
               <>
                 {inp("Email address *",email,setEmail,"email")}
@@ -268,24 +254,17 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               </>
             )}
           </div>
-
           {error && <div style={{background:T.redL,border:`1px solid ${T.redM}`,borderRadius:8,padding:"8px 12px",fontSize:12,color:T.red,marginBottom:12,fontWeight:600}}>{error}</div>}
-
-          {/* Main action button */}
           {(loginTab==="email"||(loginTab==="phone"&&otpSent)) && (
             <button onClick={submit} disabled={loading} style={{width:"100%",background:loading?"#d1d5db":T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:15,cursor:loading?"not-allowed":"pointer",marginBottom:14,transition:"background .2s"}}>
               {loading?"⏳ Please wait...":(mode==="signin"?"🔑 Sign In":"🚀 Create Account")}
             </button>
           )}
-
-          {/* OR divider */}
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
             <div style={{flex:1,height:1,background:T.border}}/>
             <span style={{fontSize:11,color:T.muted,fontWeight:600}}>OR CONTINUE WITH</span>
             <div style={{flex:1,height:1,background:T.border}}/>
           </div>
-
-          {/* Social login buttons */}
           <div style={{display:"flex",gap:10,marginBottom:16}}>
             <button onClick={googleSignIn} disabled={loading} style={{flex:1,background:"#fff",color:"#333",border:`1.5px solid ${T.border}`,padding:"11px 8px",borderRadius:11,fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}>
               <svg width="18" height="18" viewBox="0 0 48 48">
@@ -303,7 +282,6 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               Facebook
             </button>
           </div>
-
           <div style={{textAlign:"center",fontSize:12,color:T.muted}}>
             {mode==="signin"
               ?<span>Don't have an account? <span onClick={()=>setMode("signup")} style={{color:T.red,fontWeight:700,cursor:"pointer"}}>Register free →</span></span>
@@ -319,7 +297,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
 function OwnerDashboard({user, onClose, onListProperty, savedProps}){
   const isMobile = useIsMobile();
   const [tab, setTab] = useState("listings");
-  const myProps = PROPERTIES.filter(p=>p.ownerId==="owner1"); // mock: owner sees their listings
+  const myProps = PROPERTIES.filter(p=>p.ownerId==="owner1");
 
   const mockMessages = [
     {id:1,from:"Karim Ahmed",phone:"01711-111111",property:"Spacious 3-Bed in Bashundhara R/A",subject:"Inspection request",body:"Hi, I'd like to visit this Saturday at 10am if possible.",date:"Today",read:false},
@@ -340,8 +318,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:4000,display:"flex",alignItems:"flex-start",justifyContent:"flex-end",padding:0}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",width:"100%",maxWidth:560,height:"100vh",overflowY:"auto",boxShadow:"-8px 0 40px rgba(0,0,0,0.2)",display:"flex",flexDirection:"column"}}>
-
-        {/* Header */}
         <div style={{background:`linear-gradient(135deg,${T.green},#0a3d22)`,padding:"20px 22px",flexShrink:0}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -353,7 +329,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
             </div>
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           </div>
-          {/* Quick stats */}
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
             {[[myProps.length,"Listings","🏠"],[totalViews,"Views","👁"],[totalSaves,"Saved","❤️"],[unreadMsgs,"New Msgs","✉️"]].map(([val,label,icon])=>(
               <div key={label} style={{background:"rgba(255,255,255,0.12)",borderRadius:10,padding:"10px 8px",textAlign:"center"}}>
@@ -364,13 +339,9 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
             ))}
           </div>
         </div>
-
-        {/* Add property shortcut */}
         <button onClick={onListProperty} style={{margin:"14px 16px 0",background:T.gold,color:"#1a2e22",border:"none",padding:"11px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
           ➕ Add New Property Listing
         </button>
-
-        {/* Tabs */}
         <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,margin:"14px 0 0",flexShrink:0,overflowX:"auto"}}>
           {tabs.map(([val,label])=>(
             <button key={val} onClick={()=>setTab(val)} style={{padding:"9px 14px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:12,whiteSpace:"nowrap",color:tab===val?T.green:T.muted,borderBottom:tab===val?`2.5px solid ${T.green}`:"2.5px solid transparent",marginBottom:-2}}>
@@ -378,10 +349,7 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
             </button>
           ))}
         </div>
-
         <div style={{padding:"16px",flex:1}}>
-
-          {/* MY LISTINGS */}
           {tab==="listings" && (
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {myProps.map(p=>{
@@ -396,7 +364,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
                         <div style={{fontSize:11,color:T.muted,marginTop:3}}>📍 {p.location}</div>
                       </div>
                     </div>
-                    {/* Analytics row */}
                     <div style={{borderTop:`1px solid ${T.border}`,padding:"8px 12px",display:"flex",gap:16,background:"#fafafa"}}>
                       <span style={{fontSize:11,color:T.muted}}>👁 <strong style={{color:T.text}}>{p.views}</strong> views</span>
                       <span style={{fontSize:11,color:T.muted}}>❤️ <strong style={{color:T.red}}>{p.saves}</strong> saves</span>
@@ -408,8 +375,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
               })}
             </div>
           )}
-
-          {/* MESSAGES */}
           {tab==="messages" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {mockMessages.map(m=>(
@@ -438,8 +403,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
               ))}
             </div>
           )}
-
-          {/* INSPECTION BOOKINGS */}
           {tab==="bookings" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {mockBookings.map(b=>(
@@ -465,8 +428,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
               ))}
             </div>
           )}
-
-          {/* ANALYTICS */}
           {tab==="analytics" && (
             <div>
               <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:14,padding:"16px",marginBottom:14}}>
@@ -482,8 +443,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
                   ))}
                 </div>
               </div>
-
-              {/* Per-property breakdown */}
               <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>Per Property Breakdown</div>
               {myProps.map(p=>(
                 <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:11,padding:"12px 14px",marginBottom:8}}>
@@ -498,7 +457,6 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
                       <div style={{fontSize:10,color:T.muted}}>❤️ Saves</div>
                     </div>
                     <div style={{flex:1}}>
-                      {/* Simple bar */}
                       <div style={{height:6,background:"#f0f0f0",borderRadius:10,marginTop:6,marginBottom:3}}>
                         <div style={{height:6,background:T.green,borderRadius:10,width:`${Math.min((p.views/350)*100,100)}%`}}/>
                       </div>
@@ -530,7 +488,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
     {id:2,to:"Home Finders BD",property:"Modern Studio near Gulshan 1",subject:"Question about rent",date:"Yesterday",status:"sent"},
   ];
 
-  // Smart suggestions based on saved properties
   const savedTypes   = [...new Set(saved.map(p=>p.type))];
   const savedDivs    = [...new Set(saved.map(p=>p.division))];
   const avgPrice     = saved.length>0 ? Math.round(saved.reduce((a,p)=>a+p.price,0)/saved.length) : 30000;
@@ -543,8 +500,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:4000,display:"flex",alignItems:"flex-start",justifyContent:"flex-end"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",width:"100%",maxWidth:520,height:"100vh",overflowY:"auto",boxShadow:"-8px 0 40px rgba(0,0,0,0.2)",display:"flex",flexDirection:"column"}}>
-
-        {/* Header */}
         <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,padding:"20px 22px",flexShrink:0}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -566,8 +521,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
             ))}
           </div>
         </div>
-
-        {/* Tabs */}
         <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,flexShrink:0,overflowX:"auto"}}>
           {[["saved","❤️ Saved"],["bookings","📅 Bookings"],["messages","✉️ Messages"],["suggestions","✨ For You"],["history","🕓 History"]].map(([val,label])=>(
             <button key={val} onClick={()=>setTab(val)} style={{padding:"9px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:11,whiteSpace:"nowrap",color:tab===val?T.red:T.muted,borderBottom:tab===val?`2.5px solid ${T.red}`:"2.5px solid transparent",marginBottom:-2}}>
@@ -575,10 +528,7 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
             </button>
           ))}
         </div>
-
         <div style={{padding:"16px",flex:1}}>
-
-          {/* SAVED PROPERTIES */}
           {tab==="saved" && (
             <div>
               {saved.length===0 ? (
@@ -603,8 +553,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               })}
             </div>
           )}
-
-          {/* BOOKINGS */}
           {tab==="bookings" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {mockBookings.map(b=>(
@@ -622,8 +570,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               ))}
             </div>
           )}
-
-          {/* MESSAGES */}
           {tab==="messages" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {mockMessages.map(m=>(
@@ -641,8 +587,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               ))}
             </div>
           )}
-
-          {/* SMART SUGGESTIONS */}
           {tab==="suggestions" && (
             <div>
               <div style={{background:T.redL,border:`1px solid ${T.redM}`,borderRadius:12,padding:"12px 14px",marginBottom:14}}>
@@ -679,8 +623,6 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               )}
             </div>
           )}
-
-          {/* SEARCH HISTORY */}
           {tab==="history" && (
             <div>
               <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:12}}>RECENT SEARCHES</div>
@@ -795,10 +737,8 @@ function DetailModal({p, onClose, L}){
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:3000,display:"flex",alignItems:isMobile?"flex-end":"center",justifyContent:"center",padding:isMobile?0:12,overflowY:"auto"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:20,width:"100%",maxWidth:700,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(0,0,0,0.3)",margin:"auto"}}>
-        {/* ── PHOTO GALLERY ── */}
         <div style={{position:"relative",borderRadius:"20px 20px 0 0",overflow:"hidden"}}>
-          <img src={p.img} alt={p.title}
-            style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
+          <img src={p.img} alt={p.title} style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
           <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
           <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
             <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
@@ -819,7 +759,6 @@ function DetailModal({p, onClose, L}){
               <span style={{fontSize:11,color:T.red}}>❤️ {p.saves} saves</span>
             </div>
           </div>
-          {/* Tabs */}
           <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,marginBottom:16,overflowX:"auto"}}>
             {[[L.overviewTab,"overview"],[L.utilTab,"utils"],[L.msgTab,"message"],[L.inspTab,"inspect"]].map(([label,val])=>(
               <button key={val} onClick={()=>setTab(val)} style={{padding:"8px 14px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:12,whiteSpace:"nowrap",color:tab===val?T.red:T.muted,borderBottom:tab===val?`2.5px solid ${T.red}`:"2.5px solid transparent",marginBottom:-2}}>
@@ -890,24 +829,7 @@ function DetailModal({p, onClose, L}){
                     if(!msg.name||!msg.phone) return;
                     setMsgSent(true);
                     try {
-                      await fetch("/api/send-email",{
-                        method:"POST",
-                        headers:{"Content-Type":"application/json"},
-                        body:JSON.stringify({
-                          type:"owner_new_message",
-                          data:{
-                            ownerEmail:"monjur111@gmail.com",
-                            propertyTitle:p.title,
-                            senderName:msg.name,
-                            senderPhone:msg.phone,
-                            senderEmail:msg.email,
-                            subject:msg.subject,
-                            body:msg.body,
-                            prefDate:msg.prefDate,
-                            prefTime:msg.prefTime,
-                          }
-                        })
-                      });
+                      await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"owner_new_message",data:{ownerEmail:"monjur111@gmail.com",propertyTitle:p.title,senderName:msg.name,senderPhone:msg.phone,senderEmail:msg.email,subject:msg.subject,body:msg.body,prefDate:msg.prefDate,prefTime:msg.prefTime}})});
                     } catch(e){ console.log("Email error:",e); }
                   }} style={{background:T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>{L.sendMsgBtn}</button>
                 </div>
@@ -941,20 +863,7 @@ function DetailModal({p, onClose, L}){
                     if(!selectedSlot) return;
                     setBooked(true);
                     try {
-                      await fetch("/api/send-email",{
-                        method:"POST",
-                        headers:{"Content-Type":"application/json"},
-                        body:JSON.stringify({
-                          type:"owner_inspection_booked",
-                          data:{
-                            ownerEmail:"monjur111@gmail.com",
-                            propertyTitle:p.title,
-                            tenantName:"Tenant",
-                            tenantPhone:"—",
-                            slot:selectedSlot,
-                          }
-                        })
-                      });
+                      await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"owner_inspection_booked",data:{ownerEmail:"monjur111@gmail.com",propertyTitle:p.title,tenantName:"Tenant",tenantPhone:"—",slot:selectedSlot}})});
                     } catch(e){ console.log("Email error:",e); }
                   }} disabled={!selectedSlot}
                     style={{width:"100%",background:selectedSlot?T.green:"#d1d5db",color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:selectedSlot?"pointer":"not-allowed"}}>
@@ -1075,10 +984,8 @@ function ListWizard({onClose}){
                 <div style={{display:"flex",flexDirection:"column",gap:7}}>
                   {form.inspSlots.map((slot,i)=>(
                     <div key={i} style={{display:"flex",gap:7,alignItems:"center"}}>
-                      <input value={slot.day} onChange={e=>updSlot(i,"day",e.target.value)} placeholder="e.g. Friday 30 May 2026"
-                        style={{flex:2,padding:"8px 10px",border:`1.5px solid ${T.greenM}`,borderRadius:8,fontSize:12,outline:"none",background:"#fff"}}/>
-                      <input value={slot.time} onChange={e=>updSlot(i,"time",e.target.value)} placeholder="e.g. 10:00 AM"
-                        style={{flex:1,padding:"8px 10px",border:`1.5px solid ${T.greenM}`,borderRadius:8,fontSize:12,outline:"none",background:"#fff"}}/>
+                      <input value={slot.day} onChange={e=>updSlot(i,"day",e.target.value)} placeholder="e.g. Friday 30 May 2026" style={{flex:2,padding:"8px 10px",border:`1.5px solid ${T.greenM}`,borderRadius:8,fontSize:12,outline:"none",background:"#fff"}}/>
+                      <input value={slot.time} onChange={e=>updSlot(i,"time",e.target.value)} placeholder="e.g. 10:00 AM" style={{flex:1,padding:"8px 10px",border:`1.5px solid ${T.greenM}`,borderRadius:8,fontSize:12,outline:"none",background:"#fff"}}/>
                       {form.inspSlots.length>1&&<button onClick={()=>removeSlot(i)} style={{background:T.redL,color:T.red,border:"none",borderRadius:"50%",width:26,height:26,cursor:"pointer",fontWeight:800,fontSize:13,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>✕</button>}
                     </div>
                   ))}
@@ -1121,25 +1028,15 @@ function ListWizard({onClose}){
                 <textarea rows={4} value={form.desc} onChange={e=>upd("desc",e.target.value)} placeholder="Describe your property — nearby landmarks, special features, house rules…"
                   style={{width:"100%",padding:"10px 12px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none",resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
               </div>
-              {/* ── PHOTO UPLOADER ── */}
               <div>
                 <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:8}}>📷 PROPERTY PHOTOS (up to 10)</div>
                 <div style={{fontSize:11,color:T.muted,marginBottom:10}}>First photo = cover photo shown in listings. Tap ⭐ to change cover.</div>
-
-                {/* Upload area */}
                 <label style={{display:"block",border:`2px dashed ${form.photos.length>0?T.green:T.border}`,borderRadius:12,padding:"20px",textAlign:"center",cursor:"pointer",background:form.photos.length>0?T.greenL:"#fafafa",transition:"all .2s"}}>
                   <input type="file" accept="image/*" multiple style={{display:"none"}}
                     onChange={e=>{
-                      const files = Array.from(e.target.files);
-                      const remaining = 10 - form.photos.length;
-                      const toAdd = files.slice(0,remaining).map(f=>({
-                        file:f,
-                        url:URL.createObjectURL(f),
-                        name:f.name,
-                        size:(f.size/1024/1024).toFixed(1),
-                        uploading:false,
-                        done:false,
-                      }));
+                      const files=Array.from(e.target.files);
+                      const remaining=10-form.photos.length;
+                      const toAdd=files.slice(0,remaining).map(f=>({file:f,url:URL.createObjectURL(f),name:f.name,size:(f.size/1024/1024).toFixed(1),uploading:false,done:false}));
                       upd("photos",[...form.photos,...toAdd]);
                     }}
                   />
@@ -1149,18 +1046,14 @@ function ListWizard({onClose}){
                   </div>
                   <div style={{fontSize:11,color:T.muted,marginTop:4}}>JPG, PNG, WEBP · Max 5MB each · Up to 10 photos</div>
                 </label>
-
-                {/* Photo previews */}
                 {form.photos.length>0&&(
                   <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:12}}>
                     {form.photos.map((ph,i)=>(
                       <div key={i} style={{position:"relative",borderRadius:10,overflow:"hidden",border:`2.5px solid ${i===form.coverIdx?T.gold:"transparent"}`,boxShadow:i===form.coverIdx?"0 0 0 1px "+T.gold:"0 1px 4px rgba(0,0,0,0.1)"}}>
                         <img src={ph.url} alt={ph.name} style={{width:"100%",height:80,objectFit:"cover",display:"block"}}/>
-                        {/* Cover badge */}
                         {i===form.coverIdx&&(
                           <div style={{position:"absolute",bottom:0,left:0,right:0,background:"rgba(245,200,66,0.92)",textAlign:"center",fontSize:9,fontWeight:800,padding:"2px",color:"#1a2e22"}}>⭐ COVER</div>
                         )}
-                        {/* Actions */}
                         <div style={{position:"absolute",top:4,right:4,display:"flex",gap:3}}>
                           {i!==form.coverIdx&&(
                             <button onClick={()=>upd("coverIdx",i)} title="Set as cover" style={{background:"rgba(245,200,66,0.9)",border:"none",borderRadius:6,width:22,height:22,cursor:"pointer",fontSize:11,display:"flex",alignItems:"center",justifyContent:"center"}}>⭐</button>
@@ -1171,11 +1064,9 @@ function ListWizard({onClose}){
                             if(form.coverIdx>=newPhotos.length) upd("coverIdx",0);
                           }} style={{background:"rgba(200,16,46,0.85)",border:"none",borderRadius:6,width:22,height:22,cursor:"pointer",color:"#fff",fontSize:11,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
                         </div>
-                        {/* File size */}
                         <div style={{position:"absolute",top:4,left:4,background:"rgba(0,0,0,0.5)",color:"#fff",fontSize:8,padding:"1px 5px",borderRadius:5}}>{ph.size}MB</div>
                       </div>
                     ))}
-                    {/* Add more slot */}
                     {form.photos.length<10&&(
                       <label style={{border:`2px dashed ${T.border}`,borderRadius:10,height:84,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer",background:"#fafafa",gap:4}}>
                         <input type="file" accept="image/*" multiple style={{display:"none"}}
@@ -1192,8 +1083,6 @@ function ListWizard({onClose}){
                     )}
                   </div>
                 )}
-
-                {/* Tips */}
                 {form.photos.length===0&&(
                   <div style={{marginTop:10,display:"flex",gap:6,flexWrap:"wrap"}}>
                     {["📸 Good lighting = more enquiries","🏠 Show living room first","🌿 Include exterior view","🚿 Bathroom & kitchen matter"].map(tip=>(
@@ -1201,7 +1090,6 @@ function ListWizard({onClose}){
                     ))}
                   </div>
                 )}
-
                 {form.photos.length>0&&(
                   <div style={{marginTop:10,background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:9,padding:"9px 12px",fontSize:11,color:T.green,fontWeight:600}}>
                     ✅ {form.photos.length} photo{form.photos.length>1?"s":""} ready · Cover: photo #{form.coverIdx+1} · These will be uploaded when you publish
@@ -1264,8 +1152,10 @@ export default function App(){
   const [authMode,setAuthMode]   = useState("signin");
   const [showOwnerDash,setShowOwnerDash] = useState(false);
   const [showTenantDash,setShowTenantDash] = useState(false);
+  // ── FIX: showMap state (was missing — caused "Can't find variable: showMap") ──
+  const [showMap,setShowMap]     = useState(false);
   // Saved & history
-  const [savedIds,setSavedIds]   = useState([1,6]); // pre-saved for demo
+  const [savedIds,setSavedIds]   = useState([1,6]);
   const [searchHistory,setSearchHistory] = useState([
     {query:"Gulshan",filters:"Apartment · Dhaka",time:"2h ago"},
     {query:"Dhanmondi",filters:"For Rent · All Types",time:"Yesterday"},
@@ -1282,16 +1172,8 @@ export default function App(){
   const handleLogin = async (u) => {
     setUser(u);
     try {
-      await fetch("/api/send-email",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          type:"welcome",
-          data:{ email:u.email, name:u.name, role:u.role }
-        })
-      });
+      await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"welcome",data:{email:u.email,name:u.name,role:u.role}})});
     } catch(e){}
-    // Show appropriate dashboard
     if(u.role==="owner") setShowOwnerDash(true);
     else setShowTenantDash(true);
   };
@@ -1359,7 +1241,6 @@ export default function App(){
 
       {/* HEADER */}
       <header style={{background:"#fff",borderBottom:`1px solid ${T.border}`,padding:isMobile?"0 14px":"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:isMobile?54:60,position:"sticky",top:0,zIndex:500,boxShadow:"0 1px 8px rgba(0,0,0,0.07)"}}>
-        {/* Logo */}
         <div style={{display:"flex",alignItems:"center",gap:7,userSelect:"none"}}>
           <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,borderRadius:8,width:isMobile?30:36,height:isMobile?30:36,display:"flex",alignItems:"center",justifyContent:"center",fontSize:isMobile?15:18}}>🏠</div>
           <div>
@@ -1367,17 +1248,20 @@ export default function App(){
             {!isMobile&&<div style={{fontSize:8,letterSpacing:1.5,color:T.green,fontWeight:700,marginTop:1}}>{L.langBtn==="বাংলা 🇧🇩"?"FIND · RENT · LIST":"খুঁজুন · ভাড়া নিন · তালিকা দিন"}</div>}
           </div>
         </div>
-        {/* Desktop nav */}
+        {/* ── FIX: Desktop nav — Map button now properly wired to showMap state ── */}
         {!isMobile&&(
-        <nav style={{display:"flex",gap:1}}>
-          {["🔍 Listings","💰 Calculator","👨‍💼 Agents","🗺 Map"].map(label=>(
-            <button key={label} style={{padding:"5px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:T.muted}}>{label}</button>
-          ))}
-        </nav>
+          <nav style={{display:"flex",gap:1}}>
+            {["🔍 Listings","💰 Calculator","👨‍💼 Agents"].map(label=>(
+              <button key={label} style={{padding:"5px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:T.muted}}>{label}</button>
+            ))}
+            <button
+              onClick={()=>setShowMap(s=>!s)}
+              style={{padding:"5px 12px",border:"none",background:showMap?T.redL:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:showMap?T.red:T.muted,borderRadius:8,transition:"all .15s"}}>
+              🗺 Map
+            </button>
+          </nav>
         )}
-        {/* Right actions */}
         <div style={{display:"flex",gap:isMobile?7:9,alignItems:"center"}}>
-          {/* Lang toggle - always visible */}
           <button onClick={()=>setLang(l=>l==="en"?"bn":"en")} style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:12,padding:isMobile?"3px 8px":"4px 10px",color:T.green,fontSize:isMobile?9:11,fontWeight:800,cursor:"pointer"}}>
             {L.langBtn}
           </button>
@@ -1393,9 +1277,9 @@ export default function App(){
             </button>
           )}
           {!isMobile&&(
-          <button onClick={()=>setShowWizard(true)} style={{background:T.red,color:"#fff",border:"none",padding:"9px 18px",borderRadius:20,fontWeight:800,fontSize:12,cursor:"pointer",boxShadow:"0 2px 10px rgba(200,16,46,0.3)"}}>
-            {L.listBtn}
-          </button>
+            <button onClick={()=>setShowWizard(true)} style={{background:T.red,color:"#fff",border:"none",padding:"9px 18px",borderRadius:20,fontWeight:800,fontSize:12,cursor:"pointer",boxShadow:"0 2px 10px rgba(200,16,46,0.3)"}}>
+              {L.listBtn}
+            </button>
           )}
         </div>
       </header>
@@ -1462,7 +1346,7 @@ export default function App(){
                 {showAdv&&(
                   <div style={{marginTop:12,paddingTop:12,borderTop:"1px solid #f0f0f0",display:"flex",gap:9,flexWrap:"wrap",alignItems:"center"}}>
                     <div style={{display:"flex",alignItems:"center",gap:5}}>
-                      <span style={{fontSize:12,fontWeight:700,color:T.muted}}>{L.filtersBtn === "⚙ Filters" ? "Max ৳/mo:" : "সর্বোচ্চ ৳/মাস:"}</span>
+                      <span style={{fontSize:12,fontWeight:700,color:T.muted}}>{L.filtersBtn==="⚙ Filters"?"Max ৳/mo:":"সর্বোচ্চ ৳/মাস:"}</span>
                       <input type="number" value={budgetMax} onChange={e=>setBudgetMax(e.target.value)} placeholder="e.g. 30000" style={{width:100,padding:"7px 9px",border:`1.5px solid ${T.border}`,borderRadius:8,fontSize:12,outline:"none"}}/>
                     </div>
                     <select value={sortBy} onChange={e=>setSortBy(e.target.value)} style={{padding:"7px 9px",border:`1.5px solid ${T.border}`,borderRadius:8,fontSize:12,color:"#444",background:"#fff"}}>
@@ -1476,7 +1360,6 @@ export default function App(){
             </div>
           )}
 
-          {/* Notification banner for logged-in tenant */}
           {user&&user.role!=="owner"&&(
             <div style={{marginTop:16,background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:12,padding:"10px 16px",display:"inline-flex",alignItems:"center",gap:10,fontSize:13}}>
               <span style={{fontSize:18}}>✨</span>
@@ -1532,7 +1415,7 @@ export default function App(){
           </div>
         )}
 
-        {/* Results */}
+        {/* Results header */}
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:9}}>
           <div>
             <h2 style={{margin:0,fontSize:18,fontWeight:800}}>{filtered.length} {lang==="bn"?"সম্পত্তি":"Properties"}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
@@ -1545,6 +1428,7 @@ export default function App(){
           </div>
         </div>
 
+        {/* Property grid */}
         {filtered.length>0?(
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"repeat(auto-fill,minmax(280px,1fr))",gap:isMobile?14:18}}>
             {filtered.map(p=><Card key={p.id} p={p} onSelect={setSelected} savedIds={savedIds} onSaveToggle={handleSaveToggle}/>)}
@@ -1554,6 +1438,22 @@ export default function App(){
             <div style={{fontSize:48,marginBottom:10}}>🏚</div>
             <div style={{fontSize:17,fontWeight:700}}>No properties match your search</div>
             <button onClick={()=>{setSearch("");setActiveQ([]);setBudgetMax("");setStatus("all");}} style={{marginTop:12,background:T.red,color:"#fff",border:"none",padding:"9px 22px",borderRadius:18,fontWeight:700,cursor:"pointer"}}>Clear Filters</button>
+          </div>
+        )}
+
+        {/* ── FIX: Map panel — renders when showMap is true ── */}
+        {showMap && (
+          <div style={{marginTop:32,borderRadius:16,overflow:"hidden",border:`1px solid ${T.border}`,boxShadow:"0 4px 20px rgba(0,0,0,0.08)"}}>
+            <div style={{background:T.green,padding:"12px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{color:"#fff",fontWeight:800,fontSize:14}}>🗺 Property Map — Bangladesh</div>
+              <button onClick={()=>setShowMap(false)} style={{background:"rgba(255,255,255,0.2)",border:"none",borderRadius:"50%",width:28,height:28,color:"#fff",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+            </div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d233668.3088990767!2d90.3938010894898!3d23.780573498435997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1716000000000!5m2!1sen!2sbd"
+              width="100%" height="420" style={{border:"none",display:"block"}}
+              allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+              title="Bangladesh Property Map"
+            />
           </div>
         )}
 
@@ -1657,7 +1557,7 @@ export default function App(){
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory}/>}
 
-      {/* ── MOBILE BOTTOM NAV ── */}
+      {/* MOBILE BOTTOM NAV */}
       {isMobile&&(
         <div style={{position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:`1px solid ${T.border}`,display:"flex",zIndex:600,boxShadow:"0 -2px 12px rgba(0,0,0,0.1)",paddingBottom:"env(safe-area-inset-bottom)"}}>
           {[
@@ -1665,7 +1565,7 @@ export default function App(){
             {icon:"❤️",label:"Saved",    action:()=>user?setShowTenantDash(true):(setAuthMode("signin"),setShowAuth(true))},
             {icon:"➕",label:"List",     action:()=>user?setShowWizard(true):(setAuthMode("signup"),setShowAuth(true)), highlight:true},
             {icon:"📅",label:"Bookings", action:()=>user?setShowTenantDash(true):(setAuthMode("signin"),setShowAuth(true))},
-            {icon:"👤",label:user?"Me":"Sign In",  action:()=>user?(user.role==="owner"?setShowOwnerDash(true):setShowTenantDash(true)):(setAuthMode("signin"),setShowAuth(true))},
+            {icon:"👤",label:user?"Me":"Sign In", action:()=>user?(user.role==="owner"?setShowOwnerDash(true):setShowTenantDash(true)):(setAuthMode("signin"),setShowAuth(true))},
           ].map(({icon,label,action,highlight})=>(
             <button key={label} onClick={action} style={{
               flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
@@ -1681,7 +1581,6 @@ export default function App(){
           ))}
         </div>
       )}
-      {/* Bottom nav spacer */}
       {isMobile&&<div style={{height:70}}/>}
     </div>
   );
