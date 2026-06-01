@@ -21,7 +21,7 @@ const T = {
 /* ── TRANSLATIONS ─────────────────────────────── */
 const LANG = {
   en:{
-    topBar:"🇧🇩 Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust BashaBD",
+    topBar:"🇧🇩 Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust Basha.app",
     signIn:"Sign In", register:"Register", agentLogin:"Agent Login", langBtn:"বাংলা 🇧🇩",
     listBtn:"+ List Property Free",
     tenantMode:"🔍 I'm Looking to Rent", ownerMode:"🏠 I Have a Property to List",
@@ -44,7 +44,7 @@ const LANG = {
     bookedTitle:"🎉 Booked!", noInspMsg:"No inspection times yet.",
   },
   bn:{
-    topBar:"🇧🇩 বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী",
+    topBar:"🇧🇩 বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী · Basha.app",
     signIn:"সাইন ইন", register:"নিবন্ধন", agentLogin:"এজেন্ট লগইন", langBtn:"English 🇬🇧",
     listBtn:"+ বিনামূল্যে তালিকা দিন",
     tenantMode:"🔍 আমি ভাড়া খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
@@ -187,7 +187,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
           <button onClick={onClose} style={{position:"absolute",top:14,right:14,background:"rgba(255,255,255,0.2)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
             <div style={{background:"rgba(255,255,255,0.2)",borderRadius:8,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🏠</div>
-            <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:19,color:"#fff"}}>Basha<span style={{color:T.gold}}>BD</span></div>
+            <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:19,color:"#fff"}}>Basha<span style={{color:T.gold}}>.app</span></div>
           </div>
           <div style={{color:"rgba(255,255,255,0.9)",fontSize:13,fontWeight:600}}>
             {mode==="signin"?"Welcome back! Sign in to continue":"Create your free account"}
@@ -1244,7 +1244,7 @@ export default function App(){
         <div style={{display:"flex",alignItems:"center",gap:7,userSelect:"none"}}>
           <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,borderRadius:8,width:isMobile?30:36,height:isMobile?30:36,display:"flex",alignItems:"center",justifyContent:"center",fontSize:isMobile?15:18}}>🏠</div>
           <div>
-            <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:isMobile?16:18,color:T.text,lineHeight:1}}>Basha<span style={{color:T.red}}>BD</span></div>
+            <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:isMobile?16:18,color:T.text,lineHeight:1}}>Basha<span style={{color:T.red}}>.app</span></div>
             {!isMobile&&<div style={{fontSize:8,letterSpacing:1.5,color:T.green,fontWeight:700,marginTop:1}}>{L.langBtn==="বাংলা 🇧🇩"?"FIND · RENT · LIST":"খুঁজুন · ভাড়া নিন · তালিকা দিন"}</div>}
           </div>
         </div>
@@ -1391,7 +1391,7 @@ export default function App(){
 
         {mainTab==="owner"&&(
           <div style={{marginBottom:32}}>
-            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:"0 0 16px"}}>How BashaBD Works for Owners</h2>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:"0 0 16px"}}>How Basha.app Works for Owners</h2>
             <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr 1fr":"repeat(auto-fit,minmax(190px,1fr))",gap:isMobile?10:14}}>
               {[["1","📋","Create Your Listing","Fill details, set inspection times, upload photos — under 5 mins"],
                 ["2","⚡","Go Live Instantly","Reaches thousands of active renters immediately"],
@@ -1528,13 +1528,13 @@ export default function App(){
             <div style={{flex:"2 1 200px"}}>
               <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
                 <div style={{background:T.red,borderRadius:7,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>🏠</div>
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:18,fontWeight:900,color:"#fff"}}>Basha<span style={{color:T.red}}>BD</span></div>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:18,fontWeight:900,color:"#fff"}}>Basha<span style={{color:T.red}}>.app</span></div>
               </div>
               <p style={{fontSize:12,lineHeight:1.8,color:"#4d7a5f",maxWidth:240}}>Bangladesh's most trusted rental & property portal across all 8 divisions.</p>
             </div>
             {[["For Tenants",["Search Rentals","Buy Property","Book Inspections","Saved Properties","My Dashboard"]],
               ["For Owners",["List Property Free","Owner Dashboard","Manage Listings","Property Analytics","Set Inspection Times"]],
-              ["Company",["About BashaBD","Careers","Blog","Contact","Privacy Policy"]]].map(([title,items])=>(
+              ["Company",["About Basha.app","Careers","Blog","Contact","Privacy Policy"]]].map(([title,items])=>(
               <div key={title} style={{flex:"1 1 110px"}}>
                 <div style={{color:"#fff",fontWeight:700,marginBottom:9,fontSize:13}}>{title}</div>
                 {items.map(item=><div key={item} style={{fontSize:11.5,marginBottom:6,cursor:"pointer",color:"#4d7a5f"}}
@@ -1544,7 +1544,7 @@ export default function App(){
             ))}
           </div>
           <div style={{borderTop:"1px solid #1a2e22",paddingTop:14,display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:9,fontSize:11,color:"#2d5040"}}>
-            <span>© 2026 BashaBD Limited. All rights reserved. BTRC Registered.</span>
+            <span>© 2026 Basha.app Limited. All rights reserved. BTRC Registered.</span>
             <span>🇧🇩 Built for Bangladesh · Dhaka HQ</span>
           </div>
         </div>
