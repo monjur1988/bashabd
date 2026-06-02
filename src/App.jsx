@@ -2351,6 +2351,43 @@ function ListWizard({onClose, onAddArea, customAreas=[]}){
   );
 }
 
+/* ── SEARCH DROPDOWN COMPONENT ────────────────── */
+function SearchDropdown({search, customAreas, onSelect}){
+  const allSugg = [
+    ...AREA_SUGGESTIONS,
+    ...customAreas.map(a=>({label:a.label, sub:a.sub, isCustom:true}))
+  ];
+  const matches = allSugg.filter(a=>
+    a.label.toLowerCase().includes(search.toLowerCase()) ||
+    (a.sub||"").toLowerCase().includes(search.toLowerCase())
+  ).slice(0,8);
+  if(matches.length===0) return null;
+  return (
+    <div style={{position:"absolute",top:"calc(100% + 4px)",left:0,right:0,background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:10,boxShadow:"0 8px 30px rgba(0,0,0,0.12)",zIndex:999,overflow:"hidden"}}>
+      {matches.map((a,i)=>(
+        <div key={i}
+          onMouseDown={()=>onSelect(a.label)}
+          style={{padding:"10px 14px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:i<matches.length-1?`1px solid ${T.border}`:"none",background:"#fff"}}
+          onMouseEnter={e=>e.currentTarget.style.background=T.redL}
+          onMouseLeave={e=>e.currentTarget.style.background="#fff"}>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <span style={{color:a.isCustom?T.green:T.red,fontSize:13}}>{a.isCustom?"🆕":"📍"}</span>
+            <span style={{fontSize:13,fontWeight:700,color:T.text}}>
+              {a.label.toLowerCase().startsWith(search.toLowerCase())
+                ? <><strong style={{color:T.red}}>{a.label.slice(0,search.length)}</strong>{a.label.slice(search.length)}</>
+                : a.label}
+            </span>
+          </div>
+          <span style={{fontSize:11,color:T.muted,display:"flex",alignItems:"center",gap:4}}>
+            {a.sub}
+            {a.isCustom&&<span style={{background:T.greenL,color:T.green,fontSize:9,fontWeight:800,padding:"1px 5px",borderRadius:8}}>NEW</span>}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ── ANALYTICS ENGINE ─────────────────────────── */
 const Analytics = {
   _key: "basha_analytics",
@@ -2834,47 +2871,22 @@ export default function App(){
                       value={search}
                       onChange={e=>{
                         setSearch(e.target.value);
+                        setShowSugg(true);
                         if(e.target.value.length>=2) Analytics.track("search",{query:e.target.value});
                       }}
+                      onFocus={()=>setShowSugg(true)}
                       onBlur={()=>setTimeout(()=>setShowSugg(false),180)}
                       placeholder={L.searchPh}
                       style={{width:"100%",padding:"11px 14px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none",boxSizing:"border-box"}}
                     />
                     {/* Autocomplete dropdown */}
-                    {showSugg && search.length>=1 && (()=>{
-                      const allSugg = [
-                        ...AREA_SUGGESTIONS,
-                        ...customAreas.map(a=>({label:a.label,sub:a.sub,isCustom:true}))
-                      ];
-                      const matches = allSugg.filter(a=>
-                        a.label.toLowerCase().includes(search.toLowerCase()) ||
-                        a.sub.toLowerCase().includes(search.toLowerCase())
-                      ).slice(0,8);
-                      return matches.length>0 ? (
-                        <div style={{position:"absolute",top:"calc(100% + 4px)",left:0,right:0,background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:10,boxShadow:"0 8px 30px rgba(0,0,0,0.12)",zIndex:999,overflow:"hidden"}}>
-                          {matches.map((a,i)=>(
-                            <div key={i}
-                              onMouseDown={()=>{setSearch(a.label);setShowSugg(false);}}
-                              style={{padding:"10px 14px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:i<matches.length-1?`1px solid ${T.border}`:"none"}}
-                              onMouseEnter={e=>e.currentTarget.style.background=T.redL}
-                              onMouseLeave={e=>e.currentTarget.style.background="#fff"}>
-                              <div style={{display:"flex",alignItems:"center",gap:8}}>
-                                <span style={{color:a.isCustom?T.green:T.red,fontSize:13}}>{a.isCustom?"🆕":"📍"}</span>
-                                <span style={{fontSize:13,fontWeight:700,color:T.text}}>
-                                  {a.label.toLowerCase().startsWith(search.toLowerCase())
-                                    ? <><strong style={{color:T.red}}>{a.label.slice(0,search.length)}</strong>{a.label.slice(search.length)}</>
-                                    : a.label}
-                                </span>
-                              </div>
-                              <span style={{fontSize:11,color:T.muted,display:"flex",alignItems:"center",gap:4}}>
-                                {a.sub}
-                                {a.isCustom&&<span style={{background:T.greenL,color:T.green,fontSize:9,fontWeight:800,padding:"1px 5px",borderRadius:8}}>NEW</span>}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : null;
-                    })()}
+                    {showSugg && search.length>=1 &&
+                      <SearchDropdown
+                        search={search}
+                        customAreas={customAreas}
+                        onSelect={(label)=>{setSearch(label);setShowSugg(false);}}
+                      />
+                    }
                   </div>
                   <select value={typeF} onChange={e=>setTypeF(e.target.value)} style={{flex:"1 1 110px",padding:"11px 9px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:12,color:"#444",background:"#fff"}}>
                     {PTYPES.map(p=><option key={p}>{p}</option>)}
