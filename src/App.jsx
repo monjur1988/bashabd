@@ -1304,6 +1304,171 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
   );
 }
 
+/* ── ANALYTICS TAB COMPONENT ──────────────────── */
+function AnalyticsTab({myProps}){
+  const stats = Analytics.getStats();
+  const maxViews = Math.max(...stats.days.map(d=>d.views), 1);
+  const maxSearches = Math.max(...stats.days.map(d=>d.searches), 1);
+  const convRate = stats.totalViews>0 ? ((stats.totalEnquiries/stats.totalViews)*100).toFixed(1) : "0.0";
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+
+      {/* KPI Cards */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {[
+          {icon:"👁",val:stats.totalViews||0,label:"Total Views",sub:"All properties",c:T.red,bg:T.redL},
+          {icon:"❤️",val:stats.totalSaves||0,label:"Saved",sub:"Wishlisted",c:"#e11d48",bg:"#fff1f2"},
+          {icon:"✉️",val:stats.totalEnquiries||0,label:"Enquiries",sub:"Messages sent",c:T.green,bg:T.greenL},
+          {icon:"📊",val:`${convRate}%`,label:"Conversion",sub:"Views → Enquiry",c:"#7c3aed",bg:"#f5f3ff"},
+        ].map(({icon,val,label,sub,c,bg})=>(
+          <div key={label} style={{background:bg,borderRadius:12,padding:"14px 12px",textAlign:"center",border:`1px solid ${c}22`}}>
+            <div style={{fontSize:22}}>{icon}</div>
+            <div style={{fontSize:22,fontWeight:900,color:c,fontFamily:"'Playfair Display',serif",lineHeight:1.1}}>{val}</div>
+            <div style={{fontSize:12,fontWeight:700,color:T.text,marginTop:2}}>{label}</div>
+            <div style={{fontSize:10,color:T.muted}}>{sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Today snapshot */}
+      <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"12px 14px"}}>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>⚡ Today's Activity</div>
+        <div style={{display:"flex",gap:12}}>
+          {[
+            {icon:"👁",val:stats.todayViews,label:"Views today",c:T.red},
+            {icon:"🔍",val:stats.todaySearches,label:"Searches today",c:T.green},
+            {icon:"📅",val:stats.days[6]?stats.days[6].enquiries:0,label:"Enquiries today",c:"#7c3aed"},
+          ].map(({icon,val,label,c})=>(
+            <div key={label} style={{flex:1,textAlign:"center",background:T.bg,borderRadius:10,padding:"10px 4px"}}>
+              <div style={{fontSize:18}}>{icon}</div>
+              <div style={{fontSize:20,fontWeight:900,color:c}}>{val}</div>
+              <div style={{fontSize:10,color:T.muted,lineHeight:1.3}}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 7-day Views Bar Chart */}
+      <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>📈 Views — Last 7 Days</div>
+        <div style={{display:"flex",alignItems:"flex-end",gap:6,height:80}}>
+          {stats.days.map((d,i)=>(
+            <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+              <div style={{fontSize:9,fontWeight:700,color:T.red}}>{d.views||""}</div>
+              <div style={{
+                width:"100%",
+                height: Math.max((d.views/maxViews)*64, d.views>0?4:2)+"px",
+                background:i===6?T.red:T.red+"66",
+                borderRadius:"4px 4px 0 0",
+                minHeight:"2px",
+              }}/>
+              <div style={{fontSize:9,color:T.muted,fontWeight:600,textAlign:"center"}}>{d.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 7-day Searches Bar Chart */}
+      <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>🔍 Searches — Last 7 Days</div>
+        <div style={{display:"flex",alignItems:"flex-end",gap:6,height:80}}>
+          {stats.days.map((d,i)=>(
+            <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+              <div style={{fontSize:9,fontWeight:700,color:T.green}}>{d.searches||""}</div>
+              <div style={{
+                width:"100%",
+                height: Math.max((d.searches/maxSearches)*64, d.searches>0?4:2)+"px",
+                background:i===6?T.green:T.green+"66",
+                borderRadius:"4px 4px 0 0",
+                minHeight:"2px",
+              }}/>
+              <div style={{fontSize:9,color:T.muted,fontWeight:600,textAlign:"center"}}>{d.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Top Search Terms */}
+      {stats.topSearches.length>0 && (
+        <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
+          <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>🔥 Top Search Terms</div>
+          {stats.topSearches.map((s,i)=>{
+            const pct = Math.round((s.count/stats.topSearches[0].count)*100);
+            const barColor = i===0?T.red:i===1?"#f59e0b":i===2?"#10b981":T.muted;
+            const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"  ";
+            return (
+              <div key={s.query} style={{marginBottom:8}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+                  <span style={{fontSize:12,fontWeight:700,color:T.text,textTransform:"capitalize"}}>
+                    {medal} {s.query}
+                  </span>
+                  <span style={{fontSize:11,color:T.muted,fontWeight:600}}>{s.count}×</span>
+                </div>
+                <div style={{height:5,background:"#f0f0f0",borderRadius:10}}>
+                  <div style={{height:5,background:barColor,borderRadius:10,width:pct+"%"}}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Per Property Breakdown */}
+      <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:4}}>🏠 Per Property Performance</div>
+      {myProps.map(p=>{
+        const ps = Analytics.getPropStats(p.id);
+        const total = ps.views + p.views;
+        const saves = ps.saves + p.saves;
+        const saveRate = total>0 ? Math.round((saves/total)*100) : 0;
+        const pr = fmtPrice(p.price, p.status);
+        const saveBarW = Math.min(saveRate*3,100)+"%";
+        return (
+          <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:13,overflow:"hidden",marginBottom:4}}>
+            <div style={{display:"flex"}}>
+              <img src={p.img} alt={p.title} style={{width:80,height:70,objectFit:"cover",flexShrink:0}}/>
+              <div style={{padding:"8px 12px",flex:1}}>
+                <div style={{fontSize:12,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:1}}>{p.title}</div>
+                <div style={{fontSize:13,fontWeight:900,color:T.red}}>{pr.main}<span style={{fontSize:10,color:T.muted}}>{pr.sub}</span></div>
+              </div>
+            </div>
+            <div style={{padding:"10px 12px",borderTop:`1px solid ${T.border}`,background:"#fafafa"}}>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:8}}>
+                {[
+                  {icon:"👁",val:total,label:"Views",c:T.red},
+                  {icon:"❤️",val:saves,label:"Saves",c:"#e11d48"},
+                  {icon:"✉️",val:ps.enquiries,label:"Enquiries",c:T.green},
+                  {icon:"📅",val:ps.inspections,label:"Booked",c:"#7c3aed"},
+                ].map(({icon,val,label,c})=>(
+                  <div key={label} style={{textAlign:"center",background:"#fff",borderRadius:8,padding:"6px 4px",border:`1px solid ${T.border}`}}>
+                    <div style={{fontSize:14}}>{icon}</div>
+                    <div style={{fontSize:15,fontWeight:900,color:c}}>{val}</div>
+                    <div style={{fontSize:9,color:T.muted}}>{label}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <div style={{fontSize:10,color:T.muted,whiteSpace:"nowrap"}}>Save rate</div>
+                <div style={{flex:1,height:5,background:"#f0f0f0",borderRadius:10}}>
+                  <div style={{height:5,background:saveRate>10?T.green:"#f59e0b",borderRadius:10,width:saveBarW}}/>
+                </div>
+                <div style={{fontSize:10,fontWeight:700,color:T.text}}>{saveRate}%</div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Tip */}
+      <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:11,padding:"11px 13px",fontSize:11,color:T.green,fontWeight:600}}>
+        {stats.totalViews===0
+          ? "💡 No data yet — analytics will appear as tenants view, save and enquire about properties."
+          : "💡 Analytics update in real time as tenants view, save and enquire about your properties."}
+      </div>
+
+    </div>
+  );
+}
+
 /* ── OWNER DASHBOARD ──────────────────────────── */
 function OwnerDashboard({user, onClose, onListProperty, savedProps}){
   const isMobile = useIsMobile();
@@ -1439,45 +1604,7 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
               ))}
             </div>
           )}
-          {tab==="analytics" && (
-            <div>
-              <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:14,padding:"16px",marginBottom:14}}>
-                <div style={{fontWeight:800,fontSize:14,color:T.green,marginBottom:12}}>📊 Property Performance</div>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                  {[[totalViews,"Total Views","👁","All time"],[totalSaves,"Total Saves","❤️","Wishlist adds"],[myProps.length,"Active Listings","🏠","Published"],[mockMessages.length,"Enquiries","✉️","This month"]].map(([val,label,icon,sub])=>(
-                    <div key={label} style={{background:"#fff",borderRadius:10,padding:"12px",textAlign:"center"}}>
-                      <div style={{fontSize:24}}>{icon}</div>
-                      <div style={{fontSize:24,fontWeight:900,color:T.green,fontFamily:"'Playfair Display',serif"}}>{val}</div>
-                      <div style={{fontSize:12,fontWeight:700,color:T.text}}>{label}</div>
-                      <div style={{fontSize:10,color:T.muted}}>{sub}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>Per Property Breakdown</div>
-              {myProps.map(p=>(
-                <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:11,padding:"12px 14px",marginBottom:8}}>
-                  <div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:8,lineHeight:1.3}}>{p.title}</div>
-                  <div style={{display:"flex",gap:16}}>
-                    <div style={{textAlign:"center"}}>
-                      <div style={{fontSize:18,fontWeight:900,color:T.muted}}>{p.views}</div>
-                      <div style={{fontSize:10,color:T.muted}}>👁 Views</div>
-                    </div>
-                    <div style={{textAlign:"center"}}>
-                      <div style={{fontSize:18,fontWeight:900,color:T.red}}>{p.saves}</div>
-                      <div style={{fontSize:10,color:T.muted}}>❤️ Saves</div>
-                    </div>
-                    <div style={{flex:1}}>
-                      <div style={{height:6,background:"#f0f0f0",borderRadius:10,marginTop:6,marginBottom:3}}>
-                        <div style={{height:6,background:T.green,borderRadius:10,width:`${Math.min((p.views/350)*100,100)}%`}}/>
-                      </div>
-                      <div style={{fontSize:10,color:T.muted}}>{Math.round((p.saves/p.views)*100)}% save rate</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {tab==="analytics" && <AnalyticsTab myProps={myProps}/>}
         </div>
       </div>
     </div>
@@ -1839,6 +1966,7 @@ function DetailModal({p, onClose, L}){
                   <button onClick={async()=>{
                     if(!msg.name||!msg.phone) return;
                     setMsgSent(true);
+                    Analytics.track("enquiry", {propId: p.id, title: p.title});
                     try {
                       await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"owner_new_message",data:{ownerEmail:"monjur111@gmail.com",propertyTitle:p.title,senderName:msg.name,senderPhone:msg.phone,senderEmail:msg.email,subject:msg.subject,body:msg.body,prefDate:msg.prefDate,prefTime:msg.prefTime}})});
                     } catch(e){ console.log("Email error:",e); }
@@ -1873,6 +2001,7 @@ function DetailModal({p, onClose, L}){
                   <button onClick={async()=>{
                     if(!selectedSlot) return;
                     setBooked(true);
+                    Analytics.track("inspection", {propId: p.id, title: p.title, slot: selectedSlot});
                     try {
                       await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"owner_inspection_booked",data:{ownerEmail:"monjur111@gmail.com",propertyTitle:p.title,tenantName:"Tenant",tenantPhone:"—",slot:selectedSlot}})});
                     } catch(e){ console.log("Email error:",e); }
@@ -2222,7 +2351,82 @@ function ListWizard({onClose, onAddArea, customAreas=[]}){
   );
 }
 
-/* ── LEAFLET INTERACTIVE MAP ──────────────────── */
+/* ── ANALYTICS ENGINE ─────────────────────────── */
+const Analytics = {
+  _key: "basha_analytics",
+  _load() {
+    try { return JSON.parse(localStorage.getItem(this._key)||"{}"); } catch(e){ return {}; }
+  },
+  _save(data) {
+    try { localStorage.setItem(this._key, JSON.stringify(data)); } catch(e){}
+  },
+  track(event, data={}) {
+    const store = this._load();
+    const day = new Date().toISOString().slice(0,10);
+    // Daily events log
+    if(!store.events) store.events = [];
+    store.events.push({ event, data, ts: Date.now(), day });
+    // Keep last 500 events
+    if(store.events.length > 500) store.events = store.events.slice(-500);
+    // Aggregates
+    if(!store.agg) store.agg = {};
+    const k = `${event}:${JSON.stringify(data)}`;
+    store.agg[k] = (store.agg[k]||0) + 1;
+    // Daily counts
+    if(!store.daily) store.daily = {};
+    if(!store.daily[day]) store.daily[day] = {};
+    store.daily[day][event] = (store.daily[day][event]||0) + 1;
+    // Property-specific
+    if(data.propId) {
+      if(!store.props) store.props = {};
+      if(!store.props[data.propId]) store.props[data.propId] = {views:0,saves:0,enquiries:0,inspections:0};
+      if(event==="view") store.props[data.propId].views++;
+      if(event==="save") store.props[data.propId].saves++;
+      if(event==="enquiry") store.props[data.propId].enquiries++;
+      if(event==="inspection") store.props[data.propId].inspections++;
+    }
+    // Search terms
+    if(event==="search" && data.query) {
+      if(!store.searches) store.searches = {};
+      const q = data.query.toLowerCase().trim();
+      if(q) store.searches[q] = (store.searches[q]||0) + 1;
+    }
+    this._save(store);
+  },
+  getStats() {
+    const store = this._load();
+    const today = new Date().toISOString().slice(0,10);
+    const days = [];
+    for(let i=6; i>=0; i--) {
+      const d = new Date(); d.setDate(d.getDate()-i);
+      const key = d.toISOString().slice(0,10);
+      days.push({
+        label: i===0?"Today":i===1?"Yesterday":d.toLocaleDateString("en-BD",{weekday:"short"}),
+        key,
+        views: store.daily?.[key]?.view || 0,
+        saves: store.daily?.[key]?.save || 0,
+        searches: store.daily?.[key]?.search || 0,
+        enquiries: store.daily?.[key]?.enquiry || 0,
+      });
+    }
+    const topSearches = Object.entries(store.searches||{})
+      .sort((a,b)=>b[1]-a[1]).slice(0,8)
+      .map(([q,c])=>({query:q,count:c}));
+    const propStats = store.props || {};
+    const totalViews = Object.values(propStats).reduce((a,p)=>a+p.views,0);
+    const totalSaves = Object.values(propStats).reduce((a,p)=>a+p.saves,0);
+    const totalEnquiries = Object.values(propStats).reduce((a,p)=>a+p.enquiries,0);
+    const todayViews = store.daily?.[today]?.view || 0;
+    const todaySearches = store.daily?.[today]?.search || 0;
+    return { days, topSearches, propStats, totalViews, totalSaves, totalEnquiries, todayViews, todaySearches };
+  },
+  getPropStats(propId) {
+    const store = this._load();
+    return store.props?.[propId] || {views:0,saves:0,enquiries:0,inspections:0};
+  },
+};
+
+
 function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -2448,8 +2652,16 @@ export default function App(){
   const L = LANG[lang];
   const toggleQ = k=>setActiveQ(p=>p.includes(k)?p.filter(x=>x!==k):[...p,k]);
 
+  const handleSelectProperty = (p) => {
+    Analytics.track("view", {propId: p.id, title: p.title, location: p.location});
+    setSelected(p);
+  };
   const handleSaveToggle = id => {
-    setSavedIds(prev=>prev.includes(id)?prev.filter(x=>x!==id):[...prev,id]);
+    setSavedIds(prev => {
+      const saving = !prev.includes(id);
+      if(saving) Analytics.track("save", {propId:id});
+      return saving ? [...prev, id] : prev.filter(x=>x!==id);
+    });
   };
 
   const handleLogin = async (u) => {
@@ -2620,8 +2832,10 @@ export default function App(){
                   <div style={{flex:"2 1 180px",position:"relative"}}>
                     <input
                       value={search}
-                      onChange={e=>{setSearch(e.target.value);}}
-                      onFocus={()=>setShowSugg(true)}
+                      onChange={e=>{
+                        setSearch(e.target.value);
+                        if(e.target.value.length>=2) Analytics.track("search",{query:e.target.value});
+                      }}
                       onBlur={()=>setTimeout(()=>setShowSugg(false),180)}
                       placeholder={L.searchPh}
                       style={{width:"100%",padding:"11px 14px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,outline:"none",boxSizing:"border-box"}}
@@ -2787,7 +3001,7 @@ export default function App(){
             {/* Leaflet map */}
             <LeafletMap
               properties={filtered}
-              onSelect={setSelected}
+              onSelect={handleSelectProperty}
               savedIds={savedIds}
               onSaveToggle={handleSaveToggle}
             />
@@ -2799,7 +3013,7 @@ export default function App(){
           <>
             {filtered.length>0?(
               <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"repeat(auto-fill,minmax(280px,1fr))",gap:isMobile?14:18}}>
-                {filtered.map(p=><Card key={p.id} p={p} onSelect={setSelected} savedIds={savedIds} onSaveToggle={handleSaveToggle}/>)}
+                {filtered.map(p=><Card key={p.id} p={p} onSelect={handleSelectProperty} savedIds={savedIds} onSaveToggle={handleSaveToggle}/>)}
               </div>
             ):(
               <div style={{textAlign:"center",padding:"56px 0",color:T.muted}}>
