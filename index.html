@@ -2,12 +2,84 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>code</title>
+
+    <!-- ── PWA Core ── -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#C8102E" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- ── iOS PWA Support ── -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Basha.app" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+
+    <!-- ── Favicon ── -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-72x72.png" />
+    <link rel="shortcut icon" href="/icons/icon-96x96.png" />
+
+    <!-- ── Viewport ── -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- ── SEO & Social ── -->
+    <title>Basha.app — Bangladesh's #1 Rental & Property Portal</title>
+    <meta name="description" content="Find verified rentals and properties across all 8 divisions of Bangladesh. List your property free. 10,800+ listings." />
+    <meta name="keywords" content="Bangladesh property, Dhaka rent, flat for rent Dhaka, basha, property portal Bangladesh, Gulshan apartment, Mirpur flat" />
+    <meta name="author" content="Basha.app" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ── Open Graph (Facebook, WhatsApp) ── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bashabd.app/" />
+    <meta property="og:title" content="Basha.app — Bangladesh's #1 Property Portal" />
+    <meta property="og:description" content="Find verified rentals across all 8 divisions. List your property free in under 5 minutes." />
+    <meta property="og:image" content="https://bashabd.app/icons/icon-512x512.png" />
+    <meta property="og:locale" content="en_BD" />
+
+    <!-- ── Twitter Card ── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Basha.app — Bangladesh Property Portal" />
+    <meta name="twitter:description" content="Find verified rentals across all 8 divisions of Bangladesh." />
+    <meta name="twitter:image" content="https://bashabd.app/icons/icon-512x512.png" />
+
+    <!-- ── Windows PWA ── -->
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
+    <meta name="msapplication-TileColor" content="#C8102E" />
+
+    <!-- ── Preconnect for performance ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://unpkg.com" />
+
+    <style>
+      /* Prevent flash of unstyled content */
+      html { background: #ffffff; }
+      body { margin: 0; padding: 0; }
+      /* Safe area for iPhone notch */
+      body { padding-top: env(safe-area-inset-top); }
+    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- ── Register Service Worker ── -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => {
+              console.log('[Basha.app] Service Worker registered:', reg.scope);
+            })
+            .catch(err => {
+              console.warn('[Basha.app] Service Worker failed:', err);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
