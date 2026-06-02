@@ -2351,6 +2351,171 @@ function ListWizard({onClose, onAddArea, customAreas=[]}){
   );
 }
 
+/* ── PWA INSTALL BANNER ───────────────────────── */
+function usePWAInstall() {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showBanner, setShowBanner]         = useState(false);
+  const [isIOS, setIsIOS]                   = useState(false);
+  const [isInstalled, setIsInstalled]       = useState(false);
+
+  useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setIsInstalled(true);
+      return;
+    }
+    // iOS detection
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    setIsIOS(ios);
+
+    // Track visits — show banner after 2nd visit
+    const visits = parseInt(localStorage.getItem("basha_visits") || "0") + 1;
+    localStorage.setItem("basha_visits", visits);
+    const dismissed = localStorage.getItem("basha_pwa_dismissed");
+
+    // Android/Chrome — capture the install prompt
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      if (visits >= 2 && !dismissed) setShowBanner(true);
+    });
+
+    // iOS — show manual instructions after 2nd visit
+    if (ios && visits >= 2 && !dismissed) {
+      setTimeout(() => setShowBanner(true), 2000);
+    }
+
+    window.addEventListener("appinstalled", () => {
+      setIsInstalled(true);
+      setShowBanner(false);
+      localStorage.setItem("basha_pwa_dismissed", "installed");
+    });
+  }, []);
+
+  const install = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        setIsInstalled(true);
+        setShowBanner(false);
+      }
+      setDeferredPrompt(null);
+    }
+  };
+
+  const dismiss = () => {
+    setShowBanner(false);
+    localStorage.setItem("basha_pwa_dismissed", "yes");
+  };
+
+  return { showBanner, isIOS, isInstalled, install, dismiss };
+}
+
+function PWABanner({ onInstall, onDismiss, isIOS }) {
+  const [step, setStep] = useState(0);
+  return (
+    <div style={{
+      position:"fixed", bottom: 80, left:12, right:12, zIndex:2000,
+      background:"#fff", borderRadius:18,
+      boxShadow:"0 8px 40px rgba(0,0,0,0.18)",
+      border:`2px solid ${T.green}`,
+      overflow:"hidden",
+      animation:"slideUp .3s ease",
+    }}>
+      <style>{`@keyframes slideUp{from{transform:translateY(100px);opacity:0}to{transform:translateY(0);opacity:1}}`}</style>
+
+      {/* Header */}
+      <div style={{background:`linear-gradient(135deg,${T.green},#0a3d22)`,padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+        <div style={{width:44,height:44,background:"rgba(255,255,255,0.15)",borderRadius:12,display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>🏠</div>
+        <div style={{flex:1}}>
+          <div style={{color:"#fff",fontWeight:900,fontSize:15,fontFamily:"'Playfair Display',serif"}}>
+            Basha<span style={{color:T.gold}}>.app</span>
+          </div>
+          <div style={{color:"rgba(255,255,255,0.8)",fontSize:11,marginTop:1}}>
+            Install for free — works like a real app!
+          </div>
+        </div>
+        <button onClick={onDismiss} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:28,height:28,color:"#fff",fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>✕</button>
+      </div>
+
+      {/* Body */}
+      <div style={{padding:"14px 16px"}}>
+        {!isIOS ? (
+          /* Android / Chrome */
+          <div>
+            <div style={{fontSize:13,color:T.muted,marginBottom:12,lineHeight:1.6}}>
+              Add <strong style={{color:T.text}}>Basha.app</strong> to your home screen — instant access, works offline, feels like a native app. <strong style={{color:T.green}}>100% free.</strong>
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <button onClick={onInstall} style={{flex:1,background:T.green,color:"#fff",border:"none",padding:"12px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+                📲 Install Now — Free
+              </button>
+              <button onClick={onDismiss} style={{background:T.bg,color:T.muted,border:`1px solid ${T.border}`,padding:"12px 14px",borderRadius:11,fontWeight:600,fontSize:13,cursor:"pointer"}}>
+                Later
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* iOS Safari — step by step */
+          <div>
+            {step===0 ? (
+              <div>
+                <div style={{fontSize:13,color:T.muted,marginBottom:12,lineHeight:1.6}}>
+                  Install <strong style={{color:T.text}}>Basha.app</strong> on your iPhone home screen in 2 taps — no App Store needed!
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
+                  {[
+                    {icon:"⬆️",label:"Tap Share"},
+                    {icon:"➕",label:"Add to Home"},
+                    {icon:"🏠",label:"Done!"},
+                  ].map(({icon,label})=>(
+                    <div key={label} style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:10,padding:"10px 8px",textAlign:"center"}}>
+                      <div style={{fontSize:22}}>{icon}</div>
+                      <div style={{fontSize:11,fontWeight:700,color:T.green,marginTop:4}}>{label}</div>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={()=>setStep(1)} style={{width:"100%",background:T.green,color:"#fff",border:"none",padding:"11px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>
+                  Show me how →
+                </button>
+              </div>
+            ) : (
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:10}}>Follow these steps:</div>
+                {[
+                  {n:"1",icon:"⬆️",text:'Tap the Share button at the bottom of Safari (the box with an arrow)'},
+                  {n:"2",icon:"➕",text:'Scroll down and tap "Add to Home Screen"'},
+                  {n:"3",icon:"✏️",text:'Name it "Basha.app" and tap Add'},
+                  {n:"4",icon:"🎉",text:'Done! Find Basha.app on your home screen'},
+                ].map(s=>(
+                  <div key={s.n} style={{display:"flex",gap:10,marginBottom:10,alignItems:"flex-start"}}>
+                    <div style={{width:28,height:28,background:T.green,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:900,fontSize:13,flexShrink:0}}>{s.n}</div>
+                    <div style={{flex:1}}>
+                      <span style={{fontSize:18,marginRight:6}}>{s.icon}</span>
+                      <span style={{fontSize:12,color:T.text,lineHeight:1.5}}>{s.text}</span>
+                    </div>
+                  </div>
+                ))}
+                <button onClick={onDismiss} style={{width:"100%",background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"10px",borderRadius:11,fontWeight:700,fontSize:13,cursor:"pointer",marginTop:4}}>
+                  Got it ✓
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Benefits row */}
+        <div style={{display:"flex",gap:8,marginTop:10,flexWrap:"wrap"}}>
+          {["⚡ Instant load","📴 Works offline","🔔 Notifications","📱 Home screen"].map(b=>(
+            <span key={b} style={{fontSize:10,fontWeight:700,color:T.green,background:T.greenL,padding:"3px 8px",borderRadius:20,border:`1px solid ${T.greenM}`}}>{b}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── SEARCH DROPDOWN COMPONENT ────────────────── */
 function SearchDropdown({search, customAreas, onSelect}){
   const allSugg = [
@@ -2640,6 +2805,7 @@ function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
 /* ── MAIN APP ─────────────────────────────────── */
 export default function App(){
   const isMobile = useIsMobile();
+  const { showBanner:showPWA, isIOS, install:installPWA, dismiss:dismissPWA } = usePWAInstall();
   const [lang,setLang]           = useState("en");
   const [search,setSearch]       = useState("");
   const [status,setStatus]       = useState("all");
@@ -3119,6 +3285,9 @@ export default function App(){
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory}/>}
+
+      {/* PWA Install Banner */}
+      {showPWA && <PWABanner onInstall={installPWA} onDismiss={dismissPWA} isIOS={isIOS}/>}
 
       {/* MOBILE BOTTOM NAV */}
       {isMobile&&(
