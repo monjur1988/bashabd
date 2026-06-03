@@ -43,35 +43,35 @@ const LANG = {
     sendMsgBtn:"📤 Send Message", msgSentTitle:"✅ Sent!", confirmBookBtn:"✅ Confirm Booking",
     bookedTitle:"🎉 Booked!", noInspMsg:"No inspection times yet.",
     forRent:"FOR RENT", forSale:"FOR SALE", featured:"★ FEATURED",
-    beds:"শয়নকক্ষ", baths:"বাথরুম", cars:"গাড়ি", floor:"তলা", sqft:"বর্গফুট",
-    petsOk:"🐾 পোষা প্রাণী ঠিক আছে", flatmate:"👥 ফ্ল্যাটমেট",
-    today:"আজ", daysAgo:"দিন আগে",
-    budget:"💚 সাশ্রয়ী", midRange:"💛 মধ্যম", premium:"💎 প্রিমিয়াম",
-    perMonth:"/মাস", crore:"কোটি", lac:"লাখ",
-    confirmed:"✅ নিশ্চিত", pending:"⏳ অপেক্ষমান",
-    allDivisions:"সকল বিভাগ", allTypes:"সকল ধরন",
-    rent:"🔑 ভাড়া", buy:"🏢 কিনুন", all:"📊 সব",
-    listView:"🏠 তালিকা", mapView:"🗺 মানচিত্র",
-    properties:"সম্পত্তি", rentals:"ভাড়া", forSaleLbl:"বিক্রয়", allListings:"সকল তালিকা",
-    noMatch:"কোনো সম্পত্তি পাওয়া যায়নি", clearFilters:"ফিল্টার মুছুন",
-    inspSlots:"টি সময়", inspSlot:"টি সময়",
-    viewsLabel:"ভিউ", savesLabel:"সেভ",
-    listedToday:"আজ তালিকাভুক্ত", listedDaysAgo:"দিন আগে তালিকাভুক্ত",
-    included:"অন্তর্ভুক্ত", noUtilities:"কোনো সুবিধা অন্তর্ভুক্ত নেই",
-    bookInspection:"পরিদর্শন বুক করুন",
-    pickSlot:"একটি সময় বেছে নিন — মালিক/এজেন্ট আপনার ভিজিট নিশ্চিত করবেন।",
-    callDirectly:"অথবা সরাসরি ফোন করুন:",
-    listedAgo:"তালিকাভুক্ত",
-    howItWorks:"বাশা.অ্যাপ মালিকদের জন্য কীভাবে কাজ করে",
-    rentingTips:"বাংলাদেশে ভাড়ার টিপস",
-    verifyOwnership:"মালিকানা যাচাই করুন",
-    verifyOwnershipDesc:"চুক্তি স্বাক্ষরের আগে সর্বদা খতিয়ান ও পর্চা নথি চাইুন।",
-    writtenDeed:"লিখিত ভাড়া চুক্তি",
-    writtenDeedDesc:"একটি নোটারাইজড চুক্তিপত্র ভাড়াটিয়া ও মালিক উভয়কে সুরক্ষিত রাখে।",
-    bookInsp:"পরিদর্শন বুক করুন",
-    bookInspDesc:"অগ্রিম দেওয়ার আগে সম্পত্তি সশরীরে পরিদর্শন করুন।",
-    checkRajuk:"রাজউক অনুমোদন যাচাই করুন",
-    checkRajukDesc:"ঢাকার সম্পত্তির জন্য রাজউক বা সিডিএ অনুমোদন যাচাই করুন।",
+    beds:"Beds", baths:"Baths", cars:"Cars", floor:"Floor", sqft:"sqft",
+    petsOk:"🐾 Pets OK", flatmate:"👥 Flatmate",
+    today:"Today", daysAgo:"d ago",
+    budget:"💚 Budget", midRange:"💛 Mid Range", premium:"💎 Premium",
+    perMonth:"/mo", crore:"Cr", lac:"Lac",
+    confirmed:"✅ Confirmed", pending:"⏳ Pending",
+    allDivisions:"All Divisions", allTypes:"All Types",
+    rent:"🔑 Rent", buy:"🏢 Buy", all:"📊 All",
+    listView:"🏠 List", mapView:"🗺 Map",
+    properties:"Properties", rentals:"Rentals", forSaleLbl:"For Sale", allListings:"All Listings",
+    noMatch:"No properties match your search", clearFilters:"Clear Filters",
+    inspSlots:" slots", inspSlot:" slot",
+    viewsLabel:"views", savesLabel:"saves",
+    listedToday:"Today", listedDaysAgo:"d ago",
+    included:"Included", noUtilities:"No utilities included",
+    bookInspection:"Book an Inspection",
+    pickSlot:"Pick a slot — the owner/agent will confirm your visit.",
+    callDirectly:"Or call directly:",
+    listedAgo:"listed",
+    howItWorks:"How Basha.app Works for Owners",
+    rentingTips:"Renting Tips for Bangladesh",
+    verifyOwnership:"Verify Ownership",
+    verifyOwnershipDesc:"Always ask for Khatian & Porcha documents before signing.",
+    writtenDeed:"Written Rental Deed",
+    writtenDeedDesc:"A notarised Chukti Patra protects both tenant and owner.",
+    bookInsp:"Book an Inspection",
+    bookInspDesc:"Always visit the property in person before paying any advance.",
+    checkRajuk:"Check RAJUK Approval",
+    checkRajukDesc:"Verify RAJUK or CDA building approval for Dhaka properties.",
   },
   bn:{
     topBar:"বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী · Basha.app",
@@ -3012,26 +3012,8 @@ export default function App(){
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
       {/* TOP BAR */}
-      <div style={{background:T.green,color:"#fff",fontSize:11,padding:"4px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span>{L.topBar}</span>
-        <div style={{display:"flex",gap:12,alignItems:"center"}}>
-          {user ? (
-            <>
-              <span style={{cursor:"pointer",opacity:.9,fontWeight:700}} onClick={()=>user.role==="owner"?setShowOwnerDash(true):setShowTenantDash(true)}>
-                👤 {user.name.split(" ")[0]}
-              </span>
-              <span style={{cursor:"pointer",opacity:.75}} onClick={handleLogout}>Sign Out</span>
-            </>
-          ):(
-            <>
-              <span style={{cursor:"pointer",opacity:.85}} onClick={()=>{setAuthMode("signin");setShowAuth(true);}}>{L.signIn}</span>
-              <span style={{cursor:"pointer",opacity:.85}} onClick={()=>{setAuthMode("signup");setShowAuth(true);}}>{L.register}</span>
-            </>
-          )}
-          <button onClick={()=>setLang(l=>l==="en"?"bn":"en")} style={{background:"rgba(255,255,255,0.2)",border:"1.5px solid rgba(255,255,255,0.5)",borderRadius:14,padding:"3px 11px",color:"#fff",fontSize:11,fontWeight:800,cursor:"pointer"}}>
-            {L.langBtn}
-          </button>
-        </div>
+      <div style={{background:T.green,color:"#fff",fontSize:11,padding:"6px 20px",display:"flex",justifyContent:"center",alignItems:"center",textAlign:"center"}}>
+        <span style={{fontWeight:600,letterSpacing:0.3}}>{L.topBar}</span>
       </div>
 
       {/* HEADER */}
