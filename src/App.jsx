@@ -1273,7 +1273,8 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
         <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,padding:"22px 26px",position:"relative"}}>
           <button onClick={onClose} style={{position:"absolute",top:14,right:14,background:"rgba(255,255,255,0.2)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
-            <div style={{background:"rgba(255,255,255,0.2)",borderRadius:8,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🏠</div>
+            <div style={{background:"rgba(255,255,255,0.2)",borderRadius:8,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+              <img src="/icons/icon-192x192.png" alt="Basha.app" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>
             <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:19,color:"#fff"}}>Basha<span style={{color:T.gold}}>.app</span></div>
           </div>
           <div style={{color:"rgba(255,255,255,0.9)",fontSize:13,fontWeight:600}}>
@@ -3020,7 +3021,8 @@ export default function App(){
       {/* HEADER */}
       <header style={{background:"#fff",borderBottom:`1px solid ${T.border}`,padding:isMobile?"0 14px":"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:isMobile?54:60,position:"sticky",top:0,zIndex:500,boxShadow:"0 1px 8px rgba(0,0,0,0.07)"}}>
         <div style={{display:"flex",alignItems:"center",gap:7,userSelect:"none"}}>
-          <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,borderRadius:8,width:isMobile?30:36,height:isMobile?30:36,display:"flex",alignItems:"center",justifyContent:"center",fontSize:isMobile?15:18}}>🏠</div>
+          <div style={{background:`linear-gradient(135deg,${T.red},#a00d24)`,borderRadius:8,width:isMobile?30:36,height:isMobile?30:36,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
+            <img src="/icons/icon-192x192.png" alt="Basha.app" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>
           <div>
             <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:isMobile?16:18,color:T.text,lineHeight:1}}>Basha<span style={{color:T.red}}>.app</span></div>
             {!isMobile&&<div style={{fontSize:8,letterSpacing:1.5,color:T.green,fontWeight:700,marginTop:1}}>{L.langBtn==="বাংলা 🇧🇩"?"FIND · RENT · LIST":"খুঁজুন · ভাড়া নিন · তালিকা দিন"}</div>}
@@ -3348,7 +3350,8 @@ export default function App(){
           <div style={{display:"flex",gap:32,flexWrap:"wrap",marginBottom:28}}>
             <div style={{flex:"2 1 200px"}}>
               <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
-                <div style={{background:T.red,borderRadius:7,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>🏠</div>
+                <div style={{background:T.red,borderRadius:7,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+                  <img src="/icons/icon-192x192.png" alt="Basha.app" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>
                 <div style={{fontFamily:"'Playfair Display',serif",fontSize:18,fontWeight:900,color:"#fff"}}>Basha<span style={{color:T.red}}>.app</span></div>
               </div>
               <p style={{fontSize:12,lineHeight:1.8,color:"#4d7a5f",maxWidth:240}}>Bangladesh's most trusted rental & property portal across all 8 divisions.</p>
