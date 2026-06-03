@@ -1274,7 +1274,23 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
           <button onClick={onClose} style={{position:"absolute",top:14,right:14,background:"rgba(255,255,255,0.2)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
             <div style={{borderRadius:8,width:34,height:34,overflow:"hidden",flexShrink:0}}>
-              <img src="/icons/icon-192x192.png" alt="Basha.app" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/></div>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="34" height="34">
+                <rect width="512" height="512" rx="110" fill="#0f2d1a"/>
+                <circle cx="400" cy="112" r="88" fill="#C8102E"/>
+                <rect x="96" y="210" width="320" height="240" rx="6" fill="#ffffff"/>
+                <rect x="86" y="198" width="340" height="22" rx="4" fill="#e8e8e8"/>
+                <rect x="114" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                <rect x="220" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                <rect x="326" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                <rect x="114" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+                <rect x="220" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+                <rect x="326" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+                <rect x="114" y="362" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                <rect x="326" y="362" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                <rect x="210" y="406" width="92" height="44" rx="5" fill="#F5C842"/>
+                <rect x="76" y="448" width="360" height="8" rx="2" fill="#F5C842"/>
+              </svg>
+            </div>
             <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:19,color:"#fff"}}>Basha<span style={{color:T.gold}}>.app</span></div>
           </div>
           <div style={{color:"rgba(255,255,255,0.9)",fontSize:13,fontWeight:600}}>
@@ -3022,7 +3038,43 @@ export default function App(){
       <header style={{background:"#fff",borderBottom:`1px solid ${T.border}`,padding:isMobile?"0 14px":"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:isMobile?54:60,position:"sticky",top:0,zIndex:500,boxShadow:"0 1px 8px rgba(0,0,0,0.07)"}}>
         <div style={{display:"flex",alignItems:"center",gap:7,userSelect:"none"}}>
           <div style={{borderRadius:8,width:isMobile?30:36,height:isMobile?30:36,overflow:"hidden",flexShrink:0}}>
-            <img src="/icons/icon-192x192.png" alt="Basha.app" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/></div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+              <rect width="512" height="512" rx="110" fill="#0f2d1a"/>
+              <circle cx="400" cy="112" r="88" fill="#C8102E"/>
+              <rect x="96" y="210" width="320" height="240" rx="6" fill="#ffffff"/>
+              <rect x="86" y="198" width="340" height="22" rx="4" fill="#e8e8e8"/>
+              <line x1="96" y1="280" x2="416" y2="280" stroke="#e0e0e0" strokeWidth="2"/>
+              <line x1="96" y1="348" x2="416" y2="348" stroke="#e0e0e0" strokeWidth="2"/>
+              <line x1="202" y1="210" x2="202" y2="450" stroke="#e0e0e0" strokeWidth="2"/>
+              <line x1="310" y1="210" x2="310" y2="450" stroke="#e0e0e0" strokeWidth="2"/>
+              <rect x="114" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+              <line x1="148" y1="224" x2="148" y2="270" stroke="white" strokeWidth="2.5"/>
+              <line x1="114" y1="247" x2="182" y2="247" stroke="white" strokeWidth="2.5"/>
+              <rect x="220" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+              <line x1="254" y1="224" x2="254" y2="270" stroke="white" strokeWidth="2.5"/>
+              <line x1="220" y1="247" x2="288" y2="247" stroke="white" strokeWidth="2.5"/>
+              <rect x="326" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+              <line x1="360" y1="224" x2="360" y2="270" stroke="white" strokeWidth="2.5"/>
+              <line x1="326" y1="247" x2="394" y2="247" stroke="white" strokeWidth="2.5"/>
+              <rect x="114" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+              <line x1="148" y1="294" x2="148" y2="340" stroke="white" strokeWidth="2.5"/>
+              <line x1="114" y1="317" x2="182" y2="317" stroke="white" strokeWidth="2.5"/>
+              <rect x="220" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+              <line x1="254" y1="294" x2="254" y2="340" stroke="white" strokeWidth="2.5"/>
+              <line x1="220" y1="317" x2="288" y2="317" stroke="white" strokeWidth="2.5"/>
+              <rect x="326" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+              <line x1="360" y1="294" x2="360" y2="340" stroke="white" strokeWidth="2.5"/>
+              <line x1="326" y1="317" x2="394" y2="317" stroke="white" strokeWidth="2.5"/>
+              <rect x="114" y="362" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+              <line x1="148" y1="362" x2="148" y2="408" stroke="white" strokeWidth="2.5"/>
+              <line x1="114" y1="385" x2="182" y2="385" stroke="white" strokeWidth="2.5"/>
+              <rect x="326" y="362" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+              <line x1="360" y1="362" x2="360" y2="408" stroke="white" strokeWidth="2.5"/>
+              <line x1="326" y1="385" x2="394" y2="385" stroke="white" strokeWidth="2.5"/>
+              <rect x="210" y="406" width="92" height="44" rx="5" fill="#F5C842"/>
+              <rect x="76" y="448" width="360" height="8" rx="2" fill="#F5C842"/>
+            </svg>
+          </div>
           <div>
             <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:isMobile?16:18,color:T.text,lineHeight:1}}>Basha<span style={{color:T.red}}>.app</span></div>
             {!isMobile&&<div style={{fontSize:8,letterSpacing:1.5,color:T.green,fontWeight:700,marginTop:1}}>{L.langBtn==="বাংলা 🇧🇩"?"FIND · RENT · LIST":"খুঁজুন · ভাড়া নিন · তালিকা দিন"}</div>}
@@ -3351,7 +3403,23 @@ export default function App(){
             <div style={{flex:"2 1 200px"}}>
               <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
                 <div style={{borderRadius:7,width:28,height:28,overflow:"hidden",flexShrink:0}}>
-                  <img src="/icons/icon-192x192.png" alt="Basha.app" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/></div>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28">
+                    <rect width="512" height="512" rx="110" fill="#0f2d1a"/>
+                    <circle cx="400" cy="112" r="88" fill="#C8102E"/>
+                    <rect x="96" y="210" width="320" height="240" rx="6" fill="#ffffff"/>
+                    <rect x="86" y="198" width="340" height="22" rx="4" fill="#e8e8e8"/>
+                    <rect x="114" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                    <rect x="220" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                    <rect x="326" y="224" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                    <rect x="114" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+                    <rect x="220" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+                    <rect x="326" y="294" width="68" height="46" rx="4" fill="#1a6b3c" opacity="0.85"/>
+                    <rect x="114" y="362" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                    <rect x="326" y="362" width="68" height="46" rx="4" fill="#C8102E" opacity="0.85"/>
+                    <rect x="210" y="406" width="92" height="44" rx="5" fill="#F5C842"/>
+                    <rect x="76" y="448" width="360" height="8" rx="2" fill="#F5C842"/>
+                  </svg>
+                </div>
                 <div style={{fontFamily:"'Playfair Display',serif",fontSize:18,fontWeight:900,color:"#fff"}}>Basha<span style={{color:T.red}}>.app</span></div>
               </div>
               <p style={{fontSize:12,lineHeight:1.8,color:"#4d7a5f",maxWidth:240}}>Bangladesh's most trusted rental & property portal across all 8 divisions.</p>
