@@ -1,7 +1,5 @@
 {
   "rewrites": [
-    { "source": "/delete-account", "destination": "/public/delete-account.html" },
-    { "source": "/privacy", "destination": "/public/privacy.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
