@@ -18,6 +18,11 @@ const T = {
   muted:"#6b7280", border:"#e5e7eb",
 };
 
+/* Branded "photo coming soon" placeholder (inline SVG, no network needed) */
+const PHOTO_PLACEHOLDER = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><rect width="600" height="400" fill="#eef1f4"/><g fill="#c3cad3"><rect x="248" y="150" width="104" height="78" rx="8"/><circle cx="278" cy="178" r="11" fill="#eef1f4"/><path d="M256 220l28-30 22 22 18-16 26 24z" fill="#eef1f4"/></g><text x="50%" y="270" font-family="sans-serif" font-size="20" font-weight="600" fill="#9aa3ad" text-anchor="middle">Basha.app · Photo coming soon</text></svg>'
+);
+
 /* ── TRANSLATIONS ─────────────────────────────── */
 const LANG = {
   en:{
@@ -130,16 +135,16 @@ const LANG = {
 
 /* ── MOCK DATA ────────────────────────────────── */
 const PROPERTIES = [
-  { id:1,  title:"Spacious 3-Bed in Bashundhara R/A",  type:"apartment",  status:"for-rent", price:32000,  area:1450, beds:3, baths:2, cars:1, floor:7,  location:"Bashundhara R/A, Dhaka",   division:"Dhaka",      img:"https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=600&q=80", featured:true,  tags:["Semi-Furnished","Gas","Generator"], petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"], inspSlots:["Fri 30 May — 10:00 AM","Fri 30 May — 2:00 PM","Sat 31 May — 11:00 AM"], agent:"Rahim & Sons", phone:"01711-234567", age:1, views:142, saves:23, ownerId:"owner1" },
-  { id:2,  title:"Modern Studio near Gulshan 1",        type:"apartment",  status:"for-rent", price:18000,  area:480,  beds:1, baths:1, cars:0, floor:4,  location:"Gulshan 1, Dhaka",         division:"Dhaka",      img:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80", featured:true,  tags:["Furnished","WiFi","AC"],           petFriendly:true,  flatmate:true,  utilities:["WiFi","Water","AC"],          inspSlots:["Sat 31 May — 10:00 AM","Sun 1 Jun — 10:00 AM"],                       agent:"Home Finders BD", phone:"01811-345678", age:2, views:98,  saves:17, ownerId:"owner1" },
-  { id:3,  title:"Family Flat in Uttara Sector 6",      type:"apartment",  status:"for-rent", price:22000,  area:1200, beds:3, baths:2, cars:0, floor:3,  location:"Uttara Sector 6, Dhaka",   division:"Dhaka",      img:"https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&q=80", featured:false, tags:["Unfurnished","Generator"],         petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"],    inspSlots:["Sun 1 Jun — 11:00 AM","Mon 2 Jun — 4:00 PM"],                         agent:"Trust Realty", phone:"01911-456789", age:5, views:67,  saves:9,  ownerId:"owner2" },
-  { id:4,  title:"Office Space – Full Floor, Banani",   type:"commercial", status:"for-rent", price:150000, area:6000, beds:0, baths:4, cars:5, floor:12, location:"Banani, Dhaka",             division:"Dhaka",      img:"https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80", featured:true,  tags:["Full Floor","24/7 Gen","Lift"],    petFriendly:false, flatmate:false, utilities:["Generator","Lift"],            inspSlots:["Mon 2 Jun — 10:00 AM","Tue 3 Jun — 10:00 AM"],                        agent:"Corporate BD", phone:"01611-567890", age:3, views:211, saves:31, ownerId:"owner2" },
-  { id:5,  title:"Cozy 2-Bed near Dhanmondi Lake",     type:"apartment",  status:"for-rent", price:28000,  area:950,  beds:2, baths:1, cars:0, floor:5,  location:"Dhanmondi, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80", featured:false, tags:["Semi-Furnished","Lake View"],      petFriendly:true,  flatmate:true,  utilities:["Water","Gas"],                inspSlots:["Sat 31 May — 9:00 AM","Sat 31 May — 1:00 PM"],                        agent:"Lake View Homes", phone:"01711-678901", age:2, views:88,  saves:14, ownerId:"owner1" },
-  { id:6,  title:"Sea-View Flat, Panchlaish CDA",      type:"apartment",  status:"for-rent", price:25000,  area:1100, beds:2, baths:2, cars:1, floor:8,  location:"Panchlaish, Chittagong",   division:"Chittagong", img:"https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=600&q=80", featured:true,  tags:["Sea View","Semi-Furnished","AC"],  petFriendly:false, flatmate:false, utilities:["AC","Water","Gas"],            inspSlots:["Fri 30 May — 3:00 PM","Sat 31 May — 10:00 AM"],                       agent:"Port City Homes", phone:"01511-789012", age:1, views:134, saves:28, ownerId:"owner2" },
-  { id:7,  title:"Budget Room in Mirpur 10",           type:"room",       status:"for-rent", price:7000,   area:200,  beds:1, baths:1, cars:0, floor:2,  location:"Mirpur 10, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80", featured:false, tags:["Attached Bath","WiFi"],            petFriendly:false, flatmate:true,  utilities:["WiFi","Water"],               inspSlots:["Any day — Call to arrange"],                                           agent:"Mirpur Rentals", phone:"01811-890123", age:1, views:55,  saves:6,  ownerId:"owner2" },
-  { id:8,  title:"Luxury Penthouse, Baridhara",        type:"apartment",  status:"for-rent", price:120000, area:4200, beds:5, baths:4, cars:2, floor:18, location:"Baridhara, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80", featured:true,  tags:["Fully Furnished","Pool","Gym"],    petFriendly:true,  flatmate:false, utilities:["AC","Pool","Gym","Generator"], inspSlots:["By appointment — Call agent"],                                          agent:"Luxury Lets BD", phone:"01711-901234", age:4, views:309, saves:47, ownerId:"owner1" },
-  { id:9,  title:"Luxury Apartment for Sale, Gulshan", type:"apartment",  status:"for-sale", price:12500000,area:2200,beds:4, baths:3, cars:1, floor:10, location:"Gulshan 2, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80", featured:true,  tags:["Ready","Corner","Lift"],           petFriendly:false, flatmate:false, utilities:[],                             inspSlots:["By appointment — Call agent"],                                          agent:"Rahim Properties", phone:"01711-234567", age:2, views:189, saves:35, ownerId:"owner2" },
-  { id:10, title:"RAJUK Plot – Purbachal New Town",    type:"land",       status:"for-sale", price:8500000, area:2178,beds:0, baths:0, cars:0, floor:0,  location:"Purbachal New Town, Dhaka", division:"Dhaka",      img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80", featured:false, tags:["RAJUK Approved","Corner Plot"],   petFriendly:false, flatmate:false, utilities:[],                             inspSlots:["Sat 31 May — 9:00 AM","Sun 1 Jun — 9:00 AM"],                          agent:"Plot BD", phone:"01611-567890", age:12, views:76, saves:11, ownerId:"owner1" },
+  { id:1,  title:"Spacious 3-Bed in Bashundhara R/A", titleBn:"বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড",  type:"apartment",  status:"for-rent", price:32000,  area:1450, beds:3, baths:2, cars:1, floor:7,  location:"Bashundhara R/A, Dhaka",   division:"Dhaka",      img:"", featured:true,  tags:["Semi-Furnished","Gas","Generator"], petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"], inspSlots:["Fri 30 May — 10:00 AM","Fri 30 May — 2:00 PM","Sat 31 May — 11:00 AM"], agent:"Rahim & Sons", phone:"01711-234567", age:1, views:142, saves:23, ownerId:"owner1" },
+  { id:2,  title:"Modern Studio near Gulshan 1", titleBn:"গুলশান ১-এর কাছে আধুনিক স্টুডিও",        type:"apartment",  status:"for-rent", price:18000,  area:480,  beds:1, baths:1, cars:0, floor:4,  location:"Gulshan 1, Dhaka",         division:"Dhaka",      img:"", featured:true,  tags:["Furnished","WiFi","AC"],           petFriendly:true,  flatmate:true,  utilities:["WiFi","Water","AC"],          inspSlots:["Sat 31 May — 10:00 AM","Sun 1 Jun — 10:00 AM"],                       agent:"Home Finders BD", phone:"01811-345678", age:2, views:98,  saves:17, ownerId:"owner1" },
+  { id:3,  title:"Family Flat in Uttara Sector 6", titleBn:"উত্তরা সেক্টর ৬-এ ফ্যামিলি ফ্ল্যাট",      type:"apartment",  status:"for-rent", price:22000,  area:1200, beds:3, baths:2, cars:0, floor:3,  location:"Uttara Sector 6, Dhaka",   division:"Dhaka",      img:"", featured:false, tags:["Unfurnished","Generator"],         petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"],    inspSlots:["Sun 1 Jun — 11:00 AM","Mon 2 Jun — 4:00 PM"],                         agent:"Trust Realty", phone:"01911-456789", age:5, views:67,  saves:9,  ownerId:"owner2" },
+  { id:4,  title:"Office Space – Full Floor, Banani", titleBn:"বনানীতে অফিস স্পেস – পূর্ণ ফ্লোর",   type:"commercial", status:"for-rent", price:150000, area:6000, beds:0, baths:4, cars:5, floor:12, location:"Banani, Dhaka",             division:"Dhaka",      img:"", featured:true,  tags:["Full Floor","24/7 Gen","Lift"],    petFriendly:false, flatmate:false, utilities:["Generator","Lift"],            inspSlots:["Mon 2 Jun — 10:00 AM","Tue 3 Jun — 10:00 AM"],                        agent:"Corporate BD", phone:"01611-567890", age:3, views:211, saves:31, ownerId:"owner2" },
+  { id:5,  title:"Cozy 2-Bed near Dhanmondi Lake", titleBn:"ধানমন্ডি লেকের কাছে আরামদায়ক ২ বেড",     type:"apartment",  status:"for-rent", price:28000,  area:950,  beds:2, baths:1, cars:0, floor:5,  location:"Dhanmondi, Dhaka",          division:"Dhaka",      img:"", featured:false, tags:["Semi-Furnished","Lake View"],      petFriendly:true,  flatmate:true,  utilities:["Water","Gas"],                inspSlots:["Sat 31 May — 9:00 AM","Sat 31 May — 1:00 PM"],                        agent:"Lake View Homes", phone:"01711-678901", age:2, views:88,  saves:14, ownerId:"owner1" },
+  { id:6,  title:"Flat, Panchlaish CDA", titleBn:"পাঁচলাইশ সিডিএ-তে ফ্ল্যাট",      type:"apartment",  status:"for-rent", price:25000,  area:1100, beds:2, baths:2, cars:1, floor:8,  location:"Panchlaish, Chittagong",   division:"Chittagong", img:"", featured:true,  tags:["Semi-Furnished","AC"],  petFriendly:false, flatmate:false, utilities:["AC","Water","Gas"],            inspSlots:["Fri 30 May — 3:00 PM","Sat 31 May — 10:00 AM"],                       agent:"Port City Homes", phone:"01511-789012", age:1, views:134, saves:28, ownerId:"owner2" },
+  { id:7,  title:"Budget Room in Mirpur 10", titleBn:"মিরপুর ১০-এ বাজেট রুম",           type:"room",       status:"for-rent", price:7000,   area:200,  beds:1, baths:1, cars:0, floor:2,  location:"Mirpur 10, Dhaka",          division:"Dhaka",      img:"", featured:false, tags:["Attached Bath","WiFi"],            petFriendly:false, flatmate:true,  utilities:["WiFi","Water"],               inspSlots:["Any day — Call to arrange"],                                           agent:"Mirpur Rentals", phone:"01811-890123", age:1, views:55,  saves:6,  ownerId:"owner2" },
+  { id:8,  title:"Luxury Penthouse, Baridhara", titleBn:"বারিধারায় লাক্সারি পেন্টহাউস",        type:"apartment",  status:"for-rent", price:120000, area:4200, beds:5, baths:4, cars:2, floor:18, location:"Baridhara, Dhaka",          division:"Dhaka",      img:"", featured:true,  tags:["Fully Furnished","Pool","Gym"],    petFriendly:true,  flatmate:false, utilities:["AC","Pool","Gym","Generator"], inspSlots:["By appointment — Call agent"],                                          agent:"Luxury Lets BD", phone:"01711-901234", age:4, views:309, saves:47, ownerId:"owner1" },
+  { id:9,  title:"Luxury Apartment for Sale, Gulshan", titleBn:"গুলশানে বিক্রয়ের জন্য লাক্সারি অ্যাপার্টমেন্ট", type:"apartment",  status:"for-sale", price:12500000,area:2200,beds:4, baths:3, cars:1, floor:10, location:"Gulshan 2, Dhaka",          division:"Dhaka",      img:"", featured:true,  tags:["Ready","Corner","Lift"],           petFriendly:false, flatmate:false, utilities:[],                             inspSlots:["By appointment — Call agent"],                                          agent:"Rahim Properties", phone:"01711-234567", age:2, views:189, saves:35, ownerId:"owner2" },
+  { id:10, title:"RAJUK Plot – Purbachal New Town", titleBn:"রাজউক প্লট – পূর্বাচল নিউ টাউন",    type:"land",       status:"for-sale", price:8500000, area:2178,beds:0, baths:0, cars:0, floor:0,  location:"Purbachal New Town, Dhaka", division:"Dhaka",      img:"", featured:false, tags:["RAJUK Approved","Corner Plot"],   petFriendly:false, flatmate:false, utilities:[],                             inspSlots:["Sat 31 May — 9:00 AM","Sun 1 Jun — 9:00 AM"],                          agent:"Plot BD", phone:"01611-567890", age:12, views:76, saves:11, ownerId:"owner1" },
 ];
 
 const DIVISIONS_EN = ["All Divisions","Dhaka","Chittagong","Sylhet","Rajshahi","Khulna","Barishal","Rangpur","Mymensingh"];
@@ -1178,14 +1183,20 @@ const QUICK_FILTERS_BN = [
   {label:"🏋 জিম/পুল",key:"gym"},{label:"📶 ওয়াইফাই",key:"wifi"},
 ];
 
+/* Convert Western digits to Bengali numerals */
+function toBn(str){
+  const map={"0":"০","1":"১","2":"২","3":"৩","4":"৪","5":"৫","6":"৬","7":"৭","8":"৮","9":"৯"};
+  return String(str).replace(/[0-9]/g,d=>map[d]);
+}
 function fmtPrice(price,status,lang="en"){
   const perMonth = lang==="bn" ? "/মাস" : "/mo";
   const crore = lang==="bn" ? "কোটি" : "Cr";
   const lac = lang==="bn" ? "লাখ" : "Lac";
-  if(status==="for-rent") return {main:`৳${price.toLocaleString("en-BD")}`,sub:perMonth};
-  if(price>=10000000) return {main:`৳${(price/10000000).toFixed(2)} ${crore}`,sub:""};
-  if(price>=100000) return {main:`৳${(price/100000).toFixed(1)} ${lac}`,sub:""};
-  return {main:`৳${price.toLocaleString("en-BD")}`,sub:""};
+  const bn = v => lang==="bn" ? toBn(v) : v;
+  if(status==="for-rent") return {main:`৳${bn(price.toLocaleString("en-BD"))}`,sub:perMonth};
+  if(price>=10000000) return {main:`৳${bn((price/10000000).toFixed(2))} ${crore}`,sub:""};
+  if(price>=100000) return {main:`৳${bn((price/100000).toFixed(1))} ${lac}`,sub:""};
+  return {main:`৳${bn(price.toLocaleString("en-BD"))}`,sub:""};
 }
 function affordBadge(price,lang="en"){
   if(lang==="bn"){
@@ -1398,7 +1409,11 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
 }
 
 /* ── ANALYTICS TAB COMPONENT ──────────────────── */
-function AnalyticsTab({myProps}){
+function AnalyticsTab({myProps, lang="en"}){
+  const isBn = lang==="bn";
+  const t = (en,bn)=>isBn?bn:en;
+  const bn = v => isBn?toBn(v):v;
+  const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
   const stats = Analytics.getStats();
   const maxViews = Math.max(...stats.days.map(d=>d.views), 1);
   const maxSearches = Math.max(...stats.days.map(d=>d.searches), 1);
@@ -1409,10 +1424,10 @@ function AnalyticsTab({myProps}){
       {/* KPI Cards */}
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
         {[
-          {icon:"👁",val:stats.totalViews||0,label:"Total Views",sub:"All properties",c:T.red,bg:T.redL},
-          {icon:"❤️",val:stats.totalSaves||0,label:"Saved",sub:"Wishlisted",c:"#e11d48",bg:"#fff1f2"},
-          {icon:"✉️",val:stats.totalEnquiries||0,label:"Enquiries",sub:"Messages sent",c:T.green,bg:T.greenL},
-          {icon:"📊",val:`${convRate}%`,label:"Conversion",sub:"Views → Enquiry",c:"#7c3aed",bg:"#f5f3ff"},
+          {icon:"👁",val:bn(stats.totalViews||0),label:t("Total Views","মোট ভিউ"),sub:t("All properties","সব সম্পত্তি"),c:T.red,bg:T.redL},
+          {icon:"❤️",val:bn(stats.totalSaves||0),label:t("Saved","সেভ করা"),sub:t("Wishlisted","উইশলিস্টে"),c:"#e11d48",bg:"#fff1f2"},
+          {icon:"✉️",val:bn(stats.totalEnquiries||0),label:t("Enquiries","জিজ্ঞাসা"),sub:t("Messages sent","বার্তা পাঠানো"),c:T.green,bg:T.greenL},
+          {icon:"📊",val:`${bn(convRate)}%`,label:t("Conversion","রূপান্তর"),sub:t("Views → Enquiry","ভিউ → জিজ্ঞাসা"),c:"#7c3aed",bg:"#f5f3ff"},
         ].map(({icon,val,label,sub,c,bg})=>(
           <div key={label} style={{background:bg,borderRadius:12,padding:"14px 12px",textAlign:"center",border:`1px solid ${c}22`}}>
             <div style={{fontSize:22}}>{icon}</div>
@@ -1425,12 +1440,12 @@ function AnalyticsTab({myProps}){
 
       {/* Today snapshot */}
       <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"12px 14px"}}>
-        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>⚡ Today's Activity</div>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>⚡ {t("Today's Activity","আজকের কার্যকলাপ")}</div>
         <div style={{display:"flex",gap:12}}>
           {[
-            {icon:"👁",val:stats.todayViews,label:"Views today",c:T.red},
-            {icon:"🔍",val:stats.todaySearches,label:"Searches today",c:T.green},
-            {icon:"📅",val:stats.days[6]?stats.days[6].enquiries:0,label:"Enquiries today",c:"#7c3aed"},
+            {icon:"👁",val:bn(stats.todayViews),label:t("Views today","আজকের ভিউ"),c:T.red},
+            {icon:"🔍",val:bn(stats.todaySearches),label:t("Searches today","আজকের সার্চ"),c:T.green},
+            {icon:"📅",val:bn(stats.days[6]?stats.days[6].enquiries:0),label:t("Enquiries today","আজকের জিজ্ঞাসা"),c:"#7c3aed"},
           ].map(({icon,val,label,c})=>(
             <div key={label} style={{flex:1,textAlign:"center",background:T.bg,borderRadius:10,padding:"10px 4px"}}>
               <div style={{fontSize:18}}>{icon}</div>
@@ -1443,7 +1458,7 @@ function AnalyticsTab({myProps}){
 
       {/* 7-day Views Bar Chart */}
       <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
-        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>📈 Views — Last 7 Days</div>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>📈 {t("Views — Last 7 Days","ভিউ — গত ৭ দিন")}</div>
         <div style={{display:"flex",alignItems:"flex-end",gap:6,height:80}}>
           {stats.days.map((d,i)=>(
             <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
@@ -1463,7 +1478,7 @@ function AnalyticsTab({myProps}){
 
       {/* 7-day Searches Bar Chart */}
       <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
-        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>🔍 Searches — Last 7 Days</div>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>🔍 {t("Searches — Last 7 Days","সার্চ — গত ৭ দিন")}</div>
         <div style={{display:"flex",alignItems:"flex-end",gap:6,height:80}}>
           {stats.days.map((d,i)=>(
             <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
@@ -1484,7 +1499,7 @@ function AnalyticsTab({myProps}){
       {/* Top Search Terms */}
       {stats.topSearches.length>0 && (
         <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
-          <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>🔥 Top Search Terms</div>
+          <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>🔥 {t("Top Search Terms","শীর্ষ সার্চ শব্দ")}</div>
           {stats.topSearches.map((s,i)=>{
             const pct = Math.round((s.count/stats.topSearches[0].count)*100);
             const barColor = i===0?T.red:i===1?"#f59e0b":i===2?"#10b981":T.muted;
@@ -1495,7 +1510,7 @@ function AnalyticsTab({myProps}){
                   <span style={{fontSize:12,fontWeight:700,color:T.text,textTransform:"capitalize"}}>
                     {medal} {s.query}
                   </span>
-                  <span style={{fontSize:11,color:T.muted,fontWeight:600}}>{s.count}×</span>
+                  <span style={{fontSize:11,color:T.muted,fontWeight:600}}>{bn(s.count)}×</span>
                 </div>
                 <div style={{height:5,background:"#f0f0f0",borderRadius:10}}>
                   <div style={{height:5,background:barColor,borderRadius:10,width:pct+"%"}}/>
@@ -1507,30 +1522,30 @@ function AnalyticsTab({myProps}){
       )}
 
       {/* Per Property Breakdown */}
-      <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:4}}>🏠 Per Property Performance</div>
+      <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:4}}>🏠 {t("Per Property Performance","প্রতি সম্পত্তির পারফরম্যান্স")}</div>
       {myProps.map(p=>{
         const ps = Analytics.getPropStats(p.id);
         const total = ps.views + p.views;
         const saves = ps.saves + p.saves;
         const saveRate = total>0 ? Math.round((saves/total)*100) : 0;
-        const pr = fmtPrice(p.price, p.status);
+        const pr = fmtPrice(p.price, p.status, lang);
         const saveBarW = Math.min(saveRate*3,100)+"%";
         return (
           <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:13,overflow:"hidden",marginBottom:4}}>
             <div style={{display:"flex"}}>
-              <img src={p.img} alt={p.title} style={{width:80,height:70,objectFit:"cover",flexShrink:0}}/>
+              <img src={p.img||PHOTO_PLACEHOLDER} alt={pname(p)} style={{width:80,height:70,objectFit:"cover",flexShrink:0}}/>
               <div style={{padding:"8px 12px",flex:1}}>
-                <div style={{fontSize:12,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:1}}>{p.title}</div>
+                <div style={{fontSize:12,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:1}}>{pname(p)}</div>
                 <div style={{fontSize:13,fontWeight:900,color:T.red}}>{pr.main}<span style={{fontSize:10,color:T.muted}}>{pr.sub}</span></div>
               </div>
             </div>
             <div style={{padding:"10px 12px",borderTop:`1px solid ${T.border}`,background:"#fafafa"}}>
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:8}}>
                 {[
-                  {icon:"👁",val:total,label:"Views",c:T.red},
-                  {icon:"❤️",val:saves,label:"Saves",c:"#e11d48"},
-                  {icon:"✉️",val:ps.enquiries,label:"Enquiries",c:T.green},
-                  {icon:"📅",val:ps.inspections,label:"Booked",c:"#7c3aed"},
+                  {icon:"👁",val:bn(total),label:t("Views","ভিউ"),c:T.red},
+                  {icon:"❤️",val:bn(saves),label:t("Saves","সেভ"),c:"#e11d48"},
+                  {icon:"✉️",val:bn(ps.enquiries),label:t("Enquiries","জিজ্ঞাসা"),c:T.green},
+                  {icon:"📅",val:bn(ps.inspections),label:t("Booked","বুকড"),c:"#7c3aed"},
                 ].map(({icon,val,label,c})=>(
                   <div key={label} style={{textAlign:"center",background:"#fff",borderRadius:8,padding:"6px 4px",border:`1px solid ${T.border}`}}>
                     <div style={{fontSize:14}}>{icon}</div>
@@ -1540,11 +1555,11 @@ function AnalyticsTab({myProps}){
                 ))}
               </div>
               <div style={{display:"flex",alignItems:"center",gap:8}}>
-                <div style={{fontSize:10,color:T.muted,whiteSpace:"nowrap"}}>Save rate</div>
+                <div style={{fontSize:10,color:T.muted,whiteSpace:"nowrap"}}>{t("Save rate","সেভ রেট")}</div>
                 <div style={{flex:1,height:5,background:"#f0f0f0",borderRadius:10}}>
                   <div style={{height:5,background:saveRate>10?T.green:"#f59e0b",borderRadius:10,width:saveBarW}}/>
                 </div>
-                <div style={{fontSize:10,fontWeight:700,color:T.text}}>{saveRate}%</div>
+                <div style={{fontSize:10,fontWeight:700,color:T.text}}>{bn(saveRate)}%</div>
               </div>
             </div>
           </div>
@@ -1554,8 +1569,8 @@ function AnalyticsTab({myProps}){
       {/* Tip */}
       <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:11,padding:"11px 13px",fontSize:11,color:T.green,fontWeight:600}}>
         {stats.totalViews===0
-          ? "💡 No data yet — analytics will appear as tenants view, save and enquire about properties."
-          : "💡 Analytics update in real time as tenants view, save and enquire about your properties."}
+          ? t("💡 No data yet — analytics will appear as tenants view, save and enquire about properties.","💡 এখনো কোনো ডেটা নেই — ভাড়াটিয়ারা সম্পত্তি দেখা, সেভ ও জিজ্ঞাসা করলে বিশ্লেষণ এখানে দেখা যাবে।")
+          : t("💡 Analytics update in real time as tenants view, save and enquire about your properties.","💡 ভাড়াটিয়ারা আপনার সম্পত্তি দেখা, সেভ ও জিজ্ঞাসা করার সাথে সাথে বিশ্লেষণ রিয়েল-টাইমে আপডেট হয়।")}
       </div>
 
     </div>
@@ -1563,26 +1578,29 @@ function AnalyticsTab({myProps}){
 }
 
 /* ── OWNER DASHBOARD ──────────────────────────── */
-function OwnerDashboard({user, onClose, onListProperty, savedProps}){
+function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L}){
   const isMobile = useIsMobile();
+  const isBn = lang==="bn";
+  const t = (en,bn)=>isBn?bn:en;
   const [tab, setTab] = useState("listings");
   const myProps = PROPERTIES.filter(p=>p.ownerId==="owner1");
+  const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
 
   const mockMessages = [
-    {id:1,from:"Karim Ahmed",phone:"01711-111111",property:"Spacious 3-Bed in Bashundhara R/A",subject:"Inspection request",body:"Hi, I'd like to visit this Saturday at 10am if possible.",date:"Today",read:false},
-    {id:2,from:"Fatima Begum",phone:"01811-222222",property:"Modern Studio near Gulshan 1",subject:"Question about rent",body:"Is the WiFi included? Also can I move in on 1st June?",date:"Yesterday",read:true},
-    {id:3,from:"Rashed Khan",phone:"01911-333333",property:"Luxury Penthouse, Baridhara",subject:"Interested in long lease",body:"Looking for 2-year lease. Can we discuss terms?",date:"2 days ago",read:false},
+    {id:1,from:t("Karim Ahmed","করিম আহমেদ"),phone:"01711-111111",property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),subject:t("Inspection request","পরিদর্শনের অনুরোধ"),body:t("Hi, I'd like to visit this Saturday at 10am if possible.","আসসালামু আলাইকুম, সম্ভব হলে আমি এই শনিবার সকাল ১০টায় দেখতে চাই।"),date:t("Today","আজ"),read:false},
+    {id:2,from:t("Fatima Begum","ফাতিমা বেগম"),phone:"01811-222222",property:t("Modern Studio near Gulshan 1","গুলশান ১-এর কাছে আধুনিক স্টুডিও"),subject:t("Question about rent","ভাড়া সম্পর্কে প্রশ্ন"),body:t("Is the WiFi included? Also can I move in on 1st June?","ওয়াইফাই কি অন্তর্ভুক্ত? আমি কি ১লা জুন উঠতে পারব?"),date:t("Yesterday","গতকাল"),read:true},
+    {id:3,from:t("Rashed Khan","রাশেদ খান"),phone:"01911-333333",property:t("Luxury Penthouse, Baridhara","বারিধারায় লাক্সারি পেন্টহাউস"),subject:t("Interested in long lease","দীর্ঘমেয়াদী লিজে আগ্রহী"),body:t("Looking for 2-year lease. Can we discuss terms?","২ বছরের লিজ খুঁজছি। আমরা কি শর্তগুলো নিয়ে আলোচনা করতে পারি?"),date:t("2 days ago","২ দিন আগে"),read:false},
   ];
   const mockBookings = [
-    {id:1,tenant:"Karim Ahmed",phone:"01711-111111",property:"Spacious 3-Bed in Bashundhara R/A",slot:"Sat 31 May — 10:00 AM",status:"pending"},
-    {id:2,tenant:"Nusrat Jahan",phone:"01611-444444",property:"Luxury Penthouse, Baridhara",slot:"By appointment",status:"confirmed"},
+    {id:1,tenant:t("Karim Ahmed","করিম আহমেদ"),phone:"01711-111111",property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),slot:t("Sat 31 May — 10:00 AM","শনি ৩১ মে — সকাল ১০:০০"),status:"pending"},
+    {id:2,tenant:t("Nusrat Jahan","নুসরাত জাহান"),phone:"01611-444444",property:t("Luxury Penthouse, Baridhara","বারিধারায় লাক্সারি পেন্টহাউস"),slot:t("By appointment","অ্যাপয়েন্টমেন্টে"),status:"confirmed"},
   ];
 
   const totalViews = myProps.reduce((a,p)=>a+p.views,0);
   const totalSaves = myProps.reduce((a,p)=>a+p.saves,0);
   const unreadMsgs = mockMessages.filter(m=>!m.read).length;
 
-  const tabs = [["listings","🏠 My Listings"],["messages","✉️ Messages"+(unreadMsgs>0?` (${unreadMsgs})`:"")],["bookings","📅 Inspections"],["analytics","📊 Analytics"]];
+  const tabs = [["listings",t("🏠 My Listings","🏠 আমার তালিকা")],["messages",t("✉️ Messages","✉️ বার্তা")+(unreadMsgs>0?` (${isBn?toBn(unreadMsgs):unreadMsgs})`:"")],["bookings",t("📅 Inspections","📅 পরিদর্শন")],["analytics",t("📊 Analytics","📊 বিশ্লেষণ")]];
 
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:4000,display:"flex",alignItems:"flex-start",justifyContent:"flex-end",padding:0}}>
@@ -1593,23 +1611,23 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
               <div style={{width:46,height:46,background:"rgba(255,255,255,0.2)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:900,fontSize:20}}>{user.avatar}</div>
               <div>
                 <div style={{color:"#fff",fontWeight:800,fontSize:16}}>{user.name}</div>
-                <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · 🏠 Owner</div>
+                <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · 🏠 {t("Owner","মালিক")}</div>
               </div>
             </div>
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-            {[[myProps.length,"Listings","🏠"],[totalViews,"Views","👁"],[totalSaves,"Saved","❤️"],[unreadMsgs,"New Msgs","✉️"]].map(([val,label,icon])=>(
+            {[[myProps.length,t("Listings","তালিকা"),"🏠"],[totalViews,t("Views","ভিউ"),"👁"],[totalSaves,t("Saved","সেভ"),"❤️"],[unreadMsgs,t("New Msgs","নতুন বার্তা"),"✉️"]].map(([val,label,icon])=>(
               <div key={label} style={{background:"rgba(255,255,255,0.12)",borderRadius:10,padding:"10px 8px",textAlign:"center"}}>
                 <div style={{fontSize:20}}>{icon}</div>
-                <div style={{color:"#fff",fontWeight:900,fontSize:18,lineHeight:1}}>{val}</div>
+                <div style={{color:"#fff",fontWeight:900,fontSize:18,lineHeight:1}}>{isBn?toBn(val):val}</div>
                 <div style={{color:"rgba(255,255,255,0.7)",fontSize:10,marginTop:2}}>{label}</div>
               </div>
             ))}
           </div>
         </div>
         <button onClick={onListProperty} style={{margin:"14px 16px 0",background:T.gold,color:"#1a2e22",border:"none",padding:"11px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-          ➕ Add New Property Listing
+          ➕ {t("Add New Property Listing","নতুন সম্পত্তি তালিকা যোগ করুন")}
         </button>
         <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,margin:"14px 0 0",flexShrink:0,overflowX:"auto"}}>
           {tabs.map(([val,label])=>(
@@ -1622,21 +1640,21 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
           {tab==="listings" && (
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {myProps.map(p=>{
-                const pr=fmtPrice(p.price,p.status);
+                const pr=fmtPrice(p.price,p.status,lang);
                 return (
                   <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:13,overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
                     <div style={{display:"flex",gap:0}}>
-                      <img src={p.img} alt={p.title} style={{width:100,height:90,objectFit:"cover",flexShrink:0}}/>
+                      <img src={p.img||PHOTO_PLACEHOLDER} alt={pname(p)} style={{width:100,height:90,objectFit:"cover",flexShrink:0}}/>
                       <div style={{padding:"10px 12px",flex:1}}>
-                        <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:2,lineHeight:1.3}}>{p.title}</div>
+                        <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:2,lineHeight:1.3}}>{pname(p)}</div>
                         <div style={{fontSize:14,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{pr.main}<span style={{fontSize:11,color:T.muted}}>{pr.sub}</span></div>
                         <div style={{fontSize:11,color:T.muted,marginTop:3}}>📍 {p.location}</div>
                       </div>
                     </div>
                     <div style={{borderTop:`1px solid ${T.border}`,padding:"8px 12px",display:"flex",gap:16,background:"#fafafa"}}>
-                      <span style={{fontSize:11,color:T.muted}}>👁 <strong style={{color:T.text}}>{p.views}</strong> views</span>
-                      <span style={{fontSize:11,color:T.muted}}>❤️ <strong style={{color:T.red}}>{p.saves}</strong> saves</span>
-                      <span style={{fontSize:11,color:T.muted}}>📅 <strong style={{color:T.green}}>{p.inspSlots.length}</strong> {lang==="bn"?"টি পরিদর্শন সময়":"inspect slots"}</span>
+                      <span style={{fontSize:11,color:T.muted}}>👁 <strong style={{color:T.text}}>{isBn?toBn(p.views):p.views}</strong> {t("views","ভিউ")}</span>
+                      <span style={{fontSize:11,color:T.muted}}>❤️ <strong style={{color:T.red}}>{isBn?toBn(p.saves):p.saves}</strong> {t("saves","সেভ")}</span>
+                      <span style={{fontSize:11,color:T.muted}}>📅 <strong style={{color:T.green}}>{isBn?toBn(p.inspSlots.length):p.inspSlots.length}</strong> {t("inspect slots","টি পরিদর্শন সময়")}</span>
                       <span style={{marginLeft:"auto",fontSize:10,background:p.status==="for-rent"?T.greenL:T.redL,color:p.status==="for-rent"?T.green:T.red,padding:"2px 8px",borderRadius:8,fontWeight:700}}>{p.status==="for-rent"?L.forRent:L.forSale}</span>
                     </div>
                   </div>
@@ -1658,15 +1676,15 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
                     </div>
                     <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
                       <span style={{fontSize:10,color:T.muted}}>{m.date}</span>
-                      {!m.read && <span style={{background:T.green,color:"#fff",fontSize:9,padding:"1px 6px",borderRadius:8,fontWeight:700}}>NEW</span>}
+                      {!m.read && <span style={{background:T.green,color:"#fff",fontSize:9,padding:"1px 6px",borderRadius:8,fontWeight:700}}>{t("NEW","নতুন")}</span>}
                     </div>
                   </div>
-                  <div style={{fontSize:11,color:T.green,fontWeight:600,marginBottom:3}}>Re: {m.property}</div>
+                  <div style={{fontSize:11,color:T.green,fontWeight:600,marginBottom:3}}>{t("Re:","বিষয়:")} {m.property}</div>
                   <div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:3}}>{m.subject}</div>
                   <div style={{fontSize:12,color:T.muted,lineHeight:1.5}}>{m.body}</div>
                   <div style={{display:"flex",gap:8,marginTop:10}}>
-                    <button style={{flex:1,background:T.green,color:"#fff",border:"none",padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>📞 Call Back</button>
-                    <button style={{flex:1,background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✉️ Reply</button>
+                    <button style={{flex:1,background:T.green,color:"#fff",border:"none",padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>📞 {t("Call Back","কল ব্যাক")}</button>
+                    <button style={{flex:1,background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✉️ {t("Reply","উত্তর")}</button>
                   </div>
                 </div>
               ))}
@@ -1682,22 +1700,22 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
                       <div style={{fontSize:12,color:T.muted}}>{b.phone}</div>
                     </div>
                     <span style={{background:b.status==="confirmed"?T.greenL:T.redL,color:b.status==="confirmed"?T.green:T.red,fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20,border:`1px solid ${b.status==="confirmed"?T.greenM:T.redM}`}}>
-                      {b.status==="confirmed"?"✅ Confirmed":"⏳ Pending"}
+                      {b.status==="confirmed"?t("✅ Confirmed","✅ নিশ্চিত"):t("⏳ Pending","⏳ অপেক্ষমাণ")}
                     </span>
                   </div>
                   <div style={{fontSize:12,color:T.green,fontWeight:600,marginBottom:4}}>🏠 {b.property}</div>
                   <div style={{fontSize:12,color:T.muted}}>📅 {b.slot}</div>
                   {b.status==="pending" && (
                     <div style={{display:"flex",gap:8,marginTop:10}}>
-                      <button style={{flex:1,background:T.green,color:"#fff",border:"none",padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✅ Confirm</button>
-                      <button style={{flex:1,background:T.redL,color:T.red,border:`1px solid ${T.redM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✕ Decline</button>
+                      <button style={{flex:1,background:T.green,color:"#fff",border:"none",padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✅ {t("Confirm","নিশ্চিত করুন")}</button>
+                      <button style={{flex:1,background:T.redL,color:T.red,border:`1px solid ${T.redM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✕ {t("Decline","প্রত্যাখ্যান")}</button>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           )}
-          {tab==="analytics" && <AnalyticsTab myProps={myProps}/>}
+          {tab==="analytics" && <AnalyticsTab myProps={myProps} lang={lang}/>}
         </div>
       </div>
     </div>
@@ -1705,18 +1723,21 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps}){
 }
 
 /* ── TENANT DASHBOARD ─────────────────────────── */
-function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
+function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory, lang="en", L}){
   const isMobile = useIsMobile();
+  const isBn = lang==="bn";
+  const t = (en,bn)=>isBn?bn:en;
+  const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
   const [tab, setTab] = useState("saved");
   const saved = PROPERTIES.filter(p=>savedIds.includes(p.id));
 
   const mockBookings = [
-    {id:1,property:"Spacious 3-Bed in Bashundhara R/A",slot:"Sat 31 May — 10:00 AM",status:"confirmed",agent:"Rahim & Sons",phone:"01711-234567"},
-    {id:2,property:"Modern Studio near Gulshan 1",slot:"Sun 1 Jun — 10:00 AM",status:"pending",agent:"Home Finders BD",phone:"01811-345678"},
+    {id:1,property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),slot:t("Sat 31 May — 10:00 AM","শনি ৩১ মে — সকাল ১০:০০"),status:"confirmed",agent:t("Rahim & Sons","রহিম অ্যান্ড সন্স"),phone:"01711-234567"},
+    {id:2,property:t("Modern Studio near Gulshan 1","গুলশান ১-এর কাছে আধুনিক স্টুডিও"),slot:t("Sun 1 Jun — 10:00 AM","রবি ১ জুন — সকাল ১০:০০"),status:"pending",agent:t("Home Finders BD","হোম ফাইন্ডার্স বিডি"),phone:"01811-345678"},
   ];
   const mockMessages = [
-    {id:1,to:"Rahim & Sons",property:"Spacious 3-Bed in Bashundhara R/A",subject:"Inspection request",date:"Today",status:"replied"},
-    {id:2,to:"Home Finders BD",property:"Modern Studio near Gulshan 1",subject:"Question about rent",date:"Yesterday",status:"sent"},
+    {id:1,to:t("Rahim & Sons","রহিম অ্যান্ড সন্স"),property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),subject:t("Inspection request","পরিদর্শনের অনুরোধ"),date:t("Today","আজ"),status:"replied"},
+    {id:2,to:t("Home Finders BD","হোম ফাইন্ডার্স বিডি"),property:t("Modern Studio near Gulshan 1","গুলশান ১-এর কাছে আধুনিক স্টুডিও"),subject:t("Question about rent","ভাড়া সম্পর্কে প্রশ্ন"),date:t("Yesterday","গতকাল"),status:"sent"},
   ];
 
   const savedTypes   = [...new Set(saved.map(p=>p.type))];
@@ -1737,23 +1758,23 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               <div style={{width:46,height:46,background:"rgba(255,255,255,0.2)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:900,fontSize:20}}>{user.avatar}</div>
               <div>
                 <div style={{color:"#fff",fontWeight:800,fontSize:16}}>{user.name}</div>
-                <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · 🔍 Tenant</div>
+                <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · 🔍 {t("Tenant","ভাড়াটিয়া")}</div>
               </div>
             </div>
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-            {[[saved.length,"Saved","❤️"],[mockBookings.length,"Bookings","📅"],[mockMessages.length,"Messages","✉️"],[suggestions.length,"Suggestions","✨"]].map(([val,label,icon])=>(
+            {[[saved.length,t("Saved","সেভ"),"❤️"],[mockBookings.length,t("Bookings","বুকিং"),"📅"],[mockMessages.length,t("Messages","বার্তা"),"✉️"],[suggestions.length,t("Suggestions","পরামর্শ"),"✨"]].map(([val,label,icon])=>(
               <div key={label} style={{background:"rgba(255,255,255,0.12)",borderRadius:10,padding:"10px 8px",textAlign:"center"}}>
                 <div style={{fontSize:20}}>{icon}</div>
-                <div style={{color:"#fff",fontWeight:900,fontSize:18,lineHeight:1}}>{val}</div>
+                <div style={{color:"#fff",fontWeight:900,fontSize:18,lineHeight:1}}>{isBn?toBn(val):val}</div>
                 <div style={{color:"rgba(255,255,255,0.7)",fontSize:10,marginTop:2}}>{label}</div>
               </div>
             ))}
           </div>
         </div>
         <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,flexShrink:0,overflowX:"auto"}}>
-          {[["saved","❤️ Saved"],["bookings","📅 Bookings"],["messages","✉️ Messages"],["suggestions","✨ For You"],["history","🕓 History"]].map(([val,label])=>(
+          {[["saved",t("❤️ Saved","❤️ সেভ")],["bookings",t("📅 Bookings","📅 বুকিং")],["messages",t("✉️ Messages","✉️ বার্তা")],["suggestions",t("✨ For You","✨ আপনার জন্য")],["history",t("🕓 History","🕓 ইতিহাস")]].map(([val,label])=>(
             <button key={val} onClick={()=>setTab(val)} style={{padding:"9px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:11,whiteSpace:"nowrap",color:tab===val?T.red:T.muted,borderBottom:tab===val?`2.5px solid ${T.red}`:"2.5px solid transparent",marginBottom:-2}}>
               {label}
             </button>
@@ -1765,16 +1786,16 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               {saved.length===0 ? (
                 <div style={{textAlign:"center",padding:"40px 0",color:T.muted}}>
                   <div style={{fontSize:40,marginBottom:10}}>🤍</div>
-                  <div style={{fontWeight:700}}>No saved properties yet</div>
-                  <div style={{fontSize:12,marginTop:4}}>Tap the heart on any property to save it</div>
+                  <div style={{fontWeight:700}}>{t("No saved properties yet","এখনো কোনো সেভ করা সম্পত্তি নেই")}</div>
+                  <div style={{fontSize:12,marginTop:4}}>{t("Tap the heart on any property to save it","সেভ করতে যেকোনো সম্পত্তির হার্টে ট্যাপ করুন")}</div>
                 </div>
               ) : saved.map(p=>{
-                const pr=fmtPrice(p.price,p.status);
+                const pr=fmtPrice(p.price,p.status,lang);
                 return (
                   <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,overflow:"hidden",marginBottom:10,display:"flex",gap:0}}>
-                    <img src={p.img} alt={p.title} style={{width:90,height:80,objectFit:"cover",flexShrink:0}}/>
+                    <img src={p.img||PHOTO_PLACEHOLDER} alt={pname(p)} style={{width:90,height:80,objectFit:"cover",flexShrink:0}}/>
                     <div style={{padding:"10px 12px",flex:1}}>
-                      <div style={{fontSize:12,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:2}}>{p.title}</div>
+                      <div style={{fontSize:12,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:2}}>{pname(p)}</div>
                       <div style={{fontSize:14,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{pr.main}<span style={{fontSize:11,color:T.muted,fontWeight:500}}>{pr.sub}</span></div>
                       <div style={{fontSize:11,color:T.muted,marginTop:2}}>📍 {p.location}</div>
                     </div>
@@ -1791,12 +1812,12 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
                   <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
                     <span style={{fontWeight:700,fontSize:13,color:T.text}}>{b.property}</span>
                     <span style={{background:b.status==="confirmed"?T.greenL:T.redL,color:b.status==="confirmed"?T.green:T.red,fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:10}}>
-                      {b.status==="confirmed"?"✅ Confirmed":"⏳ Pending"}
+                      {b.status==="confirmed"?t("✅ Confirmed","✅ নিশ্চিত"):t("⏳ Pending","⏳ অপেক্ষমাণ")}
                     </span>
                   </div>
                   <div style={{fontSize:12,color:T.muted,marginBottom:3}}>📅 {b.slot}</div>
                   <div style={{fontSize:12,color:T.muted,marginBottom:10}}>🏢 {b.agent} · {b.phone}</div>
-                  <button style={{width:"100%",background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>📞 Call Agent</button>
+                  <button style={{width:"100%",background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>📞 {t("Call Agent","এজেন্টকে কল করুন")}</button>
                 </div>
               ))}
             </div>
@@ -1806,12 +1827,12 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               {mockMessages.map(m=>(
                 <div key={m.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"13px 14px"}}>
                   <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                    <div style={{fontWeight:700,fontSize:13,color:T.text}}>To: {m.to}</div>
+                    <div style={{fontWeight:700,fontSize:13,color:T.text}}>{t("To:","প্রাপক:")} {m.to}</div>
                     <span style={{background:m.status==="replied"?T.greenL:"#fff3e0",color:m.status==="replied"?T.green:"#e65100",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:10,border:`1px solid ${m.status==="replied"?T.greenM:"#ffcc80"}`}}>
-                      {m.status==="replied"?"💬 Replied":"📤 Sent"}
+                      {m.status==="replied"?t("💬 Replied","💬 উত্তর দেওয়া"):t("📤 Sent","📤 পাঠানো")}
                     </span>
                   </div>
-                  <div style={{fontSize:11,color:T.green,fontWeight:600,marginBottom:3}}>Re: {m.property}</div>
+                  <div style={{fontSize:11,color:T.green,fontWeight:600,marginBottom:3}}>{t("Re:","বিষয়:")} {m.property}</div>
                   <div style={{fontSize:12,color:T.muted,marginBottom:3}}>{m.subject}</div>
                   <div style={{fontSize:11,color:T.muted}}>{m.date}</div>
                 </div>
@@ -1821,25 +1842,25 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
           {tab==="suggestions" && (
             <div>
               <div style={{background:T.redL,border:`1px solid ${T.redM}`,borderRadius:12,padding:"12px 14px",marginBottom:14}}>
-                <div style={{fontWeight:800,fontSize:13,color:T.red,marginBottom:3}}>✨ Personalised For You</div>
-                <div style={{fontSize:12,color:T.muted}}>Based on your saved properties and search history, here are new listings that match your interests:</div>
+                <div style={{fontWeight:800,fontSize:13,color:T.red,marginBottom:3}}>✨ {t("Personalised For You","আপনার জন্য বিশেষায়িত")}</div>
+                <div style={{fontSize:12,color:T.muted}}>{t("Based on your saved properties and search history, here are new listings that match your interests:","আপনার সেভ করা সম্পত্তি ও সার্চ ইতিহাসের ভিত্তিতে, আপনার পছন্দের সাথে মানানসই নতুন তালিকা:")}</div>
               </div>
               {suggestions.length>0 ? suggestions.map(p=>{
-                const pr=fmtPrice(p.price,p.status);
-                const ab=affordBadge(p.price);
+                const pr=fmtPrice(p.price,p.status,lang);
+                const ab=affordBadge(p.price,lang);
                 return (
                   <div key={p.id} style={{background:"#fff",border:`1.5px solid ${T.redM}`,borderRadius:12,overflow:"hidden",marginBottom:10}}>
                     <div style={{position:"relative",height:140,overflow:"hidden"}}>
-                      <img src={p.img} alt={p.title} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                      <img src={p.img||PHOTO_PLACEHOLDER} alt={pname(p)} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
                       <div style={{position:"absolute",top:8,left:8}}>
-                        <span style={{background:T.red,color:"#fff",fontSize:10,fontWeight:800,padding:"2px 8px",borderRadius:12}}>✨ NEW MATCH</span>
+                        <span style={{background:T.red,color:"#fff",fontSize:10,fontWeight:800,padding:"2px 8px",borderRadius:12}}>✨ {t("NEW MATCH","নতুন ম্যাচ")}</span>
                       </div>
                       <div style={{position:"absolute",bottom:8,left:8}}>
                         <span style={{background:ab.bg,color:ab.c,fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:8}}>{ab.text}</span>
                       </div>
                     </div>
                     <div style={{padding:"10px 12px"}}>
-                      <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:2}}>{p.title}</div>
+                      <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:2}}>{pname(p)}</div>
                       <div style={{fontSize:16,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{pr.main}<span style={{fontSize:11,color:T.muted}}>{pr.sub}</span></div>
                       <div style={{fontSize:11,color:T.muted,marginTop:2}}>📍 {p.location}</div>
                     </div>
@@ -1848,29 +1869,29 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory}){
               }) : (
                 <div style={{textAlign:"center",padding:"30px 0",color:T.muted}}>
                   <div style={{fontSize:36,marginBottom:10}}>✨</div>
-                  <div style={{fontWeight:700}}>Save some properties first!</div>
-                  <div style={{fontSize:12,marginTop:4}}>We'll suggest similar listings based on your taste</div>
+                  <div style={{fontWeight:700}}>{t("Save some properties first!","প্রথমে কিছু সম্পত্তি সেভ করুন!")}</div>
+                  <div style={{fontSize:12,marginTop:4}}>{t("We'll suggest similar listings based on your taste","আপনার রুচি অনুযায়ী আমরা অনুরূপ তালিকা পরামর্শ দেব")}</div>
                 </div>
               )}
             </div>
           )}
           {tab==="history" && (
             <div>
-              <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:12}}>RECENT SEARCHES</div>
+              <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:12}}>{t("RECENT SEARCHES","সাম্প্রতিক সার্চ")}</div>
               {searchHistory.length>0 ? searchHistory.map((s,i)=>(
                 <div key={i} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:10,padding:"11px 14px",marginBottom:8,display:"flex",alignItems:"center",gap:10}}>
                   <span style={{fontSize:16,color:T.muted}}>🕓</span>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:13,fontWeight:600,color:T.text}}>{s.query||"All Properties"}</div>
+                    <div style={{fontSize:13,fontWeight:600,color:T.text}}>{s.query||t("All Properties","সকল সম্পত্তি")}</div>
                     <div style={{fontSize:11,color:T.muted}}>{s.filters} · {s.time}</div>
                   </div>
-                  <span style={{fontSize:11,color:T.green,fontWeight:700,cursor:"pointer"}}>Search again →</span>
+                  <span style={{fontSize:11,color:T.green,fontWeight:700,cursor:"pointer"}}>{t("Search again →","আবার সার্চ →")}</span>
                 </div>
               )) : (
                 <div style={{textAlign:"center",padding:"30px 0",color:T.muted}}>
                   <div style={{fontSize:36,marginBottom:10}}>🕓</div>
-                  <div style={{fontWeight:700}}>No search history yet</div>
-                  <div style={{fontSize:12,marginTop:4}}>Your recent searches will appear here</div>
+                  <div style={{fontWeight:700}}>{t("No search history yet","এখনো কোনো সার্চ ইতিহাস নেই")}</div>
+                  <div style={{fontSize:12,marginTop:4}}>{t("Your recent searches will appear here","আপনার সাম্প্রতিক সার্চ এখানে দেখা যাবে")}</div>
                 </div>
               )}
             </div>
@@ -1894,7 +1915,7 @@ function Card({p, onSelect, savedIds, onSaveToggle, lang="en", L}){
         boxShadow:hov?"0 12px 40px rgba(0,0,0,0.14)":"0 2px 12px rgba(0,0,0,0.07)",
         border:`1px solid ${hov?"#d1d5db":T.border}`,transform:hov?"translateY(-3px)":"none",transition:"all .2s"}}>
       <div style={{position:"relative",height:188,overflow:"hidden",flexShrink:0}}>
-        <img src={p.img} alt={p.title} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .4s",transform:hov?"scale(1.05)":"scale(1)"}}/>
+        <img src={p.img||PHOTO_PLACEHOLDER} alt={p.title} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=PHOTO_PLACEHOLDER;}} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .4s",transform:hov?"scale(1.05)":"scale(1)"}}/>
         <div style={{position:"absolute",top:10,left:10,display:"flex",gap:5}}>
           <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:10,fontWeight:800,padding:"3px 9px",borderRadius:20}}>
             {p.status==="for-sale"?L.forSale:L.forRent}
@@ -1919,7 +1940,7 @@ function Card({p, onSelect, savedIds, onSaveToggle, lang="en", L}){
           <span style={{fontSize:23,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{pr.main}</span>
           {pr.sub && <span style={{fontSize:12,color:T.muted}}>{pr.sub}</span>}
         </div>
-        <div style={{fontSize:15,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:5}}>{p.title}</div>
+        <div style={{fontSize:15,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:5}}>{isBn&&p.titleBn?p.titleBn:p.title}</div>
         <div style={{fontSize:13,color:T.muted,marginBottom:9,display:"flex",alignItems:"center",gap:3}}>
           <span style={{color:T.red}}>📍</span>{p.location}
         </div>
@@ -1927,15 +1948,15 @@ function Card({p, onSelect, savedIds, onSaveToggle, lang="en", L}){
           <div style={{display:"flex",gap:5,marginBottom:9,flexWrap:"wrap"}}>
             {p.petFriendly && <span style={{fontSize:11,background:"#f0fdf4",color:"#166534",padding:"3px 8px",borderRadius:7,fontWeight:700}}>{L.petsOk}</span>}
             {p.flatmate    && <span style={{fontSize:11,background:"#eff6ff",color:"#1d4ed8",padding:"3px 8px",borderRadius:7,fontWeight:700}}>{L.flatmate}</span>}
-            {p.inspSlots?.length>0 && <span style={{fontSize:11,background:"#fef9c3",color:"#854d0e",padding:"3px 8px",borderRadius:7,fontWeight:700}}>📅 {p.inspSlots.length}{L.inspSlots}</span>}
+            {p.inspSlots?.length>0 && <span style={{fontSize:11,background:"#fef9c3",color:"#854d0e",padding:"3px 8px",borderRadius:7,fontWeight:700}}>📅 {isBn?toBn(p.inspSlots.length):p.inspSlots.length}{L.inspSlots}</span>}
           </div>
         )}
         <div style={{display:"flex",gap:11,paddingTop:10,borderTop:`1px solid ${T.border}`,marginBottom:10}}>
-          {p.beds>0  && <span style={{fontSize:12.5,color:"#555"}}>🛏 {p.beds} {isBn?"শয়":"Bed"}</span>}
-          {p.baths>0 && <span style={{fontSize:12.5,color:"#555"}}>🚿 {p.baths} {isBn?"বাথ":"Bath"}</span>}
-          {p.cars>0  && <span style={{fontSize:12.5,color:"#555"}}>🚗 {p.cars}</span>}
-          {p.floor>0 && <span style={{fontSize:12.5,color:"#555"}}>🏢 {isBn?"":"F"}{p.floor}{isBn?"তলা":""}</span>}
-          <span style={{fontSize:12.5,color:"#555",marginLeft:"auto"}}>📐 {p.area.toLocaleString()} {isBn?"বর্গফুট":"sqft"}</span>
+          {p.beds>0  && <span style={{fontSize:12.5,color:"#555"}}>🛏 {isBn?toBn(p.beds):p.beds} {isBn?"বেড":"Bed"}</span>}
+          {p.baths>0 && <span style={{fontSize:12.5,color:"#555"}}>🚿 {isBn?toBn(p.baths):p.baths} {isBn?"বাথ":"Bath"}</span>}
+          {p.cars>0  && <span style={{fontSize:12.5,color:"#555"}}>🚗 {isBn?toBn(p.cars):p.cars}</span>}
+          {p.floor>0 && <span style={{fontSize:12.5,color:"#555"}}>🏢 {isBn?"":"F"}{isBn?toBn(p.floor):p.floor}{isBn?"তলা":""}</span>}
+          <span style={{fontSize:12.5,color:"#555",marginLeft:"auto"}}>📐 {isBn?toBn(p.area.toLocaleString()):p.area.toLocaleString()} {isBn?"বর্গফুট":"sqft"}</span>
         </div>
         <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:10}}>
           {p.tags.slice(0,3).map(tag=>(
@@ -1952,7 +1973,7 @@ function Card({p, onSelect, savedIds, onSaveToggle, lang="en", L}){
 }
 
 /* ── DETAIL MODAL ─────────────────────────────── */
-function DetailModal({p, onClose, L}){
+function DetailModal({p, onClose, L, lang="en"}){
   const isMobile = useIsMobile();
   const [tab, setTab]              = useState("overview");
   const [selectedSlot, setSlot]    = useState("");
@@ -1960,7 +1981,7 @@ function DetailModal({p, onClose, L}){
   const [msgSent, setMsgSent]      = useState(false);
   const [msg, setMsg]              = useState({name:"",phone:"",email:"",subject:"I'd like to schedule an inspection",prefDate:"",prefTime:"Anytime",body:""});
   if(!p) return null;
-  const pr = fmtPrice(p.price,p.status);
+  const pr = fmtPrice(p.price,p.status,lang);
   const upd=(k,v)=>setMsg(m=>({...m,[k]:v}));
   const inp=(ph,key,type="text")=>(
     <input value={msg[key]} onChange={e=>upd(key,e.target.value)} type={type} placeholder={ph}
@@ -1970,7 +1991,7 @@ function DetailModal({p, onClose, L}){
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:3000,display:"flex",alignItems:isMobile?"flex-end":"center",justifyContent:"center",padding:isMobile?0:12,overflowY:"auto"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:20,width:"100%",maxWidth:700,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(0,0,0,0.3)",margin:"auto"}}>
         <div style={{position:"relative",borderRadius:"20px 20px 0 0",overflow:"hidden"}}>
-          <img src={p.img} alt={p.title} style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
+          <img src={p.img||PHOTO_PLACEHOLDER} alt={p.title} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=PHOTO_PLACEHOLDER;}} style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
           <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
           <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
             <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
@@ -1984,7 +2005,7 @@ function DetailModal({p, onClose, L}){
             <div style={{fontSize:26,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif",lineHeight:1}}>
               {pr.main}<span style={{fontSize:14,color:T.muted,fontWeight:500}}>{pr.sub}</span>
             </div>
-            <div style={{fontSize:16,fontWeight:700,color:T.text,marginTop:5}}>{p.title}</div>
+            <div style={{fontSize:16,fontWeight:700,color:T.text,marginTop:5}}>{lang==="bn"&&p.titleBn?p.titleBn:p.title}</div>
             <div style={{color:T.muted,fontSize:12,marginTop:3}}>📍 {p.location} · {p.division}</div>
             <div style={{display:"flex",gap:12,marginTop:6}}>
               <span style={{fontSize:11,color:T.muted}}>👁 {p.views} views</span>
@@ -2852,7 +2873,7 @@ function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
           .setLatLng(coords)
           .setContent(`
             <div style="font-family:'DM Sans',sans-serif;padding:4px">
-              <img src="${p.img}" style="width:100%;height:110px;object-fit:cover;border-radius:8px;margin-bottom:8px"/>
+              <img src="${p.img||PHOTO_PLACEHOLDER}" style="width:100%;height:110px;object-fit:cover;border-radius:8px;margin-bottom:8px"/>
               <div style="font-weight:800;font-size:13px;color:#111;margin-bottom:2px;line-height:1.3">${p.title}</div>
               <div style="font-size:16px;font-weight:900;color:${color};margin-bottom:4px">${price}</div>
               <div style="font-size:11px;color:#6b7280;margin-bottom:6px">📍 ${p.location}</div>
@@ -2943,7 +2964,7 @@ export default function App(){
   const [searchHistory,setSearchHistory] = useState([
     {query:"Gulshan",filters:"Apartment · Dhaka",time:"2h ago"},
     {query:"Dhanmondi",filters:"For Rent · All Types",time:"Yesterday"},
-    {query:"",filters:"Sea View filter · Chittagong",time:"2 days ago"},
+    {query:"",filters:"Apartment · Chittagong",time:"2 days ago"},
   ]);
 
   const L = LANG[lang];
@@ -3399,11 +3420,11 @@ export default function App(){
       </footer>
 
       {/* MODALS */}
-      <DetailModal p={selected} onClose={()=>setSelected(null)} L={L}/>
+      <DetailModal p={selected} onClose={()=>setSelected(null)} L={L} lang={lang}/>
       {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
-      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds}/>}
-      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory}/>}
+      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
+      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
 
       {/* PWA Install Banner */}
       {showPWA && <PWABanner onInstall={installPWA} onDismiss={dismissPWA} isIOS={isIOS}/>}
