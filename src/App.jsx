@@ -26,8 +26,8 @@ const LANG = {
     listBtn:"+ List Property Free",
     tenantMode:"🔍 I'm Looking to Rent", ownerMode:"🏠 I Have a Property to List",
     heroT1:"Find Your Next", heroT2:"Home", heroT3:"",
-    heroTSub:"Search thousands of verified rentals across all 8 divisions",
-    heroO1:"List Your Vacant Property", heroO2:"Reach 1.2M+ Tenants — Free",
+    heroTSub:"Find rentals and properties across all 8 divisions",
+    heroO1:"List Your Vacant Property", heroO2:"Reach Renters Directly — Free",
     heroOSub:"Under 5 minutes · No agent fees · Direct tenant contact · Set inspection times",
     startFree:"🚀 Start Free Listing →",
     searchPh:"🔍  Area, road, city… (e.g. Gulshan, Uttara)", searchBtn:"Search",
@@ -63,7 +63,7 @@ const LANG = {
     callDirectly:"Or call directly:",
     listedAgo:"listed",
     howItWorks:"How Basha.app Works for Owners",
-    rentingTips:"Renting Tips for Bangladesh",
+    rentingTips:"Property Tips for Bangladesh",
     verifyOwnership:"Verify Ownership",
     verifyOwnershipDesc:"Always ask for Khatian & Porcha documents before signing.",
     writtenDeed:"Written Rental Deed",
@@ -79,8 +79,8 @@ const LANG = {
     listBtn:"+ বিনামূল্যে তালিকা দিন",
     tenantMode:"🔍 আমি ভাড়া খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
     heroT1:"আপনার পরবর্তী", heroT2:"বাড়ি খুঁজুন", heroT3:"",
-    heroTSub:"সারা বাংলাদেশে হাজারো যাচাইকৃত ভাড়া",
-    heroO1:"আপনার খালি সম্পত্তি তালিকা দিন", heroO2:"১২ লক্ষ+ ভাড়াটিয়ার কাছে পৌঁছান",
+    heroTSub:"সারা বাংলাদেশের ৮ বিভাগে ভাড়া ও সম্পত্তি",
+    heroO1:"আপনার খালি সম্পত্তি তালিকা দিন", heroO2:"সরাসরি ভাড়াটিয়ার কাছে পৌঁছান",
     heroOSub:"মাত্র ৫ মিনিটে · কোনো এজেন্ট ফি নেই · সরাসরি যোগাযোগ",
     startFree:"🚀 বিনামূল্যে শুরু করুন →",
     searchPh:"🔍  এলাকা, রাস্তা, শহর…", searchBtn:"খুঁজুন",
@@ -116,7 +116,7 @@ const LANG = {
     callDirectly:"অথবা সরাসরি ফোন করুন:",
     listedAgo:"তালিকাভুক্ত",
     howItWorks:"বাশা.অ্যাপ মালিকদের জন্য কীভাবে কাজ করে",
-    rentingTips:"বাংলাদেশে ভাড়ার টিপস",
+    rentingTips:"বাংলাদেশে সম্পত্তির টিপস",
     verifyOwnership:"মালিকানা যাচাই করুন",
     verifyOwnershipDesc:"চুক্তি স্বাক্ষরের আগে সর্বদা খতিয়ান ও পর্চা নথি চাইুন।",
     writtenDeed:"লিখিত ভাড়া চুক্তি",
@@ -133,10 +133,10 @@ const PROPERTIES = [
   { id:1,  title:"Spacious 3-Bed in Bashundhara R/A",  type:"apartment",  status:"for-rent", price:32000,  area:1450, beds:3, baths:2, cars:1, floor:7,  location:"Bashundhara R/A, Dhaka",   division:"Dhaka",      img:"https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=600&q=80", featured:true,  tags:["Semi-Furnished","Gas","Generator"], petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"], inspSlots:["Fri 30 May — 10:00 AM","Fri 30 May — 2:00 PM","Sat 31 May — 11:00 AM"], agent:"Rahim & Sons", phone:"01711-234567", age:1, views:142, saves:23, ownerId:"owner1" },
   { id:2,  title:"Modern Studio near Gulshan 1",        type:"apartment",  status:"for-rent", price:18000,  area:480,  beds:1, baths:1, cars:0, floor:4,  location:"Gulshan 1, Dhaka",         division:"Dhaka",      img:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80", featured:true,  tags:["Furnished","WiFi","AC"],           petFriendly:true,  flatmate:true,  utilities:["WiFi","Water","AC"],          inspSlots:["Sat 31 May — 10:00 AM","Sun 1 Jun — 10:00 AM"],                       agent:"Home Finders BD", phone:"01811-345678", age:2, views:98,  saves:17, ownerId:"owner1" },
   { id:3,  title:"Family Flat in Uttara Sector 6",      type:"apartment",  status:"for-rent", price:22000,  area:1200, beds:3, baths:2, cars:0, floor:3,  location:"Uttara Sector 6, Dhaka",   division:"Dhaka",      img:"https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&q=80", featured:false, tags:["Unfurnished","Generator"],         petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"],    inspSlots:["Sun 1 Jun — 11:00 AM","Mon 2 Jun — 4:00 PM"],                         agent:"Trust Realty", phone:"01911-456789", age:5, views:67,  saves:9,  ownerId:"owner2" },
-  { id:4,  title:"Office Space – Full Floor, Banani",   type:"commercial", status:"for-rent", price:150000, area:6000, beds:0, baths:4, cars:5, floor:12, location:"Banani, Dhaka",             division:"Dhaka",      img:"https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80", featured:true,  tags:["Full Floor","24/7 Gen","Lift"],    petFriendly:false, flatmate:false, utilities:["Generator","Lift"],            inspSlots:["Mon 2 Jun — 10:00 AM","Tue 3 Jun — 10:00 AM"],                        agent:"Corporate BD", phone:"01611-567890", age:3, views:211, saves:31, ownerId:"owner2" },
+  { id:4,  title:"Office Space – Full Floor, Banani",   type:"commercial", status:"for-rent", price:150000, area:6000, beds:0, baths:4, cars:5, floor:12, location:"Banani, Dhaka",             division:"Dhaka",      img:"https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80", featured:true,  tags:["Full Floor","24/7 Gen","Lift"],    petFriendly:false, flatmate:false, utilities:["Generator","Lift"],            inspSlots:["Mon 2 Jun — 10:00 AM","Tue 3 Jun — 10:00 AM"],                        agent:"Corporate BD", phone:"01611-567890", age:3, views:211, saves:31, ownerId:"owner2" },
   { id:5,  title:"Cozy 2-Bed near Dhanmondi Lake",     type:"apartment",  status:"for-rent", price:28000,  area:950,  beds:2, baths:1, cars:0, floor:5,  location:"Dhanmondi, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80", featured:false, tags:["Semi-Furnished","Lake View"],      petFriendly:true,  flatmate:true,  utilities:["Water","Gas"],                inspSlots:["Sat 31 May — 9:00 AM","Sat 31 May — 1:00 PM"],                        agent:"Lake View Homes", phone:"01711-678901", age:2, views:88,  saves:14, ownerId:"owner1" },
-  { id:6,  title:"Sea-View Flat, Panchlaish CDA",      type:"apartment",  status:"for-rent", price:25000,  area:1100, beds:2, baths:2, cars:1, floor:8,  location:"Panchlaish, Chittagong",   division:"Chittagong", img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80", featured:true,  tags:["Sea View","Semi-Furnished","AC"],  petFriendly:false, flatmate:false, utilities:["AC","Water","Gas"],            inspSlots:["Fri 30 May — 3:00 PM","Sat 31 May — 10:00 AM"],                       agent:"Port City Homes", phone:"01511-789012", age:1, views:134, saves:28, ownerId:"owner2" },
-  { id:7,  title:"Budget Room in Mirpur 10",           type:"room",       status:"for-rent", price:7000,   area:200,  beds:1, baths:1, cars:0, floor:2,  location:"Mirpur 10, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80", featured:false, tags:["Attached Bath","WiFi"],            petFriendly:false, flatmate:true,  utilities:["WiFi","Water"],               inspSlots:["Any day — Call to arrange"],                                           agent:"Mirpur Rentals", phone:"01811-890123", age:1, views:55,  saves:6,  ownerId:"owner2" },
+  { id:6,  title:"Sea-View Flat, Panchlaish CDA",      type:"apartment",  status:"for-rent", price:25000,  area:1100, beds:2, baths:2, cars:1, floor:8,  location:"Panchlaish, Chittagong",   division:"Chittagong", img:"https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=600&q=80", featured:true,  tags:["Sea View","Semi-Furnished","AC"],  petFriendly:false, flatmate:false, utilities:["AC","Water","Gas"],            inspSlots:["Fri 30 May — 3:00 PM","Sat 31 May — 10:00 AM"],                       agent:"Port City Homes", phone:"01511-789012", age:1, views:134, saves:28, ownerId:"owner2" },
+  { id:7,  title:"Budget Room in Mirpur 10",           type:"room",       status:"for-rent", price:7000,   area:200,  beds:1, baths:1, cars:0, floor:2,  location:"Mirpur 10, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80", featured:false, tags:["Attached Bath","WiFi"],            petFriendly:false, flatmate:true,  utilities:["WiFi","Water"],               inspSlots:["Any day — Call to arrange"],                                           agent:"Mirpur Rentals", phone:"01811-890123", age:1, views:55,  saves:6,  ownerId:"owner2" },
   { id:8,  title:"Luxury Penthouse, Baridhara",        type:"apartment",  status:"for-rent", price:120000, area:4200, beds:5, baths:4, cars:2, floor:18, location:"Baridhara, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80", featured:true,  tags:["Fully Furnished","Pool","Gym"],    petFriendly:true,  flatmate:false, utilities:["AC","Pool","Gym","Generator"], inspSlots:["By appointment — Call agent"],                                          agent:"Luxury Lets BD", phone:"01711-901234", age:4, views:309, saves:47, ownerId:"owner1" },
   { id:9,  title:"Luxury Apartment for Sale, Gulshan", type:"apartment",  status:"for-sale", price:12500000,area:2200,beds:4, baths:3, cars:1, floor:10, location:"Gulshan 2, Dhaka",          division:"Dhaka",      img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80", featured:true,  tags:["Ready","Corner","Lift"],           petFriendly:false, flatmate:false, utilities:[],                             inspSlots:["By appointment — Call agent"],                                          agent:"Rahim Properties", phone:"01711-234567", age:2, views:189, saves:35, ownerId:"owner2" },
   { id:10, title:"RAJUK Plot – Purbachal New Town",    type:"land",       status:"for-sale", price:8500000, area:2178,beds:0, baths:0, cars:0, floor:0,  location:"Purbachal New Town, Dhaka", division:"Dhaka",      img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80", featured:false, tags:["RAJUK Approved","Corner Plot"],   petFriendly:false, flatmate:false, utilities:[],                             inspSlots:["Sat 31 May — 9:00 AM","Sun 1 Jun — 9:00 AM"],                          agent:"Plot BD", phone:"01611-567890", age:12, views:76, saves:11, ownerId:"owner1" },
@@ -1914,37 +1914,37 @@ function Card({p, onSelect, savedIds, onSaveToggle, lang="en", L}){
           </span>
         </div>
       </div>
-      <div style={{padding:"13px 15px 15px",display:"flex",flexDirection:"column",flex:1}}>
-        <div style={{display:"flex",alignItems:"baseline",gap:3,marginBottom:2}}>
-          <span style={{fontSize:20,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{pr.main}</span>
-          {pr.sub && <span style={{fontSize:11,color:T.muted}}>{pr.sub}</span>}
+      <div style={{padding:"14px 16px 16px",display:"flex",flexDirection:"column",flex:1}}>
+        <div style={{display:"flex",alignItems:"baseline",gap:3,marginBottom:3}}>
+          <span style={{fontSize:23,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{pr.main}</span>
+          {pr.sub && <span style={{fontSize:12,color:T.muted}}>{pr.sub}</span>}
         </div>
-        <div style={{fontSize:13,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:4}}>{p.title}</div>
-        <div style={{fontSize:11,color:T.muted,marginBottom:8,display:"flex",alignItems:"center",gap:3}}>
+        <div style={{fontSize:15,fontWeight:700,color:T.text,lineHeight:1.3,marginBottom:5}}>{p.title}</div>
+        <div style={{fontSize:13,color:T.muted,marginBottom:9,display:"flex",alignItems:"center",gap:3}}>
           <span style={{color:T.red}}>📍</span>{p.location}
         </div>
         {p.status==="for-rent" && (
-          <div style={{display:"flex",gap:5,marginBottom:8,flexWrap:"wrap"}}>
-            {p.petFriendly && <span style={{fontSize:10,background:"#f0fdf4",color:"#166534",padding:"2px 6px",borderRadius:7,fontWeight:700}}>{L.petsOk}</span>}
-            {p.flatmate    && <span style={{fontSize:10,background:"#eff6ff",color:"#1d4ed8",padding:"2px 6px",borderRadius:7,fontWeight:700}}>{L.flatmate}</span>}
-            {p.inspSlots?.length>0 && <span style={{fontSize:10,background:"#fef9c3",color:"#854d0e",padding:"2px 6px",borderRadius:7,fontWeight:700}}>📅 {p.inspSlots.length}{L.inspSlots}</span>}
+          <div style={{display:"flex",gap:5,marginBottom:9,flexWrap:"wrap"}}>
+            {p.petFriendly && <span style={{fontSize:11,background:"#f0fdf4",color:"#166534",padding:"3px 8px",borderRadius:7,fontWeight:700}}>{L.petsOk}</span>}
+            {p.flatmate    && <span style={{fontSize:11,background:"#eff6ff",color:"#1d4ed8",padding:"3px 8px",borderRadius:7,fontWeight:700}}>{L.flatmate}</span>}
+            {p.inspSlots?.length>0 && <span style={{fontSize:11,background:"#fef9c3",color:"#854d0e",padding:"3px 8px",borderRadius:7,fontWeight:700}}>📅 {p.inspSlots.length}{L.inspSlots}</span>}
           </div>
         )}
-        <div style={{display:"flex",gap:10,paddingTop:9,borderTop:`1px solid ${T.border}`,marginBottom:9}}>
-          {p.beds>0  && <span style={{fontSize:11,color:"#555"}}>🛏 {p.beds} {isBn?"শয়":"Bed"}</span>}
-          {p.baths>0 && <span style={{fontSize:11,color:"#555"}}>🚿 {p.baths} {isBn?"বাথ":"Bath"}</span>}
-          {p.cars>0  && <span style={{fontSize:11,color:"#555"}}>🚗 {p.cars}</span>}
-          {p.floor>0 && <span style={{fontSize:11,color:"#555"}}>🏢 {isBn?"":"F"}{p.floor}{isBn?"তলা":""}</span>}
-          <span style={{fontSize:11,color:"#555",marginLeft:"auto"}}>📐 {p.area.toLocaleString()} {isBn?"বর্গফুট":"sqft"}</span>
+        <div style={{display:"flex",gap:11,paddingTop:10,borderTop:`1px solid ${T.border}`,marginBottom:10}}>
+          {p.beds>0  && <span style={{fontSize:12.5,color:"#555"}}>🛏 {p.beds} {isBn?"শয়":"Bed"}</span>}
+          {p.baths>0 && <span style={{fontSize:12.5,color:"#555"}}>🚿 {p.baths} {isBn?"বাথ":"Bath"}</span>}
+          {p.cars>0  && <span style={{fontSize:12.5,color:"#555"}}>🚗 {p.cars}</span>}
+          {p.floor>0 && <span style={{fontSize:12.5,color:"#555"}}>🏢 {isBn?"":"F"}{p.floor}{isBn?"তলা":""}</span>}
+          <span style={{fontSize:12.5,color:"#555",marginLeft:"auto"}}>📐 {p.area.toLocaleString()} {isBn?"বর্গফুট":"sqft"}</span>
         </div>
-        <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:9}}>
+        <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:10}}>
           {p.tags.slice(0,3).map(tag=>(
-            <span key={tag} style={{background:T.redL,color:T.red,fontSize:10,fontWeight:700,padding:"2px 7px",borderRadius:9,border:`1px solid ${T.redM}`}}>{tag}</span>
+            <span key={tag} style={{background:T.redL,color:T.red,fontSize:11,fontWeight:700,padding:"3px 8px",borderRadius:9,border:`1px solid ${T.redM}`}}>{tag}</span>
           ))}
         </div>
-        <div style={{marginTop:"auto",paddingTop:8,borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <span style={{fontSize:10,color:T.muted}}>🏢 {p.agent}</span>
-          <span style={{fontSize:10,fontWeight:700,color:T.green}}>{p.phone}</span>
+        <div style={{marginTop:"auto",paddingTop:9,borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <span style={{fontSize:11.5,color:T.muted}}>🏢 {p.agent}</span>
+          <span style={{fontSize:11.5,fontWeight:700,color:T.green}}>{p.phone}</span>
         </div>
       </div>
     </div>
@@ -3011,11 +3011,6 @@ export default function App(){
     <div style={{fontFamily:"'DM Sans','Segoe UI',sans-serif",minHeight:"100vh",background:T.bg,color:T.text}}>
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
-      {/* TOP BAR */}
-      <div style={{background:T.green,color:"#fff",fontSize:11,padding:"6px 20px",display:"flex",justifyContent:"center",alignItems:"center",textAlign:"center"}}>
-        <span style={{fontWeight:600,letterSpacing:0.3}}>{L.topBar}</span>
-      </div>
-
       {/* HEADER */}
       <header style={{background:"#fff",borderBottom:`1px solid ${T.border}`,padding:isMobile?"0 14px":"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:isMobile?54:60,position:"sticky",top:0,zIndex:500,boxShadow:"0 1px 8px rgba(0,0,0,0.07)"}}>
         <div style={{display:"flex",alignItems:"center",gap:7,userSelect:"none"}}>
@@ -3117,7 +3112,7 @@ export default function App(){
               <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:isMobile?26:36,fontWeight:900,margin:"0 0 10px",color:T.text,lineHeight:1.1}}>
                 {L.heroO1}<br/><span style={{color:T.green}}>{L.heroO2}</span>
               </h1>
-              <p style={{fontSize:14,color:T.muted,marginBottom:24}}>{L.heroOSub}</p>
+              <p style={{fontSize:15,color:T.muted,marginBottom:24}}>{L.heroOSub}</p>
               <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:26,flexWrap:"wrap"}}>
                 {["✅ 100% Free","⚡ Live in Minutes","📞 Direct Contact","📅 Inspection Times","🔒 Verified Tenants"].map(t=>(
                   <div key={t} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:20,padding:"6px 14px",fontSize:12,fontWeight:700,boxShadow:"0 1px 4px rgba(0,0,0,0.05)"}}>{t}</div>
@@ -3138,7 +3133,7 @@ export default function App(){
               <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:isMobile?26:36,fontWeight:900,margin:"0 0 10px",color:T.text,lineHeight:1.1}}>
                 {L.heroT1} <span style={{color:T.red}}>{L.heroT2}</span><br/>{L.heroT3}
               </h1>
-              <p style={{fontSize:14,color:T.muted,marginBottom:24}}>{L.heroTSub}</p>
+              <p style={{fontSize:15,color:T.muted,marginBottom:24}}>{L.heroTSub}</p>
               <div style={{background:"#fff",borderRadius:16,padding:isMobile?"14px 14px":"18px 20px",maxWidth:860,margin:"0 auto",boxShadow:"0 6px 40px rgba(0,0,0,0.1)",border:`1px solid ${T.border}`}}>
                 <div style={{display:"flex",gap:5,marginBottom:12,flexWrap:"wrap"}}>
                   {[
@@ -3183,18 +3178,25 @@ export default function App(){
                   <button style={{background:T.red,color:"#fff",border:"none",padding:"11px 22px",borderRadius:9,fontWeight:800,fontSize:14,cursor:"pointer"}}>{L.searchBtn}</button>
                 </div>
                 {showAdv&&(
-                  <div style={{marginTop:12,paddingTop:12,borderTop:"1px solid #f0f0f0",display:"flex",gap:9,flexWrap:"wrap",alignItems:"center"}}>
-                    <div style={{display:"flex",alignItems:"center",gap:5}}>
-                      <span style={{fontSize:12,fontWeight:700,color:T.muted}}>{L.filtersBtn==="⚙ Filters"?"Max ৳/mo:":"সর্বোচ্চ ৳/মাস:"}</span>
-                      <input type="number" value={budgetMax} onChange={e=>setBudgetMax(e.target.value)} placeholder="e.g. 30000" style={{width:100,padding:"7px 9px",border:`1.5px solid ${T.border}`,borderRadius:8,fontSize:12,outline:"none"}}/>
+                  <div style={{marginTop:14,paddingTop:14,borderTop:"1px solid #f0f0f0"}}>
+                    <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center",marginBottom:12}}>
+                      <div style={{display:"flex",alignItems:"center",gap:6}}>
+                        <span style={{fontSize:13,fontWeight:700,color:T.muted}}>{L.filtersBtn==="⚙ Filters"?"Max ৳/mo:":"সর্বোচ্চ ৳/মাস:"}</span>
+                        <input type="number" value={budgetMax} onChange={e=>setBudgetMax(e.target.value)} placeholder="e.g. 30000" style={{width:110,padding:"8px 10px",border:`1.5px solid ${T.border}`,borderRadius:8,fontSize:13,outline:"none"}}/>
+                      </div>
+                      <select value={sortBy} onChange={e=>setSortBy(e.target.value)} style={{padding:"8px 10px",border:`1.5px solid ${T.border}`,borderRadius:8,fontSize:13,color:"#444",background:"#fff"}}>
+                        <option value="featured">{lang==="bn"?"ফিচার্ড প্রথমে":"Featured First"}</option>
+                        <option value="newest">{lang==="bn"?"সর্বশেষ":"Newest"}</option>
+                        <option value="price-asc">{lang==="bn"?"মূল্য ↑":"Price ↑"}</option>
+                        <option value="price-desc">{lang==="bn"?"মূল্য ↓":"Price ↓"}</option>
+                      </select>
+                      <button onClick={()=>{setSearch("");setStatus("all");setTypeF("All Types");setDivF("All Divisions");setBudgetMax("");setActiveQ([]);}} style={{marginLeft:"auto",padding:"8px 14px",border:`1.5px solid ${T.border}`,borderRadius:8,background:"#fff",cursor:"pointer",fontSize:13,fontWeight:600,color:T.muted}}>{L.resetBtn}</button>
                     </div>
-                    <select value={sortBy} onChange={e=>setSortBy(e.target.value)} style={{padding:"7px 9px",border:`1.5px solid ${T.border}`,borderRadius:8,fontSize:12,color:"#444",background:"#fff"}}>
-                      <option value="featured">{lang==="bn"?"ফিচার্ড প্রথমে":"Featured First"}</option>
-                      <option value="newest">{lang==="bn"?"সর্বশেষ":"Newest"}</option>
-                      <option value="price-asc">{lang==="bn"?"মূল্য ↑":"Price ↑"}</option>
-                      <option value="price-desc">{lang==="bn"?"মূল্য ↓":"Price ↓"}</option>
-                    </select>
-                    <button onClick={()=>{setSearch("");setStatus("all");setTypeF("All Types");setDivF("All Divisions");setBudgetMax("");setActiveQ([]);}} style={{padding:"7px 12px",border:`1.5px solid ${T.border}`,borderRadius:8,background:"#fff",cursor:"pointer",fontSize:12,fontWeight:600,color:T.muted}}>{L.resetBtn}</button>
+                    <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
+                      <span style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:0.5,marginRight:2,width:"100%"}}>{L.quickLabel}</span>
+                      {QUICK_FILTERS.map(f=><Pill key={f.key} active={activeQ.includes(f.key)} onClick={()=>toggleQ(f.key)}>{f.label}</Pill>)}
+                      {activeQ.length>0&&<Pill onClick={()=>setActiveQ([])}>{L.clearAll}</Pill>}
+                    </div>
                   </div>
                 )}
               </div>
@@ -3208,23 +3210,7 @@ export default function App(){
               <span onClick={()=>setShowTenantDash(true)} style={{color:T.green,fontWeight:800,cursor:"pointer",textDecoration:"underline"}}>View suggestions →</span>
             </div>
           )}
-
-          <div style={{display:"flex",justifyContent:"center",gap:isMobile?16:32,marginTop:isMobile?16:22,flexWrap:"wrap"}}>
-            {[["10,800+","Rentals"],["3,200+","Agents"],["8","Divisions"],["⭐ 4.8","Rating"]].map(([num,label])=>(
-              <div key={label} style={{textAlign:"center"}}>
-                <div style={{fontSize:19,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif"}}>{num}</div>
-                <div style={{fontSize:11,color:T.muted,fontWeight:500}}>{label}</div>
-              </div>
-            ))}
-          </div>
         </div>
-      </div>
-
-      {/* QUICK FILTERS */}
-      <div style={{background:"#fff",borderBottom:`1px solid ${T.border}`,padding:"9px 20px",display:"flex",gap:6,overflowX:"auto",whiteSpace:"nowrap",alignItems:"center"}}>
-        <span style={{fontSize:10,fontWeight:800,color:T.muted,flexShrink:0,marginRight:3}}>{L.quickLabel}</span>
-        {QUICK_FILTERS.map(f=><Pill key={f.key} active={activeQ.includes(f.key)} onClick={()=>toggleQ(f.key)}>{f.label}</Pill>)}
-        {activeQ.length>0&&<Pill onClick={()=>setActiveQ([])}>{L.clearAll}</Pill>}
       </div>
 
       {/* MAIN */}
@@ -3257,28 +3243,28 @@ export default function App(){
         )}
 
         {/* Results header with List / Map toggle */}
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:9}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:18,flexWrap:"wrap",gap:12}}>
           <div>
-            <h2 style={{margin:0,fontSize:18,fontWeight:800}}>{filtered.length} {lang==="bn"?"টি সম্পত্তি":"Properties"}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
-            <div style={{fontSize:12,color:T.muted,marginTop:2}}>{status==="for-rent"?(lang==="bn"?"ভাড়া":"Rentals"):status==="for-sale"?(lang==="bn"?"বিক্রয়":"For Sale"):(lang==="bn"?"সকল তালিকা":"All Listings")}</div>
+            <h2 style={{margin:0,fontSize:22,fontWeight:800,fontFamily:"'Playfair Display',serif"}}>{filtered.length} {lang==="bn"?"টি সম্পত্তি":"Properties"}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
+            <div style={{fontSize:13,color:T.muted,marginTop:3}}>{status==="for-rent"?(lang==="bn"?"ভাড়া":"Rentals"):status==="for-sale"?(lang==="bn"?"বিক্রয়":"For Sale"):(lang==="bn"?"সকল তালিকা":"All Listings")}</div>
           </div>
-          <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-            {/* Status pills */}
-            <div style={{display:"flex",gap:5}}>
+          <div style={{display:"flex",gap:14,alignItems:"center",flexWrap:"wrap"}}>
+            {/* Status segmented control */}
+            <div style={{display:"flex",background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:11,padding:3,gap:2}}>
               {[
               [lang==="bn"?"সব":"All","all"],
               [lang==="bn"?"ভাড়া":"For Rent","for-rent"],
               [lang==="bn"?"বিক্রয়":"For Sale","for-sale"]
             ].map(([label,val])=>(
-                <Pill key={label} active={status===val} onClick={()=>setStatus(val)}>{label}</Pill>
+                <button key={label} onClick={()=>setStatus(val)} style={{padding:"7px 15px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:13,background:status===val?T.red:"transparent",color:status===val?"#fff":T.muted,transition:"all .15s"}}>{label}</button>
               ))}
             </div>
-            {/* List / Map toggle */}
-            <div style={{display:"flex",background:"#f3f4f6",borderRadius:10,padding:3,gap:2}}>
-              <button onClick={()=>setViewMode("list")} style={{padding:"6px 14px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,background:viewMode==="list"?"#fff":"transparent",color:viewMode==="list"?T.text:T.muted,boxShadow:viewMode==="list"?"0 1px 4px rgba(0,0,0,0.1)":"none",transition:"all .15s"}}>
+            {/* List / Map view toggle */}
+            <div style={{display:"flex",background:"#fff",border:`1.5px solid ${T.border}`,borderRadius:11,padding:3,gap:2}}>
+              <button onClick={()=>setViewMode("list")} style={{padding:"7px 15px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:13,background:viewMode==="list"?T.text:"transparent",color:viewMode==="list"?"#fff":T.muted,transition:"all .15s"}}>
                 {lang==="bn"?"🏠 তালিকা":"🏠 List"}
               </button>
-              <button onClick={()=>setViewMode("map")} style={{padding:"6px 14px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,background:viewMode==="map"?T.green:"transparent",color:viewMode==="map"?"#fff":T.muted,boxShadow:viewMode==="map"?"0 2px 8px rgba(26,107,60,0.25)":"none",transition:"all .15s"}}>
+              <button onClick={()=>setViewMode("map")} style={{padding:"7px 15px",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:13,background:viewMode==="map"?T.green:"transparent",color:viewMode==="map"?"#fff":T.muted,transition:"all .15s"}}>
                 {lang==="bn"?"🗺 মানচিত্র":"🗺 Map"}
               </button>
             </div>
@@ -3331,7 +3317,7 @@ export default function App(){
 
         {/* Tips */}
         <div style={{marginTop:44}}>
-          <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:"0 0 16px"}}>{L.rentingTips}</h2>
+          <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:24,fontWeight:900,margin:"0 0 16px"}}>{L.rentingTips}</h2>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr 1fr":"repeat(auto-fit,minmax(210px,1fr))",gap:12}}>
             {[
               ["📄",L.verifyOwnership,L.verifyOwnershipDesc],
@@ -3339,27 +3325,15 @@ export default function App(){
               ["📅",L.bookInsp,L.bookInspDesc],
               ["🏛",L.checkRajuk,L.checkRajukDesc],
             ].map(([icon,title,desc])=>(
-              <div key={title} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"16px 14px",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
-                <div style={{fontSize:24,marginBottom:7}}>{icon}</div>
-                <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:4}}>{title}</div>
-                <div style={{fontSize:12,color:T.muted,lineHeight:1.6}}>{desc}</div>
+              <div key={title} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"18px 16px",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
+                <div style={{fontSize:26,marginBottom:8}}>{icon}</div>
+                <div style={{fontWeight:800,fontSize:15,color:T.text,marginBottom:5}}>{title}</div>
+                <div style={{fontSize:13,color:T.muted,lineHeight:1.6}}>{desc}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* CTA */}
-        <div style={{marginTop:isMobile?28:44,background:`linear-gradient(135deg,${T.green},#0a3d22)`,borderRadius:16,padding:isMobile?"22px 20px":"32px 36px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:18,color:"#fff",position:"relative",overflow:"hidden"}}>
-          <div style={{position:"absolute",right:-28,top:-28,width:160,height:160,background:"rgba(255,255,255,0.05)",borderRadius:"50%"}}/>
-          <div style={{position:"relative"}}>
-            <div style={{fontSize:10,letterSpacing:2,fontWeight:700,opacity:.75,marginBottom:5}}>FOR LANDLORDS & PROPERTY OWNERS</div>
-            <div style={{fontFamily:"'Playfair Display',serif",fontSize:22,fontWeight:900,marginBottom:5}}>{L.ctaTitle}</div>
-            <div style={{opacity:.85,fontSize:13}}>{L.ctaSub}</div>
-          </div>
-          <button onClick={()=>user?setShowOwnerDash(true):(setAuthMode("signup"),setShowAuth(true))} style={{background:T.gold,color:"#1a2e22",border:"none",padding:"12px 24px",borderRadius:10,fontWeight:900,fontSize:14,cursor:"pointer",position:"relative"}}>
-            {L.listFreeBtn}
-          </button>
-        </div>
       </div>
 
       {/* GOVT LINKS */}
@@ -3408,7 +3382,7 @@ export default function App(){
             </div>
             {[["For Tenants",["Search Rentals","Buy Property","Book Inspections","Saved Properties","My Dashboard"]],
               ["For Owners",["List Property Free","Owner Dashboard","Manage Listings","Property Analytics","Set Inspection Times"]],
-              ["Company",["About Basha.app","Careers","Blog","Contact","Privacy Policy"]]].map(([title,items])=>(
+              ["Company",["About Basha.app","Contact","Privacy Policy"]]].map(([title,items])=>(
               <div key={title} style={{flex:"1 1 110px"}}>
                 <div style={{color:"#fff",fontWeight:700,marginBottom:9,fontSize:13}}>{title}</div>
                 {items.map(item=><div key={item} style={{fontSize:11.5,marginBottom:6,cursor:"pointer",color:"#4d7a5f"}}
@@ -3418,7 +3392,7 @@ export default function App(){
             ))}
           </div>
           <div style={{borderTop:"1px solid #1a2e22",paddingTop:14,display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:9,fontSize:11,color:"#2d5040"}}>
-            <span>© 2026 Basha.app Limited. All rights reserved. BTRC Registered.</span>
+            <span>© 2026 Basha.app · All rights reserved.</span>
             <span>🇧🇩 Built for Bangladesh · Dhaka HQ</span>
           </div>
         </div>
