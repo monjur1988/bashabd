@@ -69,6 +69,11 @@ const LANG = {
     listedAgo:"listed",
     howItWorks:"How Basha.app Works for Owners",
     rentingTips:"Property Tips for Bangladesh",
+    appsTitle:"Mobile Apps Coming Soon",
+    appsSub:"Take Basha.app with you. Our Android and iOS apps are on the way — search, save and book inspections on the go.",
+    appsAndroid:"Android App",
+    appsIos:"iOS App",
+    appsBadge:"Coming Soon",
     verifyOwnership:"Verify Ownership",
     verifyOwnershipDesc:"Always ask for Khatian & Porcha documents before signing.",
     writtenDeed:"Written Rental Deed",
@@ -122,6 +127,11 @@ const LANG = {
     listedAgo:"তালিকাভুক্ত",
     howItWorks:"বাশা.অ্যাপ মালিকদের জন্য কীভাবে কাজ করে",
     rentingTips:"বাংলাদেশে সম্পত্তির টিপস",
+    appsTitle:"মোবাইল অ্যাপ শীঘ্রই আসছে",
+    appsSub:"Basha.app সাথে রাখুন। আমাদের অ্যান্ড্রয়েড ও আইওএস অ্যাপ আসছে — চলার পথে সার্চ, সেভ ও পরিদর্শন বুক করুন।",
+    appsAndroid:"অ্যান্ড্রয়েড অ্যাপ",
+    appsIos:"আইওএস অ্যাপ",
+    appsBadge:"শীঘ্রই আসছে",
     verifyOwnership:"মালিকানা যাচাই করুন",
     verifyOwnershipDesc:"চুক্তি স্বাক্ষরের আগে সর্বদা খতিয়ান ও পর্চা নথি চাইুন।",
     writtenDeed:"লিখিত ভাড়া চুক্তি",
@@ -3335,6 +3345,29 @@ export default function App(){
             )}
           </>
         )}
+
+        {/* MOBILE APPS COMING SOON */}
+        <div style={{marginTop:44}}>
+          <div style={{background:`linear-gradient(135deg,${T.green},#0a3d22)`,borderRadius:16,padding:isMobile?"24px 20px":"30px 36px",color:"#fff",position:"relative",overflow:"hidden",display:"flex",flexDirection:isMobile?"column":"row",alignItems:"center",justifyContent:"space-between",gap:20}}>
+            <div style={{position:"absolute",right:-30,top:-30,width:170,height:170,background:"rgba(255,255,255,0.05)",borderRadius:"50%"}}/>
+            <div style={{position:"relative",textAlign:isMobile?"center":"left"}}>
+              <div style={{fontSize:34,marginBottom:8}}>📱</div>
+              <div style={{fontFamily:"'Playfair Display',serif",fontSize:isMobile?22:26,fontWeight:900,marginBottom:8}}>{L.appsTitle}</div>
+              <div style={{opacity:.85,fontSize:14,lineHeight:1.6,maxWidth:440}}>{L.appsSub}</div>
+            </div>
+            <div style={{position:"relative",display:"flex",flexDirection:isMobile?"row":"column",gap:12,flexShrink:0}}>
+              {[[L.appsAndroid,"🤖"],[L.appsIos,"🍎"]].map(([label,icon])=>(
+                <div key={label} style={{display:"flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:12,padding:isMobile?"10px 12px":"12px 18px",minWidth:isMobile?0:190}}>
+                  <span style={{fontSize:24}}>{icon}</span>
+                  <div style={{textAlign:"left"}}>
+                    <div style={{fontSize:13,fontWeight:800,lineHeight:1.2}}>{label}</div>
+                    <div style={{fontSize:10,opacity:.75,fontWeight:600,marginTop:2}}>⏳ {L.appsBadge}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Tips */}
         <div style={{marginTop:44}}>
