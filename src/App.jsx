@@ -1590,7 +1590,7 @@ function AnalyticsTab({myProps, lang="en"}){
 /* ── OWNER DASHBOARD ──────────────────────────── */
 const ADMIN_EMAIL = "monjur111@gmail.com";
 
-function OwnerDashboard({user, onClose, onLogout, onListProperty, savedProps, lang="en", L}){
+function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProperty, savedProps, lang="en", L}){
   const isMobile = useIsMobile();
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
@@ -1646,6 +1646,11 @@ function OwnerDashboard({user, onClose, onLogout, onListProperty, savedProps, la
         <button onClick={onListProperty} style={{margin:"14px 16px 0",background:T.gold,color:"#1a2e22",border:"none",padding:"11px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
           ➕ {t("Add New Property Listing","নতুন সম্পত্তি তালিকা যোগ করুন")}
         </button>
+        {onSwitchToTenant&&(
+          <button onClick={onSwitchToTenant} style={{margin:"10px 16px 0",background:T.redL,color:T.red,border:`1.5px solid ${T.redM}`,padding:"10px",borderRadius:11,fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+            🔍 {t("Switch to Find a Home","বাসা খোঁজায় যান")}
+          </button>
+        )}
         <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,margin:"14px 0 0",flexShrink:0,overflowX:"auto"}}>
           {tabs.map(([val,label])=>(
             <button key={val} onClick={()=>setTab(val)} style={{padding:"9px 14px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:12,whiteSpace:"nowrap",color:tab===val?T.green:T.muted,borderBottom:tab===val?`2.5px solid ${T.green}`:"2.5px solid transparent",marginBottom:-2}}>
@@ -1741,7 +1746,7 @@ function OwnerDashboard({user, onClose, onLogout, onListProperty, savedProps, la
 }
 
 /* ── TENANT DASHBOARD ─────────────────────────── */
-function TenantDashboard({user, onClose, onLogout, savedIds, onUnsave, searchHistory, lang="en", L}){
+function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, onUnsave, searchHistory, lang="en", L}){
   const isMobile = useIsMobile();
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
@@ -1794,7 +1799,12 @@ function TenantDashboard({user, onClose, onLogout, savedIds, onUnsave, searchHis
             ))}
           </div>
         </div>
-        <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,flexShrink:0,overflowX:"auto"}}>
+        {onSwitchToOwner&&(
+          <button onClick={onSwitchToOwner} style={{margin:"12px 16px 0",background:T.greenL,color:T.green,border:`1.5px solid ${T.greenM}`,padding:"10px",borderRadius:11,fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+            🏠 {t("Switch to List a Property","সম্পত্তি তালিকায় যান")}
+          </button>
+        )}
+        <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,flexShrink:0,overflowX:"auto",marginTop:12}}>
           {[["saved",t("❤️ Saved","❤️ সেভ")],["bookings",t("📅 Bookings","📅 বুকিং")],["messages",t("✉️ Messages","✉️ বার্তা")],["suggestions",t("✨ For You","✨ আপনার জন্য")],["history",t("🕓 History","🕓 ইতিহাস")]].map(([val,label])=>(
             <button key={val} onClick={()=>setTab(val)} style={{padding:"9px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:11,whiteSpace:"nowrap",color:tab===val?T.red:T.muted,borderBottom:tab===val?`2.5px solid ${T.red}`:"2.5px solid transparent",marginBottom:-2}}>
               {label}
@@ -3160,7 +3170,8 @@ export default function App(){
     try {
       await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"welcome",data:{email:u.email,name:u.name,role:u.role}})});
     } catch(e){}
-    if(u.role==="owner"||u.role==="agent") setShowOwnerDash(true);
+    const isAdminUser = u.email && u.email.toLowerCase()==="monjur111@gmail.com";
+    if(u.role==="owner"||u.role==="agent"||isAdminUser) setShowOwnerDash(true);
     else setShowTenantDash(true);
   };
 
@@ -3169,6 +3180,10 @@ export default function App(){
     setShowOwnerDash(false);
     setShowTenantDash(false);
   };
+
+  // One account can use both views — switch freely
+  const switchToOwner = () => { setShowTenantDash(false); setShowOwnerDash(true); };
+  const switchToTenant = () => { setShowOwnerDash(false); setShowTenantDash(true); };
 
   const filtered = PROPERTIES.filter(p=>{
     if(search&&!p.title.toLowerCase().includes(search.toLowerCase())&&!p.location.toLowerCase().includes(search.toLowerCase())) return false;
@@ -3639,8 +3654,8 @@ export default function App(){
       <DetailModal p={selected} onClose={()=>setSelected(null)} L={L} lang={lang}/>
       {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
-      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
-      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
+      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onSwitchToTenant={switchToTenant} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
+      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} onSwitchToOwner={switchToOwner} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
       {showAbout&&<AboutModal onClose={()=>setShowAbout(false)} lang={lang}/>}
 
       {/* PWA Install Banner */}
