@@ -1588,10 +1588,13 @@ function AnalyticsTab({myProps, lang="en"}){
 }
 
 /* ── OWNER DASHBOARD ──────────────────────────── */
-function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L}){
+const ADMIN_EMAIL = "monjur111@gmail.com";
+
+function OwnerDashboard({user, onClose, onLogout, onListProperty, savedProps, lang="en", L}){
   const isMobile = useIsMobile();
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
+  const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL;
   const [tab, setTab] = useState("listings");
   const myProps = PROPERTIES.filter(p=>p.ownerId==="owner1");
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
@@ -1611,6 +1614,7 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L
   const unreadMsgs = mockMessages.filter(m=>!m.read).length;
 
   const tabs = [["listings",t("🏠 My Listings","🏠 আমার তালিকা")],["messages",t("✉️ Messages","✉️ বার্তা")+(unreadMsgs>0?` (${isBn?toBn(unreadMsgs):unreadMsgs})`:"")],["bookings",t("📅 Inspections","📅 পরিদর্শন")],["analytics",t("📊 Analytics","📊 বিশ্লেষণ")]];
+  if(isAdmin) tabs.push(["admin",t("🛡 Admin","🛡 অ্যাডমিন")]);
 
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:4000,display:"flex",alignItems:"flex-start",justifyContent:"flex-end",padding:0}}>
@@ -1624,7 +1628,10 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L
                 <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · {user.role==="agent"?`👔 ${t("Agent","এজেন্ট")}`:`🏠 ${t("Owner","মালিক")}`}</div>
               </div>
             </div>
-            <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+            <div style={{display:"flex",gap:8,alignItems:"center"}}>
+              {onLogout&&<button onClick={onLogout} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:9,padding:"6px 12px",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer"}}>{t("Sign Out","সাইন আউট")}</button>}
+              <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+            </div>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
             {[[myProps.length,t("Listings","তালিকা"),"🏠"],[totalViews,t("Views","ভিউ"),"👁"],[totalSaves,t("Saved","সেভ"),"❤️"],[unreadMsgs,t("New Msgs","নতুন বার্তা"),"✉️"]].map(([val,label,icon])=>(
@@ -1726,6 +1733,7 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L
             </div>
           )}
           {tab==="analytics" && <AnalyticsTab myProps={myProps} lang={lang}/>}
+          {tab==="admin" && isAdmin && <AdminPanel lang={lang}/>}
         </div>
       </div>
     </div>
@@ -1733,7 +1741,7 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L
 }
 
 /* ── TENANT DASHBOARD ─────────────────────────── */
-function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory, lang="en", L}){
+function TenantDashboard({user, onClose, onLogout, savedIds, onUnsave, searchHistory, lang="en", L}){
   const isMobile = useIsMobile();
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
@@ -1771,7 +1779,10 @@ function TenantDashboard({user, onClose, savedIds, onUnsave, searchHistory, lang
                 <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · 🔍 {t("Tenant","ভাড়াটিয়া")}</div>
               </div>
             </div>
-            <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+            <div style={{display:"flex",gap:8,alignItems:"center"}}>
+              {onLogout&&<button onClick={onLogout} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:9,padding:"6px 12px",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer"}}>{t("Sign Out","সাইন আউট")}</button>}
+              <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+            </div>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
             {[[saved.length,t("Saved","সেভ"),"❤️"],[mockBookings.length,t("Bookings","বুকিং"),"📅"],[mockMessages.length,t("Messages","বার্তা"),"✉️"],[suggestions.length,t("Suggestions","পরামর্শ"),"✨"]].map(([val,label,icon])=>(
@@ -2753,6 +2764,106 @@ const Analytics = {
   },
 };
 
+/* ── ADMIN PANEL (admin-only, site-wide view) ── */
+function AdminPanel({lang="en"}){
+  const isBn = lang==="bn";
+  const t = (en,bn)=>isBn?bn:en;
+  const bn = v => isBn?toBn(v):v;
+  const stats = Analytics.getStats();
+  const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
+
+  // Site-wide totals across ALL listings (owners + everyone)
+  const allProps = PROPERTIES.map(p=>{
+    const live = Analytics.getPropStats(p.id);
+    return {...p, totalViews:p.views+live.views, totalSaves:p.saves+live.saves, enquiries:live.enquiries};
+  }).sort((a,b)=>b.totalViews-a.totalViews);
+
+  const siteViews = allProps.reduce((a,p)=>a+p.totalViews,0);
+  const siteSaves = allProps.reduce((a,p)=>a+p.totalSaves,0);
+  const siteEnq = allProps.reduce((a,p)=>a+p.enquiries,0);
+  const totalListings = PROPERTIES.length;
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      {/* Admin badge */}
+      <div style={{background:"#1f2937",color:"#fff",borderRadius:12,padding:"12px 15px",display:"flex",alignItems:"center",gap:10}}>
+        <span style={{fontSize:22}}>🛡</span>
+        <div>
+          <div style={{fontWeight:800,fontSize:14}}>{t("Admin Overview","অ্যাডমিন ওভারভিউ")}</div>
+          <div style={{fontSize:11,opacity:.8}}>{t("Site-wide stats across all listings","সব তালিকার সাইট-ব্যাপী পরিসংখ্যান")}</div>
+        </div>
+      </div>
+
+      {/* Site KPIs */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {[
+          {icon:"🏠",val:bn(totalListings),label:t("Total Listings","মোট তালিকা"),c:T.green,bg:T.greenL},
+          {icon:"👁",val:bn(siteViews),label:t("Total Views","মোট ভিউ"),c:T.red,bg:T.redL},
+          {icon:"❤️",val:bn(siteSaves),label:t("Total Saves","মোট সেভ"),c:"#e11d48",bg:"#fff1f2"},
+          {icon:"✉️",val:bn(siteEnq),label:t("Total Enquiries","মোট জিজ্ঞাসা"),c:"#7c3aed",bg:"#f5f3ff"},
+        ].map(({icon,val,label,c,bg})=>(
+          <div key={label} style={{background:bg,borderRadius:12,padding:"14px",textAlign:"center"}}>
+            <div style={{fontSize:22}}>{icon}</div>
+            <div style={{fontSize:22,fontWeight:900,color:c}}>{val}</div>
+            <div style={{fontSize:11,color:T.muted,fontWeight:600}}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 7-day activity */}
+      <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:13,padding:"14px 16px"}}>
+        <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:12}}>📈 {t("Activity — Last 7 Days","কার্যকলাপ — গত ৭ দিন")}</div>
+        <div style={{display:"flex",alignItems:"flex-end",gap:6,height:90}}>
+          {stats.days.map(d=>{
+            const max = Math.max(...stats.days.map(x=>x.views),1);
+            return (
+              <div key={d.key} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                <div style={{fontSize:10,fontWeight:700,color:T.muted}}>{bn(d.views)}</div>
+                <div style={{width:"100%",height:`${(d.views/max)*60}px`,minHeight:3,background:T.green,borderRadius:"4px 4px 0 0"}}/>
+                <div style={{fontSize:9,color:T.muted}}>{d.label}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Top searches site-wide */}
+      {stats.topSearches.length>0 && (
+        <div style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:13,padding:"14px 16px"}}>
+          <div style={{fontWeight:800,fontSize:13,color:T.text,marginBottom:10}}>🔥 {t("Top Searches","শীর্ষ সার্চ")}</div>
+          {stats.topSearches.map((s,i)=>(
+            <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:i<stats.topSearches.length-1?`1px solid ${T.border}`:"none"}}>
+              <span style={{fontSize:12,color:T.text}}>{s.query}</span>
+              <span style={{fontSize:11,color:T.muted,fontWeight:600}}>{bn(s.count)}×</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* All listings ranked by views */}
+      <div style={{fontWeight:800,fontSize:13,color:T.text}}>🏆 {t("All Listings by Views","ভিউ অনুযায়ী সব তালিকা")}</div>
+      {allProps.map((p,i)=>(
+        <div key={p.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:11,padding:"10px 13px",display:"flex",alignItems:"center",gap:12}}>
+          <div style={{fontSize:13,fontWeight:900,color:T.muted,minWidth:20}}>{bn(i+1)}</div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:12.5,fontWeight:700,color:T.text,lineHeight:1.3}}>{pname(p)}</div>
+            <div style={{fontSize:11,color:T.muted}}>📍 {p.location}</div>
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontSize:13,fontWeight:800,color:T.red}}>👁 {bn(p.totalViews)}</div>
+            <div style={{fontSize:10,color:T.muted}}>❤️ {bn(p.totalSaves)} · ✉️ {bn(p.enquiries)}</div>
+          </div>
+        </div>
+      ))}
+
+      {/* Honest disclaimer */}
+      <div style={{background:"#fffbeb",border:"1px solid #fde68a",borderRadius:11,padding:"12px 14px",fontSize:11.5,color:"#92400e",lineHeight:1.6}}>
+        ⚠️ {t("These counts come from this browser's local data only — they are not live site-wide visitor numbers. For real traffic across all visitors, use Vercel Analytics in your Vercel dashboard.","এই সংখ্যাগুলো শুধু এই ব্রাউজারের স্থানীয় ডেটা থেকে — এগুলো সাইট-ব্যাপী রিয়েল ভিজিটর সংখ্যা নয়। সব ভিজিটরের প্রকৃত ট্রাফিকের জন্য Vercel ড্যাশবোর্ডে Vercel Analytics ব্যবহার করুন।")}
+      </div>
+    </div>
+  );
+}
+
 
 function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
   const mapRef = useRef(null);
@@ -3528,8 +3639,8 @@ export default function App(){
       <DetailModal p={selected} onClose={()=>setSelected(null)} L={L} lang={lang}/>
       {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
-      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
-      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
+      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
+      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
       {showAbout&&<AboutModal onClose={()=>setShowAbout(false)} lang={lang}/>}
 
       {/* PWA Install Banner */}
