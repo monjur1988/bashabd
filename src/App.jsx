@@ -1621,7 +1621,7 @@ function OwnerDashboard({user, onClose, onListProperty, savedProps, lang="en", L
               <div style={{width:46,height:46,background:"rgba(255,255,255,0.2)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:900,fontSize:20}}>{user.avatar}</div>
               <div>
                 <div style={{color:"#fff",fontWeight:800,fontSize:16}}>{user.name}</div>
-                <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · 🏠 {t("Owner","মালিক")}</div>
+                <div style={{color:"rgba(255,255,255,0.75)",fontSize:12}}>{user.email} · {user.role==="agent"?`👔 ${t("Agent","এজেন্ট")}`:`🏠 ${t("Owner","মালিক")}`}</div>
               </div>
             </div>
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
@@ -3000,7 +3000,7 @@ export default function App(){
     try {
       await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"welcome",data:{email:u.email,name:u.name,role:u.role}})});
     } catch(e){}
-    if(u.role==="owner") setShowOwnerDash(true);
+    if(u.role==="owner"||u.role==="agent") setShowOwnerDash(true);
     else setShowTenantDash(true);
   };
 
@@ -3088,12 +3088,9 @@ export default function App(){
             {!isMobile&&<div style={{fontSize:8,letterSpacing:1.5,color:T.green,fontWeight:700,marginTop:1}}>{L.langBtn==="বাংলা 🇧🇩"?"FIND · RENT · LIST":"খুঁজুন · ভাড়া নিন · তালিকা দিন"}</div>}
           </div>
         </div>
-        {/* ── FIX: Desktop nav — Map button now properly wired to showMap state ── */}
+        {/* Desktop nav — Map view toggle */}
         {!isMobile&&(
           <nav style={{display:"flex",gap:1}}>
-            {["🔍 Listings","💰 Calculator","👨‍💼 Agents"].map(label=>(
-              <button key={label} style={{padding:"5px 12px",border:"none",background:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:T.muted}}>{label}</button>
-            ))}
             <button
               onClick={()=>{ setShowMap(s=>!s); setViewMode(v=>v==="map"?"list":"map"); }}
               style={{padding:"5px 12px",border:"none",background:showMap?T.redL:"transparent",cursor:"pointer",fontWeight:600,fontSize:12,color:showMap?T.red:T.muted,borderRadius:8,transition:"all .15s"}}>
@@ -3106,9 +3103,9 @@ export default function App(){
             {L.langBtn}
           </button>
           {user?(
-            <button onClick={()=>user.role==="owner"?setShowOwnerDash(true):setShowTenantDash(true)}
-              style={{background:user.role==="owner"?T.greenL:T.redL,color:user.role==="owner"?T.green:T.red,border:`1.5px solid ${user.role==="owner"?T.greenM:T.redM}`,padding:isMobile?"5px 10px":"7px 14px",borderRadius:20,fontWeight:700,fontSize:isMobile?11:12,cursor:"pointer",display:"flex",alignItems:"center",gap:5}}>
-              <div style={{width:isMobile?20:24,height:isMobile?20:24,background:user.role==="owner"?T.green:T.red,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:isMobile?10:12,fontWeight:900}}>{user.avatar}</div>
+            <button onClick={()=>(user.role==="owner"||user.role==="agent")?setShowOwnerDash(true):setShowTenantDash(true)}
+              style={{background:(user.role==="owner"||user.role==="agent")?T.greenL:T.redL,color:(user.role==="owner"||user.role==="agent")?T.green:T.red,border:`1.5px solid ${(user.role==="owner"||user.role==="agent")?T.greenM:T.redM}`,padding:isMobile?"5px 10px":"7px 14px",borderRadius:20,fontWeight:700,fontSize:isMobile?11:12,cursor:"pointer",display:"flex",alignItems:"center",gap:5}}>
+              <div style={{width:isMobile?20:24,height:isMobile?20:24,background:(user.role==="owner"||user.role==="agent")?T.green:T.red,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:isMobile?10:12,fontWeight:900}}>{user.avatar}</div>
               {isMobile?"Me":"My Dashboard"}
             </button>
           ):(
@@ -3117,7 +3114,7 @@ export default function App(){
             </button>
           )}
           {!isMobile&&(
-            <button onClick={()=>setShowWizard(true)} style={{background:T.red,color:"#fff",border:"none",padding:"9px 18px",borderRadius:20,fontWeight:800,fontSize:12,cursor:"pointer",boxShadow:"0 2px 10px rgba(200,16,46,0.3)"}}>
+            <button onClick={()=>user?setShowWizard(true):(setAuthMode("signup"),setShowAuth(true))} style={{background:T.red,color:"#fff",border:"none",padding:"9px 18px",borderRadius:20,fontWeight:800,fontSize:12,cursor:"pointer",boxShadow:"0 2px 10px rgba(200,16,46,0.3)"}}>
               {L.listBtn}
             </button>
           )}
@@ -3434,16 +3431,42 @@ export default function App(){
               </div>
               <p style={{fontSize:12,lineHeight:1.8,color:"#4d7a5f",maxWidth:240}}>Bangladesh's most trusted rental & property portal across all 8 divisions.</p>
             </div>
-            {[["For Tenants",["Search Rentals","Buy Property","Book Inspections","Saved Properties","My Dashboard"]],
-              ["For Owners",["List Property Free","Owner Dashboard","Manage Listings","Property Analytics","Set Inspection Times"]],
-              ["Company",["About Basha.app","Contact","Privacy Policy"]]].map(([title,items])=>(
-              <div key={title} style={{flex:"1 1 110px"}}>
-                <div style={{color:"#fff",fontWeight:700,marginBottom:9,fontSize:13}}>{title}</div>
-                {items.map(item=><div key={item} style={{fontSize:11.5,marginBottom:6,cursor:"pointer",color:"#4d7a5f"}}
-                  onMouseEnter={e=>e.target.style.color="#fff"}
-                  onMouseLeave={e=>e.target.style.color="#4d7a5f"}>{item}</div>)}
-              </div>
-            ))}
+            {(() => {
+              const goTop = () => window.scrollTo({top:0,behavior:"smooth"});
+              const needAuth = (after) => user ? after() : (setAuthMode("signin"), setShowAuth(true));
+              const tenantArea = () => needAuth(()=>setShowTenantDash(true));
+              const ownerArea = () => user ? ((user.role==="owner"||user.role==="agent")?setShowOwnerDash(true):setShowTenantDash(true)) : (setAuthMode("signup"), setShowAuth(true));
+              const listProperty = () => user ? setShowWizard(true) : (setAuthMode("signup"), setShowAuth(true));
+              const cols = [
+                ["For Tenants",[
+                  ["Search Rentals", ()=>{setStatus("for-rent");goTop();}],
+                  ["Buy Property",   ()=>{setStatus("for-sale");goTop();}],
+                  ["Book Inspections", tenantArea],
+                  ["Saved Properties", tenantArea],
+                  ["My Dashboard", tenantArea],
+                ]],
+                ["For Owners",[
+                  ["List Property Free", listProperty],
+                  ["Owner Dashboard", ownerArea],
+                  ["Manage Listings", ownerArea],
+                  ["Property Analytics", ownerArea],
+                  ["Set Inspection Times", ownerArea],
+                ]],
+                ["Company",[
+                  ["About Basha.app", goTop],
+                  ["Contact", ()=>{window.location.href="mailto:monjur111@gmail.com";}],
+                  ["Privacy Policy", ()=>{window.open("/privacy.html","_blank");}],
+                ]],
+              ];
+              return cols.map(([title,items])=>(
+                <div key={title} style={{flex:"1 1 110px"}}>
+                  <div style={{color:"#fff",fontWeight:700,marginBottom:9,fontSize:13}}>{title}</div>
+                  {items.map(([item,action])=><div key={item} onClick={action} style={{fontSize:11.5,marginBottom:6,cursor:"pointer",color:"#4d7a5f"}}
+                    onMouseEnter={e=>e.target.style.color="#fff"}
+                    onMouseLeave={e=>e.target.style.color="#4d7a5f"}>{item}</div>)}
+                </div>
+              ));
+            })()}
           </div>
           <div style={{borderTop:"1px solid #1a2e22",paddingTop:14,display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:9,fontSize:11,color:"#2d5040"}}>
             <span>© 2026 Basha.app · All rights reserved.</span>
@@ -3470,7 +3493,7 @@ export default function App(){
             {icon:"❤️",label:"Saved",    action:()=>user?setShowTenantDash(true):(setAuthMode("signin"),setShowAuth(true))},
             {icon:"➕",label:"List",     action:()=>user?setShowWizard(true):(setAuthMode("signup"),setShowAuth(true)), highlight:true},
             {icon:"📅",label:"Bookings", action:()=>user?setShowTenantDash(true):(setAuthMode("signin"),setShowAuth(true))},
-            {icon:"👤",label:user?"Me":"Sign In", action:()=>user?(user.role==="owner"?setShowOwnerDash(true):setShowTenantDash(true)):(setAuthMode("signin"),setShowAuth(true))},
+            {icon:"👤",label:user?"Me":"Sign In", action:()=>user?((user.role==="owner"||user.role==="agent")?setShowOwnerDash(true):setShowTenantDash(true)):(setAuthMode("signin"),setShowAuth(true))},
           ].map(({icon,label,action,highlight})=>(
             <button key={label} onClick={action} style={{
               flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
