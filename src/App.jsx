@@ -2927,6 +2927,54 @@ function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
   );
 }
 
+/* ── ABOUT MODAL ─────────────────────────────── */
+function AboutModal({onClose, lang="en"}){
+  const isMobile = useIsMobile();
+  const isBn = lang==="bn";
+  const t = (en,bn)=>isBn?bn:en;
+
+  const points = [
+    ["🔍", t("Find a home","বাসা খুঁজুন"), t("Browse rentals and properties for sale across all 8 divisions of Bangladesh. Filter by area, type, budget and amenities.","বাংলাদেশের ৮টি বিভাগ জুড়ে ভাড়া ও বিক্রয়ের সম্পত্তি দেখুন। এলাকা, ধরন, বাজেট ও সুবিধা অনুযায়ী ফিল্টার করুন।")],
+    ["🏠", t("List your property","সম্পত্তি তালিকাভুক্ত করুন"), t("Owners and agents can list a property for free in minutes, add photos, and set inspection times.","মালিক ও এজেন্টরা বিনামূল্যে কয়েক মিনিটে সম্পত্তি তালিকাভুক্ত করতে, ছবি যোগ করতে ও পরিদর্শনের সময় নির্ধারণ করতে পারেন।")],
+    ["📅", t("Book inspections","পরিদর্শন বুক করুন"), t("Tenants can request a viewing directly from a listing, and owners manage all bookings from their dashboard.","ভাড়াটিয়ারা সরাসরি তালিকা থেকে পরিদর্শনের অনুরোধ করতে পারেন, এবং মালিকরা ড্যাশবোর্ড থেকে সব বুকিং পরিচালনা করেন।")],
+    ["📊", t("Track performance","পারফরম্যান্স ট্র্যাক করুন"), t("Owners see views, saves and enquiries for each listing, helping them understand demand.","মালিকরা প্রতিটি তালিকার ভিউ, সেভ ও জিজ্ঞাসা দেখেন, যা চাহিদা বুঝতে সাহায্য করে।")],
+  ];
+
+  return (
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.5)",zIndex:1000,display:"flex",alignItems:isMobile?"flex-end":"center",justifyContent:"center",padding:isMobile?0:20}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:isMobile?"18px 18px 0 0":16,maxWidth:560,width:"100%",maxHeight:"90vh",overflowY:"auto"}}>
+        {/* Header */}
+        <div style={{background:`linear-gradient(135deg,${T.red},#8f0a1f)`,color:"#fff",padding:isMobile?"22px 20px":"26px 28px",borderRadius:isMobile?"18px 18px 0 0":"16px 16px 0 0",position:"relative"}}>
+          <button onClick={onClose} style={{position:"absolute",top:14,right:14,background:"rgba(255,255,255,0.18)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer"}}>✕</button>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:24,fontWeight:900,marginBottom:6}}>Basha<span style={{opacity:.85}}>.app</span></div>
+          <div style={{fontSize:14,opacity:.9,lineHeight:1.6}}>{t("Bangladesh's rental & property portal — find a home or list yours, across all 8 divisions.","বাংলাদেশের ভাড়া ও সম্পত্তির পোর্টাল — ৮টি বিভাগ জুড়ে বাসা খুঁজুন বা তালিকাভুক্ত করুন।")}</div>
+        </div>
+        {/* Body */}
+        <div style={{padding:isMobile?"20px":"24px 28px"}}>
+          <div style={{fontSize:14,color:T.text,lineHeight:1.7,marginBottom:18}}>
+            {t("Basha.app connects renters, buyers, property owners and agents across Bangladesh in one simple place. Whether you are looking for a flat in Dhaka, a family home in Chittagong, or want to list a vacant property, Basha.app is built to make it straightforward — in both Bangla and English.","Basha.app বাংলাদেশের ভাড়াটিয়া, ক্রেতা, সম্পত্তির মালিক ও এজেন্টদের এক সহজ জায়গায় সংযুক্ত করে। আপনি ঢাকায় ফ্ল্যাট খুঁজছেন, চট্টগ্রামে পারিবারিক বাসা চান, নাকি খালি সম্পত্তি তালিকাভুক্ত করতে চান — Basha.app তা সহজ করতে তৈরি, বাংলা ও ইংরেজি উভয় ভাষায়।")}
+          </div>
+          {points.map(([icon,title,desc])=>(
+            <div key={title} style={{display:"flex",gap:13,marginBottom:15,alignItems:"flex-start"}}>
+              <div style={{fontSize:24,flexShrink:0}}>{icon}</div>
+              <div>
+                <div style={{fontWeight:800,fontSize:14,color:T.text,marginBottom:2}}>{title}</div>
+                <div style={{fontSize:13,color:T.muted,lineHeight:1.6}}>{desc}</div>
+              </div>
+            </div>
+          ))}
+          <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:11,padding:"13px 15px",fontSize:12.5,color:T.green,fontWeight:600,marginTop:6,lineHeight:1.6}}>
+            📱 {t("Android and iOS apps are coming soon — so you can search and book on the go.","অ্যান্ড্রয়েড ও আইওএস অ্যাপ শীঘ্রই আসছে — যাতে আপনি চলার পথে সার্চ ও বুক করতে পারেন।")}
+          </div>
+          <div style={{textAlign:"center",fontSize:11,color:T.muted,marginTop:18}}>
+            🇧🇩 {t("Built for Bangladesh · Dhaka","বাংলাদেশের জন্য তৈরি · ঢাকা")}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── MAIN APP ─────────────────────────────────── */
 export default function App(){
   const isMobile = useIsMobile();
@@ -2952,6 +3000,7 @@ export default function App(){
   const [showTenantDash,setShowTenantDash] = useState(false);
   // ── FIX: showMap state (was missing — caused "Can't find variable: showMap") ──
   const [showMap,setShowMap]     = useState(false);
+  const [showAbout,setShowAbout] = useState(false);
   const [viewMode,setViewMode]   = useState("list"); // "list" | "map"
   // Custom areas added by property listers — persisted in localStorage
   const [customAreas, setCustomAreas] = useState(()=>{
@@ -3453,7 +3502,7 @@ export default function App(){
                   ["Set Inspection Times", ownerArea],
                 ]],
                 ["Company",[
-                  ["About Basha.app", goTop],
+                  ["About Basha.app", ()=>setShowAbout(true)],
                   ["Contact", ()=>{window.location.href="mailto:monjur111@gmail.com";}],
                   ["Privacy Policy", ()=>{window.open("/privacy.html","_blank");}],
                 ]],
@@ -3481,6 +3530,7 @@ export default function App(){
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
+      {showAbout&&<AboutModal onClose={()=>setShowAbout(false)} lang={lang}/>}
 
       {/* PWA Install Banner */}
       {showPWA && <PWABanner onInstall={installPWA} onDismiss={dismissPWA} isIOS={isIOS}/>}
