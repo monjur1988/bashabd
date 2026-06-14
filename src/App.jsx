@@ -2172,7 +2172,7 @@ function DetailModal({p, onClose, L, lang="en"}){
 }
 
 /* ── LISTING WIZARD ───────────────────────────── */
-function ListWizard({onClose, onAddArea, customAreas=[]}){
+function ListWizard({onClose, onAddArea, onAddProperty, customAreas=[]}){
   const isMobile = useIsMobile();
   const [step,setStep]=useState(0);
   const [form,setForm]=useState({type:"apartment",status:"for-rent",title:"",address:"",areaName:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:"",photos:[],coverIdx:0});
@@ -2307,7 +2307,7 @@ function ListWizard({onClose, onAddArea, customAreas=[]}){
               <div>
                 <div style={{fontSize:11,fontWeight:800,color:T.muted,marginBottom:4}}>DIVISION</div>
                 <select value={form.division} onChange={e=>upd("division",e.target.value)} style={{width:"100%",padding:"10px 12px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,color:"#444",background:"#fff",outline:"none"}}>
-                  {DIVISIONS_EN.slice(1).map(d=><option key={d}>{d}</option>)}
+                  {DIVISIONS.slice(1).map(d=><option key={d}>{d}</option>)}
                 </select>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:9}}>
@@ -2482,7 +2482,7 @@ function ListWizard({onClose, onAddArea, customAreas=[]}){
                   {form.petFriendly&&<span>🐾 Pets welcome · </span>}{form.flatmate&&<span>👥 Flatmate friendly</span>}
                 </div>
               </div>
-              <button onClick={onClose} style={{background:T.red,color:"#fff",border:"none",padding:"14px",borderRadius:12,fontWeight:900,fontSize:15,cursor:"pointer",marginTop:4}}>🚀 Publish My Listing — Free!</button>
+              <button onClick={()=>{ if(onAddProperty) onAddProperty(form); onClose(); }} style={{background:T.red,color:"#fff",border:"none",padding:"14px",borderRadius:12,fontWeight:900,fontSize:15,cursor:"pointer",marginTop:4}}>🚀 Publish My Listing — Free!</button>
             </div>
           )}
           {step<4&&(
@@ -3139,6 +3139,49 @@ export default function App(){
       return updated;
     });
   };
+  // User-created property listings — persisted in localStorage
+  const [userProps, setUserProps] = useState(()=>{
+    try {
+      const saved = localStorage.getItem("basha_user_props");
+      return saved ? JSON.parse(saved) : [];
+    } catch(e){ return []; }
+  });
+  const handleAddProperty = (form) => {
+    const newProp = {
+      id: Date.now(),
+      title: form.title || "Untitled Property",
+      titleBn: form.title || "",
+      type: form.type || "apartment",
+      status: form.status || "for-rent",
+      price: Number(form.price) || 0,
+      area: Number(form.area) || 0,
+      beds: Number(form.beds) || 0,
+      baths: Number(form.baths) || 0,
+      cars: 0,
+      floor: Number(form.floor) || 0,
+      location: (form.areaName ? form.areaName+", " : "") + (form.division || ""),
+      division: form.division || "Dhaka",
+      img: (form.photos && form.photos[form.coverIdx]) || (form.photos && form.photos[0]) || "",
+      photos: form.photos || [],
+      featured: false,
+      tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
+      petFriendly: !!form.petFriendly,
+      flatmate: !!form.flatmate,
+      utilities: form.utils || [],
+      inspSlots: (form.inspSlots||[]).filter(s=>s.day&&s.time).map(s=>`${s.day} — ${s.time}`),
+      agent: form.name || "Owner",
+      phone: form.phone || "",
+      desc: form.desc || "",
+      age: 0, views: 0, saves: 0,
+      ownerId: "owner1",
+    };
+    setUserProps(prev => {
+      const updated = [newProp, ...prev];
+      try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
+      return updated;
+    });
+  };
+
   // Saved & history
   const [savedIds,setSavedIds]   = useState([1,6]);
   const [searchHistory,setSearchHistory] = useState([
@@ -3185,7 +3228,8 @@ export default function App(){
   const switchToOwner = () => { setShowTenantDash(false); setShowOwnerDash(true); };
   const switchToTenant = () => { setShowOwnerDash(false); setShowTenantDash(true); };
 
-  const filtered = PROPERTIES.filter(p=>{
+  const ALL_PROPS = [...userProps, ...PROPERTIES];
+  const filtered = ALL_PROPS.filter(p=>{
     if(search&&!p.title.toLowerCase().includes(search.toLowerCase())&&!p.location.toLowerCase().includes(search.toLowerCase())) return false;
     if(status!=="all"&&p.status!==status) return false;
     if(typeF!=="All Types"&&p.type!==typeF.toLowerCase()) return false;
@@ -3652,7 +3696,7 @@ export default function App(){
 
       {/* MODALS */}
       <DetailModal p={selected} onClose={()=>setSelected(null)} L={L} lang={lang}/>
-      {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} customAreas={customAreas}/>}
+      {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} onAddProperty={handleAddProperty} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onSwitchToTenant={switchToTenant} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} onSwitchToOwner={switchToOwner} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
