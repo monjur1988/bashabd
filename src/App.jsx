@@ -2307,7 +2307,7 @@ function ListWizard({onClose, onAddArea, onAddProperty, customAreas=[]}){
               <div>
                 <div style={{fontSize:11,fontWeight:800,color:T.muted,marginBottom:4}}>DIVISION</div>
                 <select value={form.division} onChange={e=>upd("division",e.target.value)} style={{width:"100%",padding:"10px 12px",border:`1.5px solid ${T.border}`,borderRadius:9,fontSize:13,color:"#444",background:"#fff",outline:"none"}}>
-                  {DIVISIONS.slice(1).map(d=><option key={d}>{d}</option>)}
+                  {DIVISIONS_EN.slice(1).map(d=><option key={d}>{d}</option>)}
                 </select>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:9}}>
