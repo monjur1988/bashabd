@@ -1590,13 +1590,13 @@ function AnalyticsTab({myProps, lang="en"}){
 /* ── OWNER DASHBOARD ──────────────────────────── */
 const ADMIN_EMAIL = "monjur111@gmail.com";
 
-function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProperty, savedProps, lang="en", L}){
+function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProperty, savedProps, userProps=[], onDeleteProperty, onEditProperty, lang="en", L}){
   const isMobile = useIsMobile();
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
   const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL;
   const [tab, setTab] = useState("listings");
-  const myProps = PROPERTIES.filter(p=>p.ownerId==="owner1");
+  const myProps = [...userProps, ...PROPERTIES.filter(p=>p.ownerId==="owner1")];
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
 
   const mockMessages = [
@@ -1679,6 +1679,12 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
                       <span style={{fontSize:11,color:T.muted}}>📅 <strong style={{color:T.green}}>{isBn?toBn(p.inspSlots.length):p.inspSlots.length}</strong> {t("inspect slots","টি পরিদর্শন সময়")}</span>
                       <span style={{marginLeft:"auto",fontSize:10,background:p.status==="for-rent"?T.greenL:T.redL,color:p.status==="for-rent"?T.green:T.red,padding:"2px 8px",borderRadius:8,fontWeight:700}}>{p.status==="for-rent"?L.forRent:L.forSale}</span>
                     </div>
+                    {userProps.some(up=>up.id===p.id) && (
+                      <div style={{borderTop:`1px solid ${T.border}`,padding:"8px 12px",display:"flex",gap:8}}>
+                        <button onClick={()=>{ if(onEditProperty) onEditProperty(p); }} style={{flex:1,background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✏️ {t("Edit","সম্পাদনা")}</button>
+                        <button onClick={()=>{ if(window.confirm(t("Delete this listing? This cannot be undone.","এই তালিকা মুছবেন? এটি ফেরানো যাবে না।"))){ if(onDeleteProperty) onDeleteProperty(p.id); } }} style={{flex:1,background:T.redL,color:T.red,border:`1px solid ${T.redM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>🗑 {t("Delete","মুছুন")}</button>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -2172,10 +2178,35 @@ function DetailModal({p, onClose, L, lang="en"}){
 }
 
 /* ── LISTING WIZARD ───────────────────────────── */
-function ListWizard({onClose, onAddArea, onAddProperty, customAreas=[]}){
+function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEditProperty, customAreas=[]}){
   const isMobile = useIsMobile();
   const [step,setStep]=useState(0);
-  const [form,setForm]=useState({type:"apartment",status:"for-rent",title:"",address:"",areaName:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:"",photos:[],coverIdx:0});
+  const [form,setForm]=useState(()=>{
+    const base={type:"apartment",status:"for-rent",title:"",address:"",areaName:"",division:"Dhaka",price:"",beds:"",baths:"",area:"",floor:"",furnished:"unfurnished",avail:"now",availDate:"",inspSlots:[{day:"",time:""}],utils:[],petFriendly:false,flatmate:false,features:[],desc:"",name:"",phone:"",photos:[],coverIdx:0};
+    if(editingProp){
+      return {...base,
+        type:editingProp.type||base.type,
+        status:editingProp.status||base.status,
+        title:editingProp.title||"",
+        areaName:editingProp.location?editingProp.location.split(",")[0]:"",
+        division:editingProp.division||base.division,
+        price:editingProp.price?String(editingProp.price):"",
+        beds:editingProp.beds?String(editingProp.beds):"",
+        baths:editingProp.baths?String(editingProp.baths):"",
+        area:editingProp.area?String(editingProp.area):"",
+        floor:editingProp.floor?String(editingProp.floor):"",
+        utils:editingProp.utilities||[],
+        petFriendly:!!editingProp.petFriendly,
+        flatmate:!!editingProp.flatmate,
+        features:editingProp.tags||[],
+        desc:editingProp.desc||"",
+        name:editingProp.agent||"",
+        phone:editingProp.phone||"",
+        photos:editingProp.photos||[],
+      };
+    }
+    return base;
+  });
   const [areaSugg, setAreaSugg] = useState(false);
   const upd=(k,v)=>setForm(f=>({...f,[k]:v}));
   const toggleArr=(k,v)=>setForm(f=>({...f,[k]:f[k].includes(v)?f[k].filter(x=>x!==v):[...f[k],v]}));
@@ -2482,7 +2513,7 @@ function ListWizard({onClose, onAddArea, onAddProperty, customAreas=[]}){
                   {form.petFriendly&&<span>🐾 Pets welcome · </span>}{form.flatmate&&<span>👥 Flatmate friendly</span>}
                 </div>
               </div>
-              <button onClick={()=>{ if(onAddProperty) onAddProperty(form); onClose(); }} style={{background:T.red,color:"#fff",border:"none",padding:"14px",borderRadius:12,fontWeight:900,fontSize:15,cursor:"pointer",marginTop:4}}>🚀 Publish My Listing — Free!</button>
+              <button onClick={()=>{ if(editingProp){ if(onEditProperty) onEditProperty(editingProp.id, form); } else { if(onAddProperty) onAddProperty(form); } onClose(); }} style={{background:T.red,color:"#fff",border:"none",padding:"14px",borderRadius:12,fontWeight:900,fontSize:15,cursor:"pointer",marginTop:4}}>{editingProp ? "💾 Update My Listing" : "🚀 Publish My Listing — Free!"}</button>
             </div>
           )}
           {step<4&&(
@@ -3108,6 +3139,7 @@ export default function App(){
   const [activeQ,setActiveQ]     = useState([]);
   const [selected,setSelected]   = useState(null);
   const [showWizard,setShowWizard] = useState(false);
+  const [editingProp,setEditingProp] = useState(null);
   const [sortBy,setSortBy]       = useState("featured");
   const [budgetMax,setBudgetMax] = useState("");
   const [showAdv,setShowAdv]     = useState(false);
@@ -3177,6 +3209,43 @@ export default function App(){
     };
     setUserProps(prev => {
       const updated = [newProp, ...prev];
+      try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
+      return updated;
+    });
+  };
+  const handleDeleteProperty = (id) => {
+    setUserProps(prev => {
+      const updated = prev.filter(p => p.id !== id);
+      try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
+      return updated;
+    });
+  };
+  const handleEditProperty = (id, form) => {
+    setUserProps(prev => {
+      const updated = prev.map(p => p.id===id ? {
+        ...p,
+        title: form.title || p.title,
+        titleBn: form.title || p.titleBn,
+        type: form.type || p.type,
+        status: form.status || p.status,
+        price: Number(form.price) || 0,
+        area: Number(form.area) || 0,
+        beds: Number(form.beds) || 0,
+        baths: Number(form.baths) || 0,
+        floor: Number(form.floor) || 0,
+        location: (form.areaName ? form.areaName+", " : "") + (form.division || ""),
+        division: form.division || p.division,
+        img: (form.photos && form.photos[form.coverIdx]) || (form.photos && form.photos[0]) || p.img,
+        photos: form.photos || p.photos,
+        tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
+        petFriendly: !!form.petFriendly,
+        flatmate: !!form.flatmate,
+        utilities: form.utils || p.utilities,
+        inspSlots: (form.inspSlots||[]).filter(x=>x.day&&x.time).map(x=>`${x.day} — ${x.time}`),
+        agent: form.name || p.agent,
+        phone: form.phone || p.phone,
+        desc: form.desc || p.desc,
+      } : p);
       try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
       return updated;
     });
@@ -3696,9 +3765,9 @@ export default function App(){
 
       {/* MODALS */}
       <DetailModal p={selected} onClose={()=>setSelected(null)} L={L} lang={lang}/>
-      {showWizard&&<ListWizard onClose={()=>setShowWizard(false)} onAddArea={handleAddArea} onAddProperty={handleAddProperty} customAreas={customAreas}/>}
+      {showWizard&&<ListWizard onClose={()=>{setShowWizard(false);setEditingProp(null);}} onAddArea={handleAddArea} onAddProperty={handleAddProperty} editingProp={editingProp} onEditProperty={handleEditProperty} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
-      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onSwitchToTenant={switchToTenant} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} lang={lang} L={L}/>}
+      {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onSwitchToTenant={switchToTenant} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} userProps={userProps} onDeleteProperty={handleDeleteProperty} onEditProperty={(p)=>{setEditingProp(p);setShowOwnerDash(false);setShowWizard(true);}} lang={lang} L={L}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} onSwitchToOwner={switchToOwner} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
       {showAbout&&<AboutModal onClose={()=>setShowAbout(false)} lang={lang}/>}
 
