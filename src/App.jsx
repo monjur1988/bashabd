@@ -2433,8 +2433,14 @@ function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEdit
                     onChange={e=>{
                       const files=Array.from(e.target.files);
                       const remaining=10-form.photos.length;
-                      const toAdd=files.slice(0,remaining).map(f=>({file:f,url:URL.createObjectURL(f),name:f.name,size:(f.size/1024/1024).toFixed(1),uploading:false,done:false}));
-                      upd("photos",[...form.photos,...toAdd]);
+                      const toAdd=files.slice(0,remaining);
+                      toAdd.forEach(f=>{
+                        const reader=new FileReader();
+                        reader.onload=ev=>{
+                          setForm(prev=>({...prev,photos:[...prev.photos,{url:ev.target.result,name:f.name,size:(f.size/1024/1024).toFixed(1)}]}));
+                        };
+                        reader.readAsDataURL(f);
+                      });
                     }}
                   />
                   <div style={{fontSize:28,marginBottom:6}}>📷</div>
@@ -2470,8 +2476,13 @@ function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEdit
                           onChange={e=>{
                             const files=Array.from(e.target.files);
                             const remaining=10-form.photos.length;
-                            const toAdd=files.slice(0,remaining).map(f=>({file:f,url:URL.createObjectURL(f),name:f.name,size:(f.size/1024/1024).toFixed(1),uploading:false,done:false}));
-                            upd("photos",[...form.photos,...toAdd]);
+                            files.slice(0,remaining).forEach(f=>{
+                              const reader=new FileReader();
+                              reader.onload=ev=>{
+                                setForm(prev=>({...prev,photos:[...prev.photos,{url:ev.target.result,name:f.name,size:(f.size/1024/1024).toFixed(1)}]}));
+                              };
+                              reader.readAsDataURL(f);
+                            });
                           }}
                         />
                         <span style={{fontSize:20}}>➕</span>
@@ -3193,7 +3204,7 @@ export default function App(){
       floor: Number(form.floor) || 0,
       location: (form.areaName ? form.areaName+", " : "") + (form.division || ""),
       division: form.division || "Dhaka",
-      img: (form.photos && form.photos[form.coverIdx]) || (form.photos && form.photos[0]) || "",
+      img: (form.photos && form.photos[form.coverIdx] && form.photos[form.coverIdx].url) || (form.photos && form.photos[0] && form.photos[0].url) || "",
       photos: form.photos || [],
       featured: false,
       tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
@@ -3235,7 +3246,7 @@ export default function App(){
         floor: Number(form.floor) || 0,
         location: (form.areaName ? form.areaName+", " : "") + (form.division || ""),
         division: form.division || p.division,
-        img: (form.photos && form.photos[form.coverIdx]) || (form.photos && form.photos[0]) || p.img,
+        img: (form.photos && form.photos[form.coverIdx] && form.photos[form.coverIdx].url) || (form.photos && form.photos[0] && form.photos[0].url) || p.img,
         photos: form.photos || p.photos,
         tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
         petFriendly: !!form.petFriendly,
