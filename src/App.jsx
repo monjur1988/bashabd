@@ -1,4 +1,100 @@
 import { useState, useEffect, useRef } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+/* ── SUPABASE CLIENT ─────────────────────────── */
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = (SUPABASE_URL && SUPABASE_KEY) ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+// Convert a database row -> the property shape the app UI expects
+function dbRowToProp(r){
+  return {
+    id: r.id,
+    title: r.title || "Untitled Property",
+    titleBn: r.title || "",
+    type: r.type || "apartment",
+    status: r.status || "for-rent",
+    price: Number(r.price) || 0,
+    area: Number(r.area_sqft) || 0,
+    beds: Number(r.beds) || 0,
+    baths: Number(r.baths) || 0,
+    cars: Number(r.cars) || 0,
+    floor: Number(r.floor_no) || 0,
+    location: r.area_name ? (r.area_name + (r.division ? ", " + r.division : "")) : (r.address || r.division || ""),
+    division: r.division || "Dhaka",
+    img: r.img || (Array.isArray(r.photos) && r.photos[0]) || "",
+    photos: Array.isArray(r.photos) ? r.photos.map(u=>({url:u})) : [],
+    featured: !!r.featured,
+    tags: Array.isArray(r.tags) ? r.tags : [],
+    petFriendly: !!r.pet_friendly,
+    flatmate: !!r.flatmate_ok,
+    utilities: Array.isArray(r.utilities) ? r.utilities : [],
+    inspSlots: Array.isArray(r.insp_slots) ? r.insp_slots : [],
+    agent: r.agent || "Owner",
+    phone: r.phone || "",
+    desc: r.description || "",
+    age: 0,
+    views: Number(r.views) || 0,
+    saves: 0,
+    ownerId: r.owner_email || "owner1",
+    ownerEmail: r.owner_email || "",
+    isUserListing: true,
+  };
+}
+
+// Upload base64/blob photos to Supabase Storage, return array of public URLs
+async function uploadPhotos(photos){
+  if(!supabase || !Array.isArray(photos) || photos.length===0) return [];
+  const urls = [];
+  for(let i=0;i<photos.length;i++){
+    const ph = photos[i];
+    const dataUrl = ph && ph.url ? ph.url : (typeof ph==="string"?ph:null);
+    if(!dataUrl) continue;
+    // Already a hosted URL (editing an existing listing) — keep as-is
+    if(dataUrl.startsWith("http")){ urls.push(dataUrl); continue; }
+    try {
+      const resp = await fetch(dataUrl);
+      const blob = await resp.blob();
+      const ext = (blob.type && blob.type.split("/")[1]) || "jpg";
+      const path = `listing_${Date.now()}_${i}.${ext}`;
+      const { error } = await supabase.storage.from("property-photos").upload(path, blob, { contentType: blob.type || "image/jpeg", upsert: false });
+      if(error){ console.error("Photo upload failed:", error.message); continue; }
+      const { data } = supabase.storage.from("property-photos").getPublicUrl(path);
+      if(data && data.publicUrl) urls.push(data.publicUrl);
+    } catch(e){ console.error("Photo processing failed:", e); }
+  }
+  return urls;
+}
+
+// Build a database row from the wizard form + uploaded photo URLs
+function formToDbRow(form, photoUrls){
+  return {
+    title: form.title || "Untitled Property",
+    type: form.type || "apartment",
+    status: form.status || "for-rent",
+    price: Number(form.price) || 0,
+    area_sqft: Number(form.area) || 0,
+    beds: Number(form.beds) || 0,
+    baths: Number(form.baths) || 0,
+    floor_no: Number(form.floor) || 0,
+    area_name: form.areaName || "",
+    address: form.address || "",
+    division: form.division || "Dhaka",
+    img: photoUrls[form.coverIdx] || photoUrls[0] || "",
+    photos: photoUrls,
+    tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
+    pet_friendly: !!form.petFriendly,
+    flatmate_ok: !!form.flatmate,
+    utilities: form.utils || [],
+    insp_slots: (form.inspSlots||[]).filter(x=>x.day&&x.time).map(x=>`${x.day} — ${x.time}`),
+    agent: form.name || "Owner",
+    phone: form.phone || "",
+    description: form.desc || "",
+    published: true,
+    views: 0,
+  };
+}
+
 
 /* ── MOBILE HOOK ─────────────────────────────── */
 function useIsMobile() {
@@ -3183,83 +3279,50 @@ export default function App(){
     });
   };
   // User-created property listings — persisted in localStorage
-  const [userProps, setUserProps] = useState(()=>{
+  const [userProps, setUserProps] = useState([]);
+
+  // Load real listings from Supabase on startup
+  useEffect(()=>{
+    if(!supabase) return;
+    (async()=>{
+      const { data, error } = await supabase
+        .from("properties")
+        .select("*")
+        .order("created_at", { ascending:false });
+      if(error){ console.error("Load listings failed:", error.message); return; }
+      if(data) setUserProps(data.map(dbRowToProp));
+    })();
+  },[]);
+
+  const handleAddProperty = async (form) => {
+    if(!supabase){ alert("Database not connected. Please try again later."); return; }
     try {
-      const saved = localStorage.getItem("basha_user_props");
-      return saved ? JSON.parse(saved) : [];
-    } catch(e){ return []; }
-  });
-  const handleAddProperty = (form) => {
-    const newProp = {
-      id: Date.now(),
-      title: form.title || "Untitled Property",
-      titleBn: form.title || "",
-      type: form.type || "apartment",
-      status: form.status || "for-rent",
-      price: Number(form.price) || 0,
-      area: Number(form.area) || 0,
-      beds: Number(form.beds) || 0,
-      baths: Number(form.baths) || 0,
-      cars: 0,
-      floor: Number(form.floor) || 0,
-      location: (form.areaName ? form.areaName+", " : "") + (form.division || ""),
-      division: form.division || "Dhaka",
-      img: (form.photos && form.photos[form.coverIdx] && form.photos[form.coverIdx].url) || (form.photos && form.photos[0] && form.photos[0].url) || "",
-      photos: form.photos || [],
-      featured: false,
-      tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
-      petFriendly: !!form.petFriendly,
-      flatmate: !!form.flatmate,
-      utilities: form.utils || [],
-      inspSlots: (form.inspSlots||[]).filter(s=>s.day&&s.time).map(s=>`${s.day} — ${s.time}`),
-      agent: form.name || "Owner",
-      phone: form.phone || "",
-      desc: form.desc || "",
-      age: 0, views: 0, saves: 0,
-      ownerId: "owner1",
-    };
-    setUserProps(prev => {
-      const updated = [newProp, ...prev];
-      try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
-      return updated;
-    });
+      const photoUrls = await uploadPhotos(form.photos);
+      const row = formToDbRow(form, photoUrls);
+      row.owner_email = (typeof user!=="undefined" && user && user.email) ? user.email : "";
+      const { data, error } = await supabase.from("properties").insert(row).select().single();
+      if(error){ console.error("Add listing failed:", error.message); alert("Could not publish listing: "+error.message); return; }
+      if(data) setUserProps(prev => [dbRowToProp(data), ...prev]);
+    } catch(e){ console.error(e); alert("Something went wrong publishing your listing."); }
   };
-  const handleDeleteProperty = (id) => {
-    setUserProps(prev => {
-      const updated = prev.filter(p => p.id !== id);
-      try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
-      return updated;
-    });
+
+  const handleDeleteProperty = async (id) => {
+    if(!supabase) return;
+    const { error } = await supabase.from("properties").delete().eq("id", id);
+    if(error){ console.error("Delete failed:", error.message); alert("Could not delete listing: "+error.message); return; }
+    setUserProps(prev => prev.filter(p => p.id !== id));
   };
-  const handleEditProperty = (id, form) => {
-    setUserProps(prev => {
-      const updated = prev.map(p => p.id===id ? {
-        ...p,
-        title: form.title || p.title,
-        titleBn: form.title || p.titleBn,
-        type: form.type || p.type,
-        status: form.status || p.status,
-        price: Number(form.price) || 0,
-        area: Number(form.area) || 0,
-        beds: Number(form.beds) || 0,
-        baths: Number(form.baths) || 0,
-        floor: Number(form.floor) || 0,
-        location: (form.areaName ? form.areaName+", " : "") + (form.division || ""),
-        division: form.division || p.division,
-        img: (form.photos && form.photos[form.coverIdx] && form.photos[form.coverIdx].url) || (form.photos && form.photos[0] && form.photos[0].url) || p.img,
-        photos: form.photos || p.photos,
-        tags: [...(form.furnished?[form.furnished.charAt(0).toUpperCase()+form.furnished.slice(1)]:[]), ...((form.features||[]).slice(0,3))],
-        petFriendly: !!form.petFriendly,
-        flatmate: !!form.flatmate,
-        utilities: form.utils || p.utilities,
-        inspSlots: (form.inspSlots||[]).filter(x=>x.day&&x.time).map(x=>`${x.day} — ${x.time}`),
-        agent: form.name || p.agent,
-        phone: form.phone || p.phone,
-        desc: form.desc || p.desc,
-      } : p);
-      try { localStorage.setItem("basha_user_props", JSON.stringify(updated)); } catch(e){}
-      return updated;
-    });
+
+  const handleEditProperty = async (id, form) => {
+    if(!supabase) return;
+    try {
+      const photoUrls = await uploadPhotos(form.photos);
+      const row = formToDbRow(form, photoUrls);
+      delete row.views; // don't reset views on edit
+      const { data, error } = await supabase.from("properties").update(row).eq("id", id).select().single();
+      if(error){ console.error("Edit failed:", error.message); alert("Could not update listing: "+error.message); return; }
+      if(data) setUserProps(prev => prev.map(p => p.id===id ? dbRowToProp(data) : p));
+    } catch(e){ console.error(e); alert("Something went wrong updating your listing."); }
   };
 
   // Saved & history
