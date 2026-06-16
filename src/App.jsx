@@ -3765,6 +3765,34 @@ export default function App(){
         </div>
       </div>
 
+      {/* HELPFUL GUIDES STRIP */}
+      <section style={{background:"#f7fbf8",borderTop:`1px solid ${T.border}`,padding:"40px 20px"}}>
+        <div style={{maxWidth:1100,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:24}}>
+            <div style={{fontFamily:"'Playfair Display',serif",fontSize:24,fontWeight:900,color:T.text,marginBottom:6}}>Helpful Guides for Renting & Buying</div>
+            <div style={{fontSize:14,color:T.muted}}>Honest, practical advice on renting and property in Bangladesh — written for how the market really works.</div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:16}}>
+            {[
+              ["How to Find a Flat to Rent in Dhaka","The complete guide — how renting really works, and how to avoid the Facebook group games.","/blog/rent-flat-dhaka-guide"],
+              ["Are Dhaka Rental Facebook Groups Safe?","What nobody tells you about how group admins control the listings you see.","/blog/dhaka-rental-facebook-groups"],
+              ["Buying Land or a House in Bangladesh","How to avoid fake deeds, duplicate ownership, and dalal traps when buying.","/blog/buying-land-house-bangladesh"],
+            ].map(([title,desc,url])=>(
+              <a key={url} href={url} target="_blank" rel="noopener noreferrer" style={{display:"block",background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"18px 20px",textDecoration:"none",boxShadow:"0 1px 4px rgba(0,0,0,0.05)",transition:"transform .15s,box-shadow .15s"}}
+                onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 24px rgba(0,0,0,0.10)";}}
+                onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="0 1px 4px rgba(0,0,0,0.05)";}}>
+                <div style={{fontWeight:800,fontSize:15,color:T.text,marginBottom:7,lineHeight:1.3}}>{title}</div>
+                <div style={{fontSize:13,color:T.muted,lineHeight:1.5,marginBottom:10}}>{desc}</div>
+                <span style={{fontSize:13,fontWeight:700,color:T.green}}>Read guide →</span>
+              </a>
+            ))}
+          </div>
+          <div style={{textAlign:"center",marginTop:22}}>
+            <a href="/blog/" target="_blank" rel="noopener noreferrer" style={{display:"inline-block",background:T.green,color:"#fff",padding:"11px 26px",borderRadius:10,fontWeight:700,fontSize:14,textDecoration:"none"}}>View all guides →</a>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer style={{background:"#0f1f16",color:"#6b8f7a",padding:"40px 20px 20px"}}>
         <div style={{maxWidth:1220,margin:"0 auto"}}>
@@ -3818,6 +3846,12 @@ export default function App(){
                   ["About Basha.app", ()=>setShowAbout(true)],
                   ["Contact", ()=>{window.location.href="mailto:monjur111@gmail.com";}],
                   ["Privacy Policy", ()=>{window.open("/privacy.html","_blank");}],
+                ]],
+                ["Guides",[
+                  ["How to Rent in Dhaka", ()=>{window.open("/blog/rent-flat-dhaka-guide","_blank");}],
+                  ["Bachelor Flat Rent Guide", ()=>{window.open("/blog/bachelor-flat-rent-dhaka","_blank");}],
+                  ["Buying Land Safely", ()=>{window.open("/blog/buying-land-house-bangladesh","_blank");}],
+                  ["All Guides →", ()=>{window.open("/blog/","_blank");}],
                 ]],
               ];
               return cols.map(([title,items])=>(
