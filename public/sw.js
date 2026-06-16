@@ -1,7 +1,7 @@
 /* ── Basha.app Service Worker ─────────────────── */
-const CACHE_NAME = "basha-app-v1";
-const STATIC_CACHE = "basha-static-v1";
-const API_CACHE = "basha-api-v1";
+const CACHE_NAME = "basha-app-v2";
+const STATIC_CACHE = "basha-static-v2";
+const API_CACHE = "basha-api-v2";
 
 // Files to cache immediately on install
 const PRECACHE_URLS = [
@@ -48,6 +48,10 @@ self.addEventListener("fetch", (event) => {
 
   // Skip non-GET requests
   if (request.method !== "GET") return;
+
+  // Skip the blog entirely — always load these static pages from the network,
+  // never from cache or the offline fallback.
+  if (url.pathname === "/blog" || url.pathname.startsWith("/blog/")) return;
 
   // Skip cross-origin requests (Leaflet tiles, Unsplash images, etc.)
   // But serve them with network-first for map tiles
