@@ -1340,18 +1340,48 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
 
   const submit = async () => {
     setError("");
-    if(loginTab==="email"){
-      if(!email||!pass){setError("Please fill in email and password.");return;}
-    } else {
-      if(!phone){setError("Please enter your phone number.");return;}
-      if(otpSent&&!otp){setError("Please enter the OTP sent to your phone.");return;}
+    // Phone/OTP not enabled yet — guide user to email for now
+    if(loginTab!=="email"){
+      setError("Phone login is coming soon. Please use email and password for now.");
+      return;
     }
+    if(!email||!pass){setError("Please fill in email and password.");return;}
     if(mode==="signup"&&!name){setError("Please enter your full name.");return;}
+    if(!supabase){setError("Service unavailable. Please try again shortly.");return;}
     setLoading(true);
-    await new Promise(r=>setTimeout(r,900));
-    setLoading(false);
-    onLogin(mkUser());
-    onClose();
+    try {
+      if(mode==="signup"){
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim(),
+          password: pass,
+          options: { data: { name: name.trim() } }
+        });
+        if(error){ setError(error.message); setLoading(false); return; }
+        // If email confirmation is off, session exists immediately
+        if(data.session && data.user){
+          onLogin({ id:data.user.id, name:name.trim()||email.split("@")[0], email:data.user.email, phone:"", role:"tenant", avatar:(name||email)[0].toUpperCase() });
+          setLoading(false); onClose(); return;
+        }
+        // If confirmation is on, no session yet
+        setLoading(false);
+        setError("Account created! Please check your email to confirm, then sign in.");
+        setMode("signin");
+        return;
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password: pass
+        });
+        if(error){ setError(error.message); setLoading(false); return; }
+        const u = data.user;
+        const uname = (u.user_metadata && u.user_metadata.name) || u.email.split("@")[0];
+        onLogin({ id:u.id, name:uname, email:u.email, phone:"", role:"tenant", avatar:uname[0].toUpperCase() });
+        setLoading(false); onClose(); return;
+      }
+    } catch(e){
+      setLoading(false);
+      setError("Something went wrong. Please try again.");
+    }
   };
 
   const sendOtp = async () => {
@@ -3300,6 +3330,7 @@ export default function App(){
       const photoUrls = await uploadPhotos(form.photos);
       const row = formToDbRow(form, photoUrls);
       row.owner_email = (typeof user!=="undefined" && user && user.email) ? user.email : "";
+      if(typeof user!=="undefined" && user && user.id) row.owner_id = user.id;
       const { data, error } = await supabase.from("properties").insert(row).select().single();
       if(error){ console.error("Add listing failed:", error.message); alert("Could not publish listing: "+error.message); return; }
       if(data) setUserProps(prev => [dbRowToProp(data), ...prev]);
@@ -3361,7 +3392,8 @@ export default function App(){
     else setShowTenantDash(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try { if(supabase) await supabase.auth.signOut(); } catch(e){}
     setUser(null);
     setShowOwnerDash(false);
     setShowTenantDash(false);
@@ -3370,6 +3402,19 @@ export default function App(){
   // One account can use both views — switch freely
   const switchToOwner = () => { setShowTenantDash(false); setShowOwnerDash(true); };
   const switchToTenant = () => { setShowOwnerDash(false); setShowTenantDash(true); };
+
+  // Restore an existing login session on app load (stay logged in across refreshes)
+  useEffect(()=>{
+    if(!supabase) return;
+    supabase.auth.getSession().then(({ data })=>{
+      const sess = data && data.session;
+      if(sess && sess.user){
+        const u = sess.user;
+        const uname = (u.user_metadata && u.user_metadata.name) || u.email.split("@")[0];
+        setUser({ id:u.id, name:uname, email:u.email, phone:"", role:"tenant", avatar:uname[0].toUpperCase() });
+      }
+    });
+  },[]);
 
   const ALL_PROPS = [...userProps, ...PROPERTIES];
   const filtered = ALL_PROPS.filter(p=>{
