@@ -3447,7 +3447,6 @@ export default function App(){
           </div>
           <div>
             <div style={{fontFamily:"'Playfair Display',serif",fontWeight:900,fontSize:isMobile?16:18,color:T.text,lineHeight:1}}>Basha<span style={{color:T.red}}>.app</span></div>
-            {!isMobile&&<div style={{fontSize:8,letterSpacing:1.5,color:T.green,fontWeight:700,marginTop:1}}>{L.langBtn==="বাংলা 🇧🇩"?"FIND · RENT · LIST":"খুঁজুন · ভাড়া নিন · তালিকা দিন"}</div>}
           </div>
         </div>
         {/* Desktop nav — Map view toggle */}
