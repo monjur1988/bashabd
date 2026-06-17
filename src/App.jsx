@@ -3613,7 +3613,7 @@ export default function App(){
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,marginTop:20}}>
                 {user?(
                   <button onClick={()=>setShowWizard(true)} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
-                    ➕ {t("Add Your Property","আপনার সম্পত্তি যোগ করুন")}
+                    ➕ {lang==="bn"?"আপনার সম্পত্তি যোগ করুন":"Add Your Property"}
                   </button>
                 ):(
                   <button onClick={()=>{setAuthMode("signup");setShowAuth(true);}} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
@@ -3622,7 +3622,7 @@ export default function App(){
                 )}
                 <a href="https://facebook.com/Bashabdapp" target="_blank" rel="noopener noreferrer" style={{display:"inline-flex",alignItems:"center",gap:9,background:"#fff",border:`1.5px solid ${T.green}`,color:T.green,padding:"12px 24px",borderRadius:13,fontWeight:800,fontSize:14,textDecoration:"none",boxShadow:"0 2px 10px rgba(0,0,0,0.05)"}}>
                   <span style={{fontSize:18}}>💬</span>
-                  {t("Need help listing? We do it for you — Free!","তালিকাভুক্ত করতে সাহায্য চান? আমরা বিনামূল্যে করে দিই!")}
+                  {lang==="bn"?"তালিকাভুক্ত করতে সাহায্য চান? আমরা বিনামূল্যে করে দিই!":"Need help listing? We do it for you — Free!"}
                 </a>
               </div>
             </div>
