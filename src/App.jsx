@@ -128,8 +128,8 @@ const LANG = {
     tenantMode:"🔍 I'm Looking for Property", ownerMode:"🏠 I Have a Property to List",
     heroT1:"Find Your Next", heroT2:"Property", heroT3:"",
     heroTSub:"Find rentals and properties across all 8 divisions",
-    heroO1:"List Your Vacant Property", heroO2:"Reach Renters Directly — Free",
-    heroOSub:"Under 5 minutes · No agent fees · Direct tenant contact · Set inspection times",
+    heroO1:"List Your Property", heroO2:"Reach Directly",
+    heroOSub:"",
     startFree:"🚀 Start Free Listing →",
     searchPh:"🔍  Area, road, city… (e.g. Gulshan, Uttara)", searchBtn:"Search",
     filtersBtn:"⚙ Filters", resetBtn:"✕ Reset",
@@ -186,7 +186,7 @@ const LANG = {
     tenantMode:"🔍 আমি সম্পত্তি খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
     heroT1:"আপনার পরবর্তী", heroT2:"সম্পত্তি খুঁজুন", heroT3:"",
     heroTSub:"সারা বাংলাদেশের ৮ বিভাগে ভাড়া ও সম্পত্তি",
-    heroO1:"আপনার খালি সম্পত্তি তালিকা দিন", heroO2:"সরাসরি ভাড়াটিয়ার কাছে পৌঁছান",
+    heroO1:"আপনার সম্পত্তি তালিকাভুক্ত করুন", heroO2:"সরাসরি পৌঁছান",
     heroOSub:"মাত্র ৫ মিনিটে · কোনো এজেন্ট ফি নেই · সরাসরি যোগাযোগ",
     startFree:"🚀 বিনামূল্যে শুরু করুন →",
     searchPh:"🔍  এলাকা, রাস্তা, শহর…", searchBtn:"খুঁজুন",
@@ -3610,21 +3610,21 @@ export default function App(){
               <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:isMobile?26:36,fontWeight:900,margin:"0 0 10px",color:T.text,lineHeight:1.1}}>
                 {L.heroO1}<br/><span style={{color:T.green}}>{L.heroO2}</span>
               </h1>
-              <p style={{fontSize:15,color:T.muted,marginBottom:24}}>{L.heroOSub}</p>
-              <div style={{display:"flex",justifyContent:"center",gap:12,marginBottom:26,flexWrap:"wrap"}}>
-                {["✅ 100% Free","⚡ Live in Minutes","📞 Direct Contact","📅 Inspection Times","🔒 Verified Tenants"].map(t=>(
-                  <div key={t} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:20,padding:"6px 14px",fontSize:12,fontWeight:700,boxShadow:"0 1px 4px rgba(0,0,0,0.05)"}}>{t}</div>
-                ))}
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,marginTop:20}}>
+                {user?(
+                  <button onClick={()=>setShowWizard(true)} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
+                    ➕ {t("Add Your Property","আপনার সম্পত্তি যোগ করুন")}
+                  </button>
+                ):(
+                  <button onClick={()=>{setAuthMode("signup");setShowAuth(true);}} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
+                    {L.startFree}
+                  </button>
+                )}
+                <a href="https://facebook.com/Bashabdapp" target="_blank" rel="noopener noreferrer" style={{display:"inline-flex",alignItems:"center",gap:9,background:"#fff",border:`1.5px solid ${T.green}`,color:T.green,padding:"12px 24px",borderRadius:13,fontWeight:800,fontSize:14,textDecoration:"none",boxShadow:"0 2px 10px rgba(0,0,0,0.05)"}}>
+                  <span style={{fontSize:18}}>💬</span>
+                  {t("Need help listing? We do it for you — Free!","তালিকাভুক্ত করতে সাহায্য চান? আমরা বিনামূল্যে করে দিই!")}
+                </a>
               </div>
-              {user?(
-                <button onClick={()=>setShowOwnerDash(true)} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
-                  📊 Go to My Dashboard →
-                </button>
-              ):(
-                <button onClick={()=>{setAuthMode("signup");setShowAuth(true);}} style={{background:T.green,color:"#fff",border:"none",padding:"15px 44px",borderRadius:13,fontWeight:900,fontSize:16,cursor:"pointer",boxShadow:"0 4px 20px rgba(26,107,60,0.3)"}}>
-                  {L.startFree}
-                </button>
-              )}
             </div>
           ):(
             <div>
@@ -3701,13 +3701,6 @@ export default function App(){
             </div>
           )}
 
-          {user&&user.role!=="owner"&&(
-            <div style={{marginTop:16,background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:12,padding:"10px 16px",display:"inline-flex",alignItems:"center",gap:10,fontSize:13}}>
-              <span style={{fontSize:18}}>✨</span>
-              <span style={{color:T.green,fontWeight:600}}>3 new properties match your interests! </span>
-              <span onClick={()=>setShowTenantDash(true)} style={{color:T.green,fontWeight:800,cursor:"pointer",textDecoration:"underline"}}>View suggestions →</span>
-            </div>
-          )}
         </div>
       </div>
 
@@ -3718,10 +3711,10 @@ export default function App(){
           <div style={{marginBottom:32}}>
             <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:900,margin:"0 0 16px"}}>How Basha.app Works for Owners</h2>
             <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr 1fr":"repeat(auto-fit,minmax(190px,1fr))",gap:isMobile?10:14}}>
-              {[["1","📋","Create Your Listing","Fill details, set inspection times, upload photos — under 5 mins"],
-                ["2","⚡","Go Live Instantly","Reaches thousands of active renters immediately"],
-                ["3","📅","Manage Inspections","Tenants book from your available times — you get notified"],
-                ["4","📊","Track Performance","See views, saves & messages per property in your dashboard"]].map(([num,icon,title,desc])=>(
+              {[["1","📋","Create Your Listing","Add details & photos — under 5 mins"],
+                ["2","⚡","Go Live Instantly","Reaches active renters & buyers right away"],
+                ["3","📅","Manage Inspections","Visitors book from your available times"],
+                ["4","📊","Track Performance","See views, saves & messages per listing"]].map(([num,icon,title,desc])=>(
                 <div key={num} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:13,padding:"18px 16px",position:"relative",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
                   <div style={{position:"absolute",top:13,right:13,width:24,height:24,background:T.greenL,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,color:T.green}}>{num}</div>
                   <div style={{fontSize:26,marginBottom:7}}>{icon}</div>
@@ -3729,13 +3722,6 @@ export default function App(){
                   <div style={{fontSize:11,color:T.muted,lineHeight:1.6}}>{desc}</div>
                 </div>
               ))}
-            </div>
-            <div style={{textAlign:"center",marginTop:16}}>
-              {user?(
-                <button onClick={()=>setShowOwnerDash(true)} style={{background:T.green,color:"#fff",border:"none",padding:"12px 34px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer"}}>📊 Open My Dashboard</button>
-              ):(
-                <button onClick={()=>{setAuthMode("signup");setShowAuth(true);}} style={{background:T.green,color:"#fff",border:"none",padding:"12px 34px",borderRadius:11,fontWeight:900,fontSize:14,cursor:"pointer"}}>📋 Register & Start Listing</button>
-              )}
             </div>
           </div>
         )}
