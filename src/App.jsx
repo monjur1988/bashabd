@@ -1464,6 +1464,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               </div>
             </div>
           )}
+          {false && (
           <div style={{display:"flex",gap:8,marginBottom:14}}>
             {[["email","📧 Email"],["phone","📱 Mobile OTP"]].map(([t,label])=>(
               <button key={t} onClick={()=>{setLoginTab(t);setError("");setOtpSent(false);}} style={{flex:1,padding:"8px",border:"1.5px solid",borderRadius:9,cursor:"pointer",fontWeight:700,fontSize:12,borderColor:loginTab===t?T.red:T.border,background:loginTab===t?T.redL:"#fff",color:loginTab===t?T.red:"#666"}}>
@@ -1471,6 +1472,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               </button>
             ))}
           </div>
+          )}
           <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
             {mode==="signup" && inp("Full name *",name,setName)}
             {loginTab==="email" ? (
@@ -1511,6 +1513,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               {loading?"⏳ Please wait...":(mode==="signin"?"🔑 Sign In":"🚀 Create Account")}
             </button>
           )}
+          {false && (<>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
             <div style={{flex:1,height:1,background:T.border}}/>
             <span style={{fontSize:11,color:T.muted,fontWeight:600}}>OR CONTINUE WITH</span>
@@ -1533,6 +1536,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
               Facebook
             </button>
           </div>
+          </>)}
           <div style={{textAlign:"center",fontSize:12,color:T.muted}}>
             {mode==="signin"
               ?<span>Don't have an account? <span onClick={()=>setMode("signup")} style={{color:T.red,fontWeight:700,cursor:"pointer"}}>Register free →</span></span>
