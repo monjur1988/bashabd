@@ -1359,7 +1359,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
         if(error){ setError(error.message); setLoading(false); return; }
         // If email confirmation is off, session exists immediately
         if(data.session && data.user){
-          onLogin({ id:data.user.id, name:name.trim()||email.split("@")[0], email:data.user.email, phone:"", role:"tenant", avatar:(name||email)[0].toUpperCase() });
+          onLogin({ id:data.user.id, name:name.trim()||email.split("@")[0], email:data.user.email, phone:"", role:"tenant", avatar:(name||email)[0].toUpperCase() }, true);
           setLoading(false); onClose(); return;
         }
         // If confirmation is on, no session yet
@@ -3388,11 +3388,13 @@ export default function App(){
     });
   };
 
-  const handleLogin = async (u) => {
+  const handleLogin = async (u, isNew=false) => {
     setUser(u);
-    try {
-      await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"welcome",data:{email:u.email,name:u.name,role:u.role}})});
-    } catch(e){}
+    if(isNew){
+      try {
+        await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"welcome",data:{email:u.email,name:u.name,role:u.role}})});
+      } catch(e){}
+    }
     const isAdminUser = u.email && u.email.toLowerCase()==="monjur111@gmail.com";
     if(u.role==="owner"||u.role==="agent"||isAdminUser) setShowOwnerDash(true);
     else setShowTenantDash(true);
