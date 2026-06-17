@@ -1726,7 +1726,9 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
   const t = (en,bn)=>isBn?bn:en;
   const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL;
   const [tab, setTab] = useState("listings");
-  const myProps = [...userProps, ...PROPERTIES.filter(p=>p.ownerId==="owner1")];
+  const myEmail = (user.email||"").toLowerCase();
+  const myUserProps = isAdmin ? userProps : userProps.filter(p => (p.ownerEmail||"").toLowerCase() === myEmail);
+  const myProps = [...myUserProps, ...PROPERTIES.filter(p=>p.ownerId==="owner1")];
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
 
   const mockMessages = [
@@ -1809,7 +1811,7 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
                       <span style={{fontSize:11,color:T.muted}}>📅 <strong style={{color:T.green}}>{isBn?toBn(p.inspSlots.length):p.inspSlots.length}</strong> {t("inspect slots","টি পরিদর্শন সময়")}</span>
                       <span style={{marginLeft:"auto",fontSize:10,background:p.status==="for-rent"?T.greenL:T.redL,color:p.status==="for-rent"?T.green:T.red,padding:"2px 8px",borderRadius:8,fontWeight:700}}>{p.status==="for-rent"?L.forRent:L.forSale}</span>
                     </div>
-                    {userProps.some(up=>up.id===p.id) && (
+                    {(isAdmin || (p.ownerEmail||"").toLowerCase()===myEmail) && userProps.some(up=>up.id===p.id) && (
                       <div style={{borderTop:`1px solid ${T.border}`,padding:"8px 12px",display:"flex",gap:8}}>
                         <button onClick={()=>{ if(onEditProperty) onEditProperty(p); }} style={{flex:1,background:T.greenL,color:T.green,border:`1px solid ${T.greenM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>✏️ {t("Edit","সম্পাদনা")}</button>
                         <button onClick={()=>{ if(window.confirm(t("Delete this listing? This cannot be undone.","এই তালিকা মুছবেন? এটি ফেরানো যাবে না।"))){ if(onDeleteProperty) onDeleteProperty(p.id); } }} style={{flex:1,background:T.redL,color:T.red,border:`1px solid ${T.redM}`,padding:"8px",borderRadius:8,fontWeight:700,fontSize:12,cursor:"pointer"}}>🗑 {t("Delete","মুছুন")}</button>
