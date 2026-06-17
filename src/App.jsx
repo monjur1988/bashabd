@@ -3114,7 +3114,7 @@ function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
     if (!window.L) return;
     const L = window.L;
 
-    // Approximate coordinates for each property location
+    // Precise coordinates for well-known Dhaka/Chittagong areas (keep existing accuracy)
     const coordMap = {
       "Bashundhara R/A, Dhaka":   [23.8122, 90.4240],
       "Gulshan 1, Dhaka":         [23.7808, 90.4147],
@@ -3128,8 +3128,64 @@ function LeafletMap({ properties, onSelect, savedIds, onSaveToggle }) {
       "Purbachal New Town, Dhaka":[23.8204, 90.5031],
     };
 
+    // 8 divisions
+    const DIV_COORDS = {
+      "dhaka":[23.8103,90.4125], "chittagong":[22.3569,91.7832], "chattogram":[22.3569,91.7832],
+      "sylhet":[24.8949,91.8687], "rajshahi":[24.3636,88.6241], "khulna":[22.8456,89.5403],
+      "barishal":[22.7010,90.3535], "barisal":[22.7010,90.3535], "rangpur":[25.7439,89.2752],
+      "mymensingh":[24.7471,90.4203],
+    };
+
+    // 64 districts — centre coordinates
+    const DIST_COORDS = {
+      "dhaka":[23.8103,90.4125],"gazipur":[24.0023,90.4264],"narayanganj":[23.6238,90.5000],
+      "tangail":[24.2513,89.9167],"narsingdi":[23.9226,90.7150],"munshiganj":[23.5422,90.5305],
+      "manikganj":[23.8617,90.0003],"kishoreganj":[24.4449,90.7766],"gopalganj":[23.0050,89.8266],
+      "madaripur":[23.1641,90.1897],"shariatpur":[23.2423,90.4348],"rajbari":[23.7574,89.6445],
+      "faridpur":[23.6070,89.8429],"chittagong":[22.3569,91.7832],"chattogram":[22.3569,91.7832],
+      "coxsbazar":[21.4272,92.0058],"cox's bazar":[21.4272,92.0058],"coxs bazar":[21.4272,92.0058],
+      "bandarban":[22.1953,92.2184],"rangamati":[22.6533,92.1751],"khagrachhari":[23.1193,91.9847],
+      "feni":[23.0159,91.3976],"noakhali":[22.8696,91.0995],"lakshmipur":[22.9447,90.8282],
+      "comilla":[23.4607,91.1809],"cumilla":[23.4607,91.1809],"chandpur":[23.2333,90.6712],
+      "brahmanbaria":[23.9571,91.1119],"sylhet":[24.8949,91.8687],"moulvibazar":[24.4829,91.7774],
+      "habiganj":[24.3745,91.4155],"sunamganj":[25.0658,91.3950],"rajshahi":[24.3636,88.6241],
+      "natore":[24.4206,89.0000],"naogaon":[24.7936,88.9318],"chapainawabganj":[24.5965,88.2776],
+      "nawabganj":[24.5965,88.2776],"pabna":[24.0064,89.2372],"sirajganj":[24.4534,89.7007],
+      "bogura":[24.8466,89.3773],"bogra":[24.8466,89.3773],"joypurhat":[25.0968,89.0227],
+      "khulna":[22.8456,89.5403],"bagerhat":[22.6516,89.7859],"satkhira":[22.7185,89.0705],
+      "jessore":[23.1664,89.2081],"jashore":[23.1664,89.2081],"jhenaidah":[23.5448,89.1539],
+      "magura":[23.4855,89.4198],"narail":[23.1729,89.5128],"kushtia":[23.9013,89.1206],
+      "chuadanga":[23.6402,88.8418],"meherpur":[23.7622,88.6318],"barishal":[22.7010,90.3535],
+      "barisal":[22.7010,90.3535],"bhola":[22.6859,90.6483],"patuakhali":[22.3596,90.3299],
+      "pirojpur":[22.5841,89.9720],"jhalokati":[22.6406,90.1987],"barguna":[22.0953,90.1121],
+      "rangpur":[25.7439,89.2752],"dinajpur":[25.6217,88.6354],"thakurgaon":[26.0337,88.4616],
+      "panchagarh":[26.3411,88.5542],"nilphamari":[25.9310,88.8560],"lalmonirhat":[25.9923,89.2847],
+      "kurigram":[25.8054,89.6362],"gaibandha":[25.3288,89.5286],"mymensingh":[24.7471,90.4203],
+      "jamalpur":[24.9375,89.9371],"sherpur":[25.0205,90.0153],"netrokona":[24.8709,90.7279],
+    };
+
+    const norm = (x)=> (x||"").toLowerCase().replace(/[^a-z\s']/g,"").trim();
+
+    const findCoords = (p)=>{
+      // step 1 - exact precise match
+      if(coordMap[p.location]) return coordMap[p.location];
+      const locN = norm(p.location);
+      const divN = norm(p.division);
+      // step 2 - district name appears in location or division text
+      for(const d in DIST_COORDS){
+        if(locN.includes(d) || divN.includes(d)) return DIST_COORDS[d];
+      }
+      // step 3 - division match
+      if(DIV_COORDS[divN]) return DIV_COORDS[divN];
+      for(const dv in DIV_COORDS){
+        if(locN.includes(dv) || divN.includes(dv)) return DIV_COORDS[dv];
+      }
+      // step 4 - nothing
+      return null;
+    };
+
     props.forEach(p => {
-      const coords = coordMap[p.location];
+      const coords = findCoords(p);
       if (!coords) return;
 
       const price = p.status === "for-rent"
