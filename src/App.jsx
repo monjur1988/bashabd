@@ -1780,7 +1780,7 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
         </button>
         {onSwitchToTenant&&(
           <button onClick={onSwitchToTenant} style={{margin:"10px 16px 0",background:T.redL,color:T.red,border:`1.5px solid ${T.redM}`,padding:"10px",borderRadius:11,fontWeight:700,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-            🔍 {t("Switch to Find a Home","বাসা খোঁজায় যান")}
+            🔍 {t("Switch to Find Property","সম্পত্তি খোঁজায় যান")}
           </button>
         )}
         <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,margin:"14px 0 0",flexShrink:0,overflowX:"auto"}}>
