@@ -3435,6 +3435,19 @@ export default function App(){
   const handleSelectProperty = (p) => {
     Analytics.track("view", {propId: p.id, title: p.title, location: p.location});
     setSelected(p);
+    // Record a real view in the database (skip the owner viewing their own listing)
+    try {
+      const viewerEmail = (user && user.email) ? user.email.toLowerCase() : "";
+      const ownerEmail = (p.ownerEmail || "").toLowerCase();
+      const isOwnListing = viewerEmail && ownerEmail && viewerEmail === ownerEmail;
+      if (supabase && p.isUserListing && !isOwnListing) {
+        supabase.rpc("increment_views", { row_id: p.id }).then(({ error })=>{
+          if(error) console.error("View count failed:", error.message);
+        });
+        // reflect locally so the owner dashboard total feels live
+        setUserProps(prev => prev.map(x => x.id===p.id ? {...x, views:(x.views||0)+1} : x));
+      }
+    } catch(e){ console.error(e); }
   };
   const handleSaveToggle = id => {
     setSavedIds(prev => {
@@ -3729,7 +3742,7 @@ export default function App(){
         {/* Results header with List / Map toggle */}
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:18,flexWrap:"wrap",gap:12}}>
           <div>
-            <h2 style={{margin:0,fontSize:22,fontWeight:800,fontFamily:"'Playfair Display',serif"}}>{filtered.length} {lang==="bn"?"টি সম্পত্তি":"Properties"}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
+            <h2 style={{margin:0,fontSize:22,fontWeight:800,fontFamily:"'Playfair Display',serif"}}>{(user && user.email && user.email.toLowerCase()==="monjur111@gmail.com") ? `${filtered.length} ${lang==="bn"?"টি সম্পত্তি":"Properties"}` : (lang==="bn"?"সকল তালিকা":"All Listings")}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
             <div style={{fontSize:13,color:T.muted,marginTop:3}}>{status==="for-rent"?(lang==="bn"?"ভাড়া":"Rentals"):status==="for-sale"?(lang==="bn"?"বিক্রয়":"For Sale"):(lang==="bn"?"সকল তালিকা":"All Listings")}</div>
           </div>
           <div style={{display:"flex",gap:14,alignItems:"center",flexWrap:"wrap"}}>
