@@ -3743,7 +3743,7 @@ export default function App(){
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:18,flexWrap:"wrap",gap:12}}>
           <div>
             <h2 style={{margin:0,fontSize:22,fontWeight:800,fontFamily:"'Playfair Display',serif"}}>{(user && user.email && user.email.toLowerCase()==="monjur111@gmail.com") ? `${filtered.length} ${lang==="bn"?"টি সম্পত্তি":"Properties"}` : (lang==="bn"?"সকল তালিকা":"All Listings")}{divF!=="All Divisions"?` in ${divF}`:""}</h2>
-            <div style={{fontSize:13,color:T.muted,marginTop:3}}>{status==="for-rent"?(lang==="bn"?"ভাড়া":"Rentals"):status==="for-sale"?(lang==="bn"?"বিক্রয়":"For Sale"):(lang==="bn"?"সকল তালিকা":"All Listings")}</div>
+            {status!=="all" && <div style={{fontSize:13,color:T.muted,marginTop:3}}>{status==="for-rent"?(lang==="bn"?"ভাড়া":"Rentals"):(lang==="bn"?"বিক্রয়":"For Sale")}</div>}
           </div>
           <div style={{display:"flex",gap:14,alignItems:"center",flexWrap:"wrap"}}>
             {/* Status segmented control */}
