@@ -240,7 +240,8 @@ const LANG = {
 };
 
 /* ── MOCK DATA ────────────────────────────────── */
-const PROPERTIES = [
+const PROPERTIES = []; // demo listings removed for public launch — original kept below as PROPERTIES_DEMO
+const PROPERTIES_DEMO = [
   { id:1,  title:"Spacious 3-Bed in Bashundhara R/A", titleBn:"বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড",  type:"apartment",  status:"for-rent", price:32000,  area:1450, beds:3, baths:2, cars:1, floor:7,  location:"Bashundhara R/A, Dhaka",   division:"Dhaka",      img:"", featured:true,  tags:["Semi-Furnished","Gas","Generator"], petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"], inspSlots:["Fri 30 May — 10:00 AM","Fri 30 May — 2:00 PM","Sat 31 May — 11:00 AM"], agent:"Rahim & Sons", phone:"01711-234567", age:1, views:142, saves:23, ownerId:"owner1" },
   { id:2,  title:"Modern Studio near Gulshan 1", titleBn:"গুলশান ১-এর কাছে আধুনিক স্টুডিও",        type:"apartment",  status:"for-rent", price:18000,  area:480,  beds:1, baths:1, cars:0, floor:4,  location:"Gulshan 1, Dhaka",         division:"Dhaka",      img:"", featured:true,  tags:["Furnished","WiFi","AC"],           petFriendly:true,  flatmate:true,  utilities:["WiFi","Water","AC"],          inspSlots:["Sat 31 May — 10:00 AM","Sun 1 Jun — 10:00 AM"],                       agent:"Home Finders BD", phone:"01811-345678", age:2, views:98,  saves:17, ownerId:"owner1" },
   { id:3,  title:"Family Flat in Uttara Sector 6", titleBn:"উত্তরা সেক্টর ৬-এ ফ্যামিলি ফ্ল্যাট",      type:"apartment",  status:"for-rent", price:22000,  area:1200, beds:3, baths:2, cars:0, floor:3,  location:"Uttara Sector 6, Dhaka",   division:"Dhaka",      img:"", featured:false, tags:["Unfurnished","Generator"],         petFriendly:false, flatmate:false, utilities:["Gas","Water","Generator"],    inspSlots:["Sun 1 Jun — 11:00 AM","Mon 2 Jun — 4:00 PM"],                         agent:"Trust Realty", phone:"01911-456789", age:5, views:67,  saves:9,  ownerId:"owner2" },
@@ -1719,6 +1720,9 @@ function AnalyticsTab({myProps, lang="en"}){
 
 /* ── OWNER DASHBOARD ──────────────────────────── */
 const ADMIN_EMAIL = "monjur111@gmail.com";
+// Set to true later (when traffic grows) to show view counts to all listers.
+// While false, only the admin sees view counts; listers don't (avoids discouraging "0 views").
+const SHOW_VIEWS_TO_OWNERS = false;
 
 function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProperty, savedProps, userProps=[], onDeleteProperty, onEditProperty, lang="en", L}){
   const isMobile = useIsMobile();
@@ -1731,15 +1735,8 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
   const myProps = [...myUserProps, ...PROPERTIES.filter(p=>p.ownerId==="owner1")];
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
 
-  const mockMessages = [
-    {id:1,from:t("Karim Ahmed","করিম আহমেদ"),phone:"01711-111111",property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),subject:t("Inspection request","পরিদর্শনের অনুরোধ"),body:t("Hi, I'd like to visit this Saturday at 10am if possible.","আসসালামু আলাইকুম, সম্ভব হলে আমি এই শনিবার সকাল ১০টায় দেখতে চাই।"),date:t("Today","আজ"),read:false},
-    {id:2,from:t("Fatima Begum","ফাতিমা বেগম"),phone:"01811-222222",property:t("Modern Studio near Gulshan 1","গুলশান ১-এর কাছে আধুনিক স্টুডিও"),subject:t("Question about rent","ভাড়া সম্পর্কে প্রশ্ন"),body:t("Is the WiFi included? Also can I move in on 1st June?","ওয়াইফাই কি অন্তর্ভুক্ত? আমি কি ১লা জুন উঠতে পারব?"),date:t("Yesterday","গতকাল"),read:true},
-    {id:3,from:t("Rashed Khan","রাশেদ খান"),phone:"01911-333333",property:t("Luxury Penthouse, Baridhara","বারিধারায় লাক্সারি পেন্টহাউস"),subject:t("Interested in long lease","দীর্ঘমেয়াদী লিজে আগ্রহী"),body:t("Looking for 2-year lease. Can we discuss terms?","২ বছরের লিজ খুঁজছি। আমরা কি শর্তগুলো নিয়ে আলোচনা করতে পারি?"),date:t("2 days ago","২ দিন আগে"),read:false},
-  ];
-  const mockBookings = [
-    {id:1,tenant:t("Karim Ahmed","করিম আহমেদ"),phone:"01711-111111",property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),slot:t("Sat 31 May — 10:00 AM","শনি ৩১ মে — সকাল ১০:০০"),status:"pending"},
-    {id:2,tenant:t("Nusrat Jahan","নুসরাত জাহান"),phone:"01611-444444",property:t("Luxury Penthouse, Baridhara","বারিধারায় লাক্সারি পেন্টহাউস"),slot:t("By appointment","অ্যাপয়েন্টমেন্টে"),status:"confirmed"},
-  ];
+  const mockMessages = []; // empty until real messaging is built
+  const mockBookings = []; // empty until real bookings is built
 
   const totalViews = myProps.reduce((a,p)=>a+p.views,0);
   const totalSaves = myProps.reduce((a,p)=>a+p.saves,0);
@@ -1765,8 +1762,8 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
               <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:32,height:32,color:"#fff",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
             </div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-            {[[myProps.length,t("Listings","তালিকা"),"🏠"],[totalViews,t("Views","ভিউ"),"👁"],[totalSaves,t("Saved","সেভ"),"❤️"],[unreadMsgs,t("New Msgs","নতুন বার্তা"),"✉️"]].map(([val,label,icon])=>(
+          <div style={{display:"grid",gridTemplateColumns:`repeat(${(SHOW_VIEWS_TO_OWNERS||isAdmin)?4:3},1fr)`,gap:8}}>
+            {[[myProps.length,t("Listings","তালিকা"),"🏠"],...((SHOW_VIEWS_TO_OWNERS||isAdmin)?[[totalViews,t("Views","ভিউ"),"👁"]]:[]),[totalSaves,t("Saved","সেভ"),"❤️"],[unreadMsgs,t("New Msgs","নতুন বার্তা"),"✉️"]].map(([val,label,icon])=>(
               <div key={label} style={{background:"rgba(255,255,255,0.12)",borderRadius:10,padding:"10px 8px",textAlign:"center"}}>
                 <div style={{fontSize:20}}>{icon}</div>
                 <div style={{color:"#fff",fontWeight:900,fontSize:18,lineHeight:1}}>{isBn?toBn(val):val}</div>
@@ -1806,7 +1803,7 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
                       </div>
                     </div>
                     <div style={{borderTop:`1px solid ${T.border}`,padding:"8px 12px",display:"flex",gap:16,background:"#fafafa"}}>
-                      <span style={{fontSize:11,color:T.muted}}>👁 <strong style={{color:T.text}}>{isBn?toBn(p.views):p.views}</strong> {t("views","ভিউ")}</span>
+                      {(SHOW_VIEWS_TO_OWNERS || isAdmin) && <span style={{fontSize:11,color:T.muted}}>👁 <strong style={{color:T.text}}>{isBn?toBn(p.views):p.views}</strong> {t("views","ভিউ")}</span>}
                       <span style={{fontSize:11,color:T.muted}}>❤️ <strong style={{color:T.red}}>{isBn?toBn(p.saves):p.saves}</strong> {t("saves","সেভ")}</span>
                       <span style={{fontSize:11,color:T.muted}}>📅 <strong style={{color:T.green}}>{isBn?toBn(p.inspSlots.length):p.inspSlots.length}</strong> {t("inspect slots","টি পরিদর্শন সময়")}</span>
                       <span style={{marginLeft:"auto",fontSize:10,background:p.status==="for-rent"?T.greenL:T.redL,color:p.status==="for-rent"?T.green:T.red,padding:"2px 8px",borderRadius:8,fontWeight:700}}>{p.status==="for-rent"?L.forRent:L.forSale}</span>
@@ -1824,6 +1821,13 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
           )}
           {tab==="messages" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {mockMessages.length===0 && (
+                <div style={{textAlign:"center",padding:"40px 20px",color:T.muted}}>
+                  <div style={{fontSize:40,marginBottom:10}}>✉️</div>
+                  <div style={{fontWeight:700,fontSize:15,color:T.text,marginBottom:4}}>{t("No messages yet","এখনও কোন বার্তা নেই")}</div>
+                  <div style={{fontSize:13}}>{t("When someone contacts you about a listing, it'll appear here.","কেউ আপনার তালিকা সম্পর্কে যোগাযোগ করলে এখানে দেখা যাবে।")}</div>
+                </div>
+              )}
               {mockMessages.map(m=>(
                 <div key={m.id} style={{background:"#fff",border:`1.5px solid ${m.read?T.border:T.green}`,borderRadius:12,padding:"13px 14px",boxShadow:m.read?"none":"0 2px 10px rgba(26,107,60,0.1)"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
@@ -1852,6 +1856,13 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
           )}
           {tab==="bookings" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {mockBookings.length===0 && (
+                <div style={{textAlign:"center",padding:"40px 20px",color:T.muted}}>
+                  <div style={{fontSize:40,marginBottom:10}}>📅</div>
+                  <div style={{fontWeight:700,fontSize:15,color:T.text,marginBottom:4}}>{t("No inspection bookings yet","এখনও কোন পরিদর্শন বুকিং নেই")}</div>
+                  <div style={{fontSize:13}}>{t("Inspection requests from interested visitors will show here.","আগ্রহী দর্শকদের পরিদর্শন অনুরোধ এখানে দেখা যাবে।")}</div>
+                </div>
+              )}
               {mockBookings.map(b=>(
                 <div key={b.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
@@ -1875,7 +1886,13 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
               ))}
             </div>
           )}
-          {tab==="analytics" && <AnalyticsTab myProps={myProps} lang={lang}/>}
+          {tab==="analytics" && ((SHOW_VIEWS_TO_OWNERS||isAdmin) ? <AnalyticsTab myProps={myProps} lang={lang}/> : (
+            <div style={{textAlign:"center",padding:"40px 20px",color:T.muted}}>
+              <div style={{fontSize:40,marginBottom:10}}>📊</div>
+              <div style={{fontWeight:700,fontSize:15,color:T.text,marginBottom:4}}>{t("Analytics coming soon","বিশ্লেষণ শীঘ্রই আসছে")}</div>
+              <div style={{fontSize:13}}>{t("Detailed performance stats for your listings will be available here soon.","আপনার তালিকার বিস্তারিত পরিসংখ্যান শীঘ্রই এখানে পাওয়া যাবে।")}</div>
+            </div>
+          ))}
           {tab==="admin" && isAdmin && <AdminPanel lang={lang}/>}
         </div>
       </div>
@@ -1892,14 +1909,8 @@ function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, on
   const [tab, setTab] = useState("saved");
   const saved = PROPERTIES.filter(p=>savedIds.includes(p.id));
 
-  const mockBookings = [
-    {id:1,property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),slot:t("Sat 31 May — 10:00 AM","শনি ৩১ মে — সকাল ১০:০০"),status:"confirmed",agent:t("Rahim & Sons","রহিম অ্যান্ড সন্স"),phone:"01711-234567"},
-    {id:2,property:t("Modern Studio near Gulshan 1","গুলশান ১-এর কাছে আধুনিক স্টুডিও"),slot:t("Sun 1 Jun — 10:00 AM","রবি ১ জুন — সকাল ১০:০০"),status:"pending",agent:t("Home Finders BD","হোম ফাইন্ডার্স বিডি"),phone:"01811-345678"},
-  ];
-  const mockMessages = [
-    {id:1,to:t("Rahim & Sons","রহিম অ্যান্ড সন্স"),property:t("Spacious 3-Bed in Bashundhara R/A","বসুন্ধরা আবাসিকে প্রশস্ত ৩ বেড"),subject:t("Inspection request","পরিদর্শনের অনুরোধ"),date:t("Today","আজ"),status:"replied"},
-    {id:2,to:t("Home Finders BD","হোম ফাইন্ডার্স বিডি"),property:t("Modern Studio near Gulshan 1","গুলশান ১-এর কাছে আধুনিক স্টুডিও"),subject:t("Question about rent","ভাড়া সম্পর্কে প্রশ্ন"),date:t("Yesterday","গতকাল"),status:"sent"},
-  ];
+  const mockBookings = []; // empty until real bookings is built
+  const mockMessages = []; // empty until real messaging is built
 
   const savedTypes   = [...new Set(saved.map(p=>p.type))];
   const savedDivs    = [...new Set(saved.map(p=>p.division))];
@@ -1976,6 +1987,13 @@ function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, on
           )}
           {tab==="bookings" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {mockBookings.length===0 && (
+                <div style={{textAlign:"center",padding:"40px 20px",color:T.muted}}>
+                  <div style={{fontSize:40,marginBottom:10}}>📅</div>
+                  <div style={{fontWeight:700,fontSize:15,color:T.text,marginBottom:4}}>{t("No bookings yet","এখনও কোন বুকিং নেই")}</div>
+                  <div style={{fontSize:13}}>{t("Inspections you book will appear here.","আপনার বুক করা পরিদর্শন এখানে দেখা যাবে।")}</div>
+                </div>
+              )}
               {mockBookings.map(b=>(
                 <div key={b.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"14px"}}>
                   <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
@@ -1993,6 +2011,13 @@ function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, on
           )}
           {tab==="messages" && (
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {mockMessages.length===0 && (
+                <div style={{textAlign:"center",padding:"40px 20px",color:T.muted}}>
+                  <div style={{fontSize:40,marginBottom:10}}>✉️</div>
+                  <div style={{fontWeight:700,fontSize:15,color:T.text,marginBottom:4}}>{t("No messages yet","এখনও কোন বার্তা নেই")}</div>
+                  <div style={{fontSize:13}}>{t("Messages you send to owners will appear here.","মালিকদের পাঠানো বার্তা এখানে দেখা যাবে।")}</div>
+                </div>
+              )}
               {mockMessages.map(m=>(
                 <div key={m.id} style={{background:"#fff",border:`1px solid ${T.border}`,borderRadius:12,padding:"13px 14px"}}>
                   <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
