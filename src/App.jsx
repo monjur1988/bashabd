@@ -1809,7 +1809,7 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
   const [tab, setTab] = useState("listings");
   const myEmail = (user.email||"").toLowerCase();
   const myUserProps = isAdmin ? userProps : userProps.filter(p => (p.ownerEmail||"").toLowerCase() === myEmail);
-  const myProps = [...myUserProps, ...PROPERTIES.filter(p=>p.ownerId==="owner1")];
+  const myProps = myUserProps;
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
 
   const mockMessages = []; // empty until real messaging is built
@@ -1978,13 +1978,13 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
 }
 
 /* ── TENANT DASHBOARD ─────────────────────────── */
-function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, onUnsave, searchHistory, lang="en", L}){
+function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, onUnsave, searchHistory, allProps=[], lang="en", L}){
   const isMobile = useIsMobile();
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
   const [tab, setTab] = useState("saved");
-  const saved = PROPERTIES.filter(p=>savedIds.includes(p.id));
+  const saved = allProps.filter(p=>savedIds.includes(p.id));
 
   const mockBookings = []; // empty until real bookings is built
   const mockMessages = []; // empty until real messaging is built
@@ -1992,7 +1992,7 @@ function TenantDashboard({user, onClose, onLogout, onSwitchToOwner, savedIds, on
   const savedTypes   = [...new Set(saved.map(p=>p.type))];
   const savedDivs    = [...new Set(saved.map(p=>p.division))];
   const avgPrice     = saved.length>0 ? Math.round(saved.reduce((a,p)=>a+p.price,0)/saved.length) : 30000;
-  const suggestions  = PROPERTIES.filter(p=>
+  const suggestions  = allProps.filter(p=>
     !savedIds.includes(p.id) &&
     (savedTypes.includes(p.type)||savedDivs.includes(p.division)) &&
     Math.abs(p.price-avgPrice)/avgPrice<0.5
@@ -4097,7 +4097,7 @@ export default function App(){
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
       {showResetPw&&<ResetPasswordModal onClose={()=>setShowResetPw(false)}/>}
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onSwitchToTenant={switchToTenant} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} userProps={userProps} onDeleteProperty={handleDeleteProperty} onEditProperty={(p)=>{setEditingProp(p);setShowOwnerDash(false);setShowWizard(true);}} lang={lang} L={L}/>}
-      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} onSwitchToOwner={switchToOwner} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
+      {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} onSwitchToOwner={switchToOwner} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} allProps={ALL_PROPS} lang={lang} L={L}/>}
       {showAbout&&<AboutModal onClose={()=>setShowAbout(false)} lang={lang}/>}
 
       {/* PWA Install Banner */}
