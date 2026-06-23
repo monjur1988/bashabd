@@ -3623,6 +3623,11 @@ export default function App(){
     if(activeQ.includes("wifi")&&!p.utilities.includes("WiFi")) return false;
     return true;
   }).sort((a,b)=>{
+    // Saved properties always float to the top
+    const aSaved = savedIds.includes(a.id) ? 1 : 0;
+    const bSaved = savedIds.includes(b.id) ? 1 : 0;
+    if(aSaved !== bSaved) return bSaved - aSaved;
+    // Then apply the chosen sort within each group
     if(sortBy==="price-asc") return a.price-b.price;
     if(sortBy==="price-desc") return b.price-a.price;
     if(sortBy==="newest") return a.age-b.age;
