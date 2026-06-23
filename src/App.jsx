@@ -1317,6 +1317,54 @@ function affordBadge(price,lang="en"){
 }
 
 /* ── AUTH MODAL ───────────────────────────────── */
+function ResetPasswordModal({onClose}){
+  const [pass,setPass] = useState("");
+  const [pass2,setPass2] = useState("");
+  const [error,setError] = useState("");
+  const [loading,setLoading] = useState(false);
+  const [done,setDone] = useState(false);
+
+  const save = async () => {
+    setError("");
+    if(!pass || pass.length<6){ setError("Password must be at least 6 characters."); return; }
+    if(pass!==pass2){ setError("Passwords don't match."); return; }
+    if(!supabase){ setError("Service unavailable. Please try again."); return; }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: pass });
+      setLoading(false);
+      if(error){ setError(error.message); return; }
+      setDone(true);
+    } catch(e){ setLoading(false); setError("Something went wrong."); }
+  };
+
+  return (
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.5)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:9999,padding:20}}>
+      <div style={{background:"#fff",borderRadius:16,padding:"28px 24px",maxWidth:380,width:"100%",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
+        {done ? (
+          <div style={{textAlign:"center"}}>
+            <div style={{fontSize:44,marginBottom:12}}>✅</div>
+            <div style={{fontWeight:900,fontSize:19,color:T.text,marginBottom:8}}>Password updated!</div>
+            <div style={{fontSize:14,color:T.muted,marginBottom:20}}>You can now sign in with your new password.</div>
+            <button onClick={onClose} style={{width:"100%",background:T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:15,cursor:"pointer"}}>Continue</button>
+          </div>
+        ) : (
+          <>
+            <div style={{fontWeight:900,fontSize:20,color:T.text,marginBottom:6}}>Set a new password</div>
+            <div style={{fontSize:13,color:T.muted,marginBottom:18}}>Enter and confirm your new password below.</div>
+            <input type="password" value={pass} onChange={e=>setPass(e.target.value)} placeholder="New password" style={{width:"100%",boxSizing:"border-box",padding:"12px 14px",border:`1.5px solid ${T.border}`,borderRadius:10,fontSize:14,marginBottom:10}}/>
+            <input type="password" value={pass2} onChange={e=>setPass2(e.target.value)} placeholder="Confirm new password" style={{width:"100%",boxSizing:"border-box",padding:"12px 14px",border:`1.5px solid ${T.border}`,borderRadius:10,fontSize:14,marginBottom:14}}/>
+            {error && <div style={{background:T.redL,border:`1px solid ${T.redM}`,borderRadius:8,padding:"8px 12px",fontSize:12,color:T.red,marginBottom:12,fontWeight:600}}>{error}</div>}
+            <button onClick={save} disabled={loading} style={{width:"100%",background:loading?"#d1d5db":T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:15,cursor:loading?"not-allowed":"pointer"}}>
+              {loading?"⏳ Saving...":"Save new password"}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AuthModal({onClose, onLogin, initialMode="signin"}){
   const isMobile = useIsMobile();
   const [mode,      setMode]      = useState(initialMode);
@@ -1330,6 +1378,25 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
   const [otpSent,   setOtpSent]   = useState(false);
   const [error,     setError]     = useState("");
   const [loading,   setLoading]   = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
+  const sendReset = async () => {
+    setError("");
+    if(!email){ setError("Please enter your email first."); return; }
+    if(!supabase){ setError("Service unavailable. Please try again shortly."); return; }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: "https://www.bashabd.app/"
+      });
+      setLoading(false);
+      if(error){ setError(error.message); return; }
+      setResetSent(true);
+    } catch(e){
+      setLoading(false);
+      setError("Something went wrong. Please try again.");
+    }
+  };
 
   const mkUser = (overrides={}) => ({
     id: Date.now().toString(),
@@ -1510,9 +1577,19 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
           </div>
           {error && <div style={{background:T.redL,border:`1px solid ${T.redM}`,borderRadius:8,padding:"8px 12px",fontSize:12,color:T.red,marginBottom:12,fontWeight:600}}>{error}</div>}
           {(loginTab==="email"||(loginTab==="phone"&&otpSent)) && (
-            <button onClick={submit} disabled={loading} style={{width:"100%",background:loading?"#d1d5db":T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:15,cursor:loading?"not-allowed":"pointer",marginBottom:14,transition:"background .2s"}}>
+            <button onClick={submit} disabled={loading} style={{width:"100%",background:loading?"#d1d5db":T.red,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:15,cursor:loading?"not-allowed":"pointer",marginBottom:10,transition:"background .2s"}}>
               {loading?"⏳ Please wait...":(mode==="signin"?"🔑 Sign In":"🚀 Create Account")}
             </button>
+          )}
+          {mode==="signin" && loginTab==="email" && !resetSent && (
+            <div style={{textAlign:"center",marginBottom:14}}>
+              <span onClick={sendReset} style={{fontSize:12,color:T.muted,cursor:"pointer",textDecoration:"underline"}}>Forgot password?</span>
+            </div>
+          )}
+          {resetSent && (
+            <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:8,padding:"10px 12px",fontSize:12,color:T.green,marginBottom:14,fontWeight:600,textAlign:"center"}}>
+              ✓ Password reset link sent! Check your email ({email}) and click the link to set a new password.
+            </div>
           )}
           {false && (<>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
@@ -3373,6 +3450,7 @@ export default function App(){
   const [user,setUser]           = useState(null);
   const [showAuth,setShowAuth]   = useState(false);
   const [authMode,setAuthMode]   = useState("signin");
+  const [showResetPw,setShowResetPw] = useState(false);
   const [showOwnerDash,setShowOwnerDash] = useState(false);
   const [showTenantDash,setShowTenantDash] = useState(false);
   // ── FIX: showMap state (was missing — caused "Can't find variable: showMap") ──
@@ -3516,6 +3594,11 @@ export default function App(){
         setUser({ id:u.id, name:uname, email:u.email, phone:"", role:"tenant", avatar:uname[0].toUpperCase() });
       }
     });
+    // Detect when the user arrives via a password-reset email link
+    const { data: sub } = supabase.auth.onAuthStateChange((event)=>{
+      if(event==="PASSWORD_RECOVERY"){ setShowResetPw(true); }
+    });
+    return ()=>{ if(sub && sub.subscription) sub.subscription.unsubscribe(); };
   },[]);
 
   const ALL_PROPS = [...userProps, ...PROPERTIES];
@@ -4007,6 +4090,7 @@ export default function App(){
       <DetailModal p={selected} onClose={()=>setSelected(null)} L={L} lang={lang}/>
       {showWizard&&<ListWizard onClose={()=>{setShowWizard(false);setEditingProp(null);}} onAddArea={handleAddArea} onAddProperty={handleAddProperty} editingProp={editingProp} onEditProperty={handleEditProperty} customAreas={customAreas}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onLogin={handleLogin} initialMode={authMode}/>}
+      {showResetPw&&<ResetPasswordModal onClose={()=>setShowResetPw(false)}/>}
       {showOwnerDash&&user&&<OwnerDashboard user={user} onClose={()=>setShowOwnerDash(false)} onLogout={()=>{handleLogout();}} onSwitchToTenant={switchToTenant} onListProperty={()=>{setShowOwnerDash(false);setShowWizard(true);}} savedProps={savedIds} userProps={userProps} onDeleteProperty={handleDeleteProperty} onEditProperty={(p)=>{setEditingProp(p);setShowOwnerDash(false);setShowWizard(true);}} lang={lang} L={L}/>}
       {showTenantDash&&user&&<TenantDashboard user={user} onClose={()=>setShowTenantDash(false)} onLogout={()=>{handleLogout();}} onSwitchToOwner={switchToOwner} savedIds={savedIds} onUnsave={id=>setSavedIds(p=>p.filter(x=>x!==id))} searchHistory={searchHistory} lang={lang} L={L}/>}
       {showAbout&&<AboutModal onClose={()=>setShowAbout(false)} lang={lang}/>}
