@@ -3522,12 +3522,8 @@ export default function App(){
   };
 
   // Saved & history
-  const [savedIds,setSavedIds]   = useState([1,6]);
-  const [searchHistory,setSearchHistory] = useState([
-    {query:"Gulshan",filters:"Apartment · Dhaka",time:"2h ago"},
-    {query:"Dhanmondi",filters:"For Rent · All Types",time:"Yesterday"},
-    {query:"",filters:"Apartment · Chittagong",time:"2 days ago"},
-  ]);
+  const [savedIds,setSavedIds]   = useState([]);
+  const [searchHistory,setSearchHistory] = useState([]);
 
   const L = LANG[lang];
   const QUICK_FILTERS = lang==="bn" ? QUICK_FILTERS_BN : QUICK_FILTERS_EN;
