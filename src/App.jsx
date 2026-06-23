@@ -3594,7 +3594,16 @@ export default function App(){
         setUser({ id:u.id, name:uname, email:u.email, phone:"", role:"tenant", avatar:uname[0].toUpperCase() });
       }
     });
-    // Detect when the user arrives via a password-reset email link
+    // Detect when the user arrives via a password-reset email link.
+    // Step one - check the URL immediately since the event can fire before this listener attaches
+    try {
+      const hash = window.location.hash || "";
+      const qs = window.location.search || "";
+      if (hash.includes("type=recovery") || qs.includes("type=recovery")) {
+        setShowResetPw(true);
+      }
+    } catch(e){}
+    // Step two - also listen for the live event to cover other timing
     const { data: sub } = supabase.auth.onAuthStateChange((event)=>{
       if(event==="PASSWORD_RECOVERY"){ setShowResetPw(true); }
     });
