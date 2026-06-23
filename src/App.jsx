@@ -3548,13 +3548,34 @@ export default function App(){
       }
     } catch(e){ console.error(e); }
   };
-  const handleSaveToggle = id => {
-    setSavedIds(prev => {
-      const saving = !prev.includes(id);
-      if(saving) Analytics.track("save", {propId:id});
-      return saving ? [...prev, id] : prev.filter(x=>x!==id);
-    });
+  const handleSaveToggle = async (id) => {
+    const saving = !savedIds.includes(id);
+    // Update UI immediately (optimistic)
+    setSavedIds(prev => saving ? [...prev, id] : prev.filter(x=>x!==id));
+    if(saving) Analytics.track("save", {propId:id});
+    // Persist to database if logged in
+    if(supabase && user && user.id){
+      try {
+        if(saving){
+          const { error } = await supabase.from("saved_properties").insert({ user_id:user.id, property_id:id });
+          if(error && error.code!=="23505"){ console.error("Save failed:", error.message); }
+        } else {
+          const { error } = await supabase.from("saved_properties").delete().eq("user_id",user.id).eq("property_id",id);
+          if(error){ console.error("Unsave failed:", error.message); }
+        }
+      } catch(e){ console.error(e); }
+    }
   };
+
+  // Load this user's saved properties from the database when they log in
+  useEffect(()=>{
+    if(!supabase || !user || !user.id){ setSavedIds([]); return; }
+    (async()=>{
+      const { data, error } = await supabase.from("saved_properties").select("property_id").eq("user_id", user.id);
+      if(error){ console.error("Load saves failed:", error.message); return; }
+      if(data) setSavedIds(data.map(r=>r.property_id));
+    })();
+  },[user]);
 
   const handleLogin = async (u, isNew=false) => {
     setUser(u);
