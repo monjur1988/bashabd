@@ -2284,7 +2284,7 @@ function DetailModal({p, onClose, L, lang="en"}){
             </div>
           </div>
           <div style={{display:"flex",borderBottom:`2px solid ${T.border}`,marginBottom:16,overflowX:"auto"}}>
-            {[[L.overviewTab,"overview"],[L.utilTab,"utils"],[L.msgTab,"message"],[L.inspTab,"inspect"]].map(([label,val])=>(
+            {[[L.overviewTab,"overview"],[L.utilTab,"utils"],[L.inspTab,"inspect"]].map(([label,val])=>(
               <button key={val} onClick={()=>setTab(val)} style={{padding:"8px 14px",border:"none",background:"transparent",cursor:"pointer",fontWeight:700,fontSize:12,whiteSpace:"nowrap",color:tab===val?T.red:T.muted,borderBottom:tab===val?`2.5px solid ${T.red}`:"2.5px solid transparent",marginBottom:-2}}>
                 {label}
               </button>
@@ -2363,47 +2363,28 @@ function DetailModal({p, onClose, L, lang="en"}){
           )}
           {tab==="inspect" && (
             <div>
-              {booked?(
-                <div style={{background:T.greenL,border:`1px solid ${T.greenM}`,borderRadius:14,padding:"28px",textAlign:"center"}}>
-                  <div style={{fontSize:40,marginBottom:10}}>🎉</div>
-                  <div style={{fontWeight:800,fontSize:16,color:T.green,marginBottom:4}}>{L.bookedTitle}</div>
-                  <div style={{fontSize:12,color:T.muted}}>Time: <strong>{selectedSlot}</strong></div>
-                  <div style={{fontSize:12,color:T.muted,marginTop:2}}>Agent: {p.agent} · {p.phone}</div>
+              <div style={{fontWeight:700,fontSize:14,marginBottom:4}}>{t("Inspection Times","পরিদর্শনের সময়")}</div>
+              <div style={{fontSize:12,color:T.muted,marginBottom:14}}>{t("Times the owner is available. Call to confirm your visit.","মালিক যে সময়ে উপলব্ধ। ভিজিট নিশ্চিত করতে কল করুন।")}</div>
+              {(p.inspSlots && p.inspSlots.length>0) ? (
+                <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+                  {p.inspSlots.map(slot=>(
+                    <div key={slot} style={{padding:"12px 15px",borderRadius:11,border:`1.5px solid ${T.border}`,background:"#fff",display:"flex",alignItems:"center"}}>
+                      <span style={{fontSize:13,fontWeight:700,color:T.text}}>📅 {slot}</span>
+                    </div>
+                  ))}
                 </div>
-              ):(
-                <>
-                  <div style={{fontWeight:700,fontSize:14,marginBottom:4}}>Book an Inspection</div>
-                  <div style={{fontSize:12,color:T.muted,marginBottom:14}}>Pick a slot — the owner/agent will confirm your visit.</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-                    {p.inspSlots.map(slot=>(
-                      <button key={slot} onClick={()=>setSlot(slot)} style={{padding:"12px 15px",borderRadius:11,border:"2px solid",textAlign:"left",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",borderColor:selectedSlot===slot?T.green:T.border,background:selectedSlot===slot?T.greenL:"#fff"}}>
-                        <span style={{fontSize:13,fontWeight:700,color:selectedSlot===slot?T.green:T.text}}>📅 {slot}</span>
-                        <div style={{width:18,height:18,borderRadius:"50%",border:`2px solid ${selectedSlot===slot?T.green:T.border}`,background:selectedSlot===slot?T.green:"#fff",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          {selectedSlot===slot&&<div style={{width:7,height:7,borderRadius:"50%",background:"#fff"}}/>}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                  <button onClick={async()=>{
-                    if(!selectedSlot) return;
-                    setBooked(true);
-                    Analytics.track("inspection", {propId: p.id, title: p.title, slot: selectedSlot});
-                    try {
-                      await fetch("/api/send-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"owner_inspection_booked",data:{ownerEmail:"monjur111@gmail.com",propertyTitle:p.title,tenantName:"Tenant",tenantPhone:"—",slot:selectedSlot}})});
-                    } catch(e){ console.log("Email error:",e); }
-                  }} disabled={!selectedSlot}
-                    style={{width:"100%",background:selectedSlot?T.green:"#d1d5db",color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:selectedSlot?"pointer":"not-allowed"}}>
-                    {L.confirmBookBtn}
-                  </button>
-                  <div style={{marginTop:10,fontSize:12,color:T.muted,textAlign:"center"}}>Or call directly: <strong style={{color:T.green}}>{p.phone}</strong></div>
-                </>
+              ) : (
+                <div style={{fontSize:13,color:T.muted,marginBottom:16,padding:"14px",background:"#f7f7f7",borderRadius:11,textAlign:"center"}}>{t("No fixed times listed — call to arrange a visit.","কোন নির্দিষ্ট সময় নেই — ভিজিট ঠিক করতে কল করুন।")}</div>
               )}
+              <a href={p.phone?`tel:${p.phone.replace(/[^0-9+]/g,"")}`:undefined} onClick={(e)=>{ if(!window.confirm(t(`Call ${p.phone}?`,`${p.phone} নম্বরে কল করবেন?`))){ e.preventDefault(); } }} style={{display:"flex",alignItems:"center",justifyContent:"center",background:T.green,color:"#fff",textDecoration:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14}}>📞 {t("Call to arrange","কল করে ঠিক করুন")} — {p.phone}</a>
             </div>
           )}
-          <div style={{display:"flex",gap:9,marginTop:18}}>
-            <button onClick={()=>setTab("message")} style={{flex:1,background:T.red,color:"#fff",border:"none",padding:"12px",borderRadius:11,fontWeight:800,fontSize:13,cursor:"pointer"}}>{L.enquireBtn}</button>
-            <button style={{flex:1,background:T.green,color:"#fff",border:"none",padding:"12px",borderRadius:11,fontWeight:800,fontSize:13,cursor:"pointer"}}>{L.callBtn} {p.phone}</button>
-            <button onClick={()=>setTab("inspect")} style={{background:T.greenL,color:T.green,border:`2px solid ${T.green}`,padding:"12px 13px",borderRadius:11,fontWeight:800,fontSize:13,cursor:"pointer",whiteSpace:"nowrap"}}>{L.inspectBtn}</button>
+          <div style={{display:"flex",flexDirection:"column",gap:9,marginTop:18}}>
+            <div style={{display:"flex",gap:9}}>
+              <a href={p.phone?`tel:${p.phone.replace(/[^0-9+]/g,"")}`:undefined} onClick={(e)=>{ if(!window.confirm(t(`Call ${p.phone}?`,`${p.phone} নম্বরে কল করবেন?`))){ e.preventDefault(); } }} style={{flex:1,textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",background:T.green,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>📞 {p.phone}</a>
+              <a href={p.phone?`https://wa.me/${(()=>{let n=p.phone.replace(/[^0-9]/g,"");if(n.startsWith("0"))n="88"+n;else if(!n.startsWith("880"))n="880"+n;return n;})()}`:undefined} target="_blank" rel="noopener noreferrer" style={{flex:1,textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"#25D366",color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>💬 WhatsApp</a>
+            </div>
+            <button onClick={()=>setTab("inspect")} style={{background:T.greenL,color:T.green,border:`2px solid ${T.green}`,padding:"12px",borderRadius:11,fontWeight:800,fontSize:13,cursor:"pointer"}}>{L.inspectBtn}</button>
           </div>
         </div>
       </div>
