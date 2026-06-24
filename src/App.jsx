@@ -2363,8 +2363,8 @@ function DetailModal({p, onClose, L, lang="en"}){
           )}
           {tab==="inspect" && (
             <div>
-              <div style={{fontWeight:700,fontSize:14,marginBottom:4}}>{t("Inspection Times","পরিদর্শনের সময়")}</div>
-              <div style={{fontSize:12,color:T.muted,marginBottom:14}}>{t("Times the owner is available. Call to confirm your visit.","মালিক যে সময়ে উপলব্ধ। ভিজিট নিশ্চিত করতে কল করুন।")}</div>
+              <div style={{fontWeight:700,fontSize:14,marginBottom:4}}>{lang==="bn"?"পরিদর্শনের সময়":"Inspection Times"}</div>
+              <div style={{fontSize:12,color:T.muted,marginBottom:14}}>{lang==="bn"?"মালিক যে সময়ে উপলব্ধ। ভিজিট নিশ্চিত করতে কল করুন।":"Times the owner is available. Call to confirm your visit."}</div>
               {(p.inspSlots && p.inspSlots.length>0) ? (
                 <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
                   {p.inspSlots.map(slot=>(
@@ -2374,14 +2374,14 @@ function DetailModal({p, onClose, L, lang="en"}){
                   ))}
                 </div>
               ) : (
-                <div style={{fontSize:13,color:T.muted,marginBottom:16,padding:"14px",background:"#f7f7f7",borderRadius:11,textAlign:"center"}}>{t("No fixed times listed — call to arrange a visit.","কোন নির্দিষ্ট সময় নেই — ভিজিট ঠিক করতে কল করুন।")}</div>
+                <div style={{fontSize:13,color:T.muted,marginBottom:16,padding:"14px",background:"#f7f7f7",borderRadius:11,textAlign:"center"}}>{lang==="bn"?"কোন নির্দিষ্ট সময় নেই — ভিজিট ঠিক করতে কল করুন।":"No fixed times listed — call to arrange a visit."}</div>
               )}
-              <a href={p.phone?`tel:${p.phone.replace(/[^0-9+]/g,"")}`:undefined} onClick={(e)=>{ if(!window.confirm(t(`Call ${p.phone}?`,`${p.phone} নম্বরে কল করবেন?`))){ e.preventDefault(); } }} style={{display:"flex",alignItems:"center",justifyContent:"center",background:T.green,color:"#fff",textDecoration:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14}}>📞 {t("Call to arrange","কল করে ঠিক করুন")} — {p.phone}</a>
+              <a href={p.phone?`tel:${p.phone.replace(/[^0-9+]/g,"")}`:undefined} onClick={(e)=>{ if(!window.confirm(lang==="bn"?`${p.phone} নম্বরে কল করবেন?`:`Call ${p.phone}?`)){ e.preventDefault(); } }} style={{display:"flex",alignItems:"center",justifyContent:"center",background:T.green,color:"#fff",textDecoration:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14}}>📞 {lang==="bn"?"কল করে ঠিক করুন":"Call to arrange"} — {p.phone}</a>
             </div>
           )}
           <div style={{display:"flex",flexDirection:"column",gap:9,marginTop:18}}>
             <div style={{display:"flex",gap:9}}>
-              <a href={p.phone?`tel:${p.phone.replace(/[^0-9+]/g,"")}`:undefined} onClick={(e)=>{ if(!window.confirm(t(`Call ${p.phone}?`,`${p.phone} নম্বরে কল করবেন?`))){ e.preventDefault(); } }} style={{flex:1,textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",background:T.green,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>📞 {p.phone}</a>
+              <a href={p.phone?`tel:${p.phone.replace(/[^0-9+]/g,"")}`:undefined} onClick={(e)=>{ if(!window.confirm(lang==="bn"?`${p.phone} নম্বরে কল করবেন?`:`Call ${p.phone}?`)){ e.preventDefault(); } }} style={{flex:1,textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",background:T.green,color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>📞 {p.phone}</a>
               <a href={p.phone?`https://wa.me/${(()=>{let n=p.phone.replace(/[^0-9]/g,"");if(n.startsWith("0"))n="88"+n;else if(!n.startsWith("880"))n="880"+n;return n;})()}`:undefined} target="_blank" rel="noopener noreferrer" style={{flex:1,textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"#25D366",color:"#fff",border:"none",padding:"13px",borderRadius:11,fontWeight:800,fontSize:14,cursor:"pointer"}}>💬 WhatsApp</a>
             </div>
             <button onClick={()=>setTab("inspect")} style={{background:T.greenL,color:T.green,border:`2px solid ${T.green}`,padding:"12px",borderRadius:11,fontWeight:800,fontSize:13,cursor:"pointer"}}>{L.inspectBtn}</button>
