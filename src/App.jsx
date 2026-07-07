@@ -42,6 +42,46 @@ function dbRowToProp(r){
   };
 }
 
+// Compress + resize an image File in the browser BEFORE storing/uploading.
+// Shrinks a 3-8MB phone photo to ~200-400KB. Returns a data URL (JPEG).
+// This is the key fix for slow/failing uploads on mobile connections.
+function compressImage(file, maxDim = 1600, quality = 0.72){
+  return new Promise((resolve) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+          let { width, height } = img;
+          // Scale down so the longest side is at most maxDim
+          if(width > height && width > maxDim){ height = Math.round(height * maxDim / width); width = maxDim; }
+          else if(height >= width && height > maxDim){ width = Math.round(width * maxDim / height); height = maxDim; }
+          const canvas = document.createElement("canvas");
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          try {
+            const dataUrl = canvas.toDataURL("image/jpeg", quality);
+            resolve(dataUrl);
+          } catch(e){ resolve(ev.target.result); } // fallback: original
+        };
+        img.onerror = () => resolve(ev.target.result); // fallback: original
+        img.src = ev.target.result;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    } catch(e){ resolve(null); }
+  });
+}
+
+// Rough size of a base64 data URL in MB (for the size badge in the UI)
+function dataUrlSizeMB(dataUrl){
+  if(!dataUrl || typeof dataUrl !== "string") return "0.0";
+  const b64 = dataUrl.split(",")[1] || "";
+  const bytes = Math.round(b64.length * 3 / 4);
+  return (bytes / 1024 / 1024).toFixed(1);
+}
+
 // Upload base64/blob photos to Supabase Storage, return array of public URLs
 async function uploadPhotos(photos){
   if(!supabase || !Array.isArray(photos) || photos.length===0) return [];
@@ -2649,20 +2689,19 @@ function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEdit
                       const files=Array.from(e.target.files);
                       const remaining=10-form.photos.length;
                       const toAdd=files.slice(0,remaining);
-                      toAdd.forEach(f=>{
-                        const reader=new FileReader();
-                        reader.onload=ev=>{
-                          setForm(prev=>({...prev,photos:[...prev.photos,{url:ev.target.result,name:f.name,size:(f.size/1024/1024).toFixed(1)}]}));
-                        };
-                        reader.readAsDataURL(f);
+                      toAdd.forEach(async f=>{
+                        const compressed=await compressImage(f);
+                        if(!compressed) return;
+                        setForm(prev=>({...prev,photos:[...prev.photos,{url:compressed,name:f.name,size:dataUrlSizeMB(compressed)}]}));
                       });
+                      e.target.value="";
                     }}
                   />
                   <div style={{fontSize:28,marginBottom:6}}>📷</div>
                   <div style={{fontWeight:700,fontSize:13,color:form.photos.length>0?T.green:T.muted}}>
                     {form.photos.length>0?`${form.photos.length} photo${form.photos.length>1?"s":""} selected — tap to add more`:"Click here to select photos"}
                   </div>
-                  <div style={{fontSize:11,color:T.muted,marginTop:4}}>JPG, PNG, WEBP · Max 5MB each · Up to 10 photos</div>
+                  <div style={{fontSize:11,color:T.muted,marginTop:4}}>JPG, PNG, WEBP · Auto-compressed for fast upload · Up to 10 photos</div>
                 </label>
                 {form.photos.length>0&&(
                   <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginTop:12}}>
@@ -2691,13 +2730,12 @@ function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEdit
                           onChange={e=>{
                             const files=Array.from(e.target.files);
                             const remaining=10-form.photos.length;
-                            files.slice(0,remaining).forEach(f=>{
-                              const reader=new FileReader();
-                              reader.onload=ev=>{
-                                setForm(prev=>({...prev,photos:[...prev.photos,{url:ev.target.result,name:f.name,size:(f.size/1024/1024).toFixed(1)}]}));
-                              };
-                              reader.readAsDataURL(f);
+                            files.slice(0,remaining).forEach(async f=>{
+                              const compressed=await compressImage(f);
+                              if(!compressed) return;
+                              setForm(prev=>({...prev,photos:[...prev.photos,{url:compressed,name:f.name,size:dataUrlSizeMB(compressed)}]}));
                             });
+                            e.target.value="";
                           }}
                         />
                         <span style={{fontSize:20}}>➕</span>
