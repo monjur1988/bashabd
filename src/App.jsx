@@ -162,7 +162,7 @@ const PHOTO_PLACEHOLDER = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent
 /* ── TRANSLATIONS ─────────────────────────────── */
 const LANG = {
   en:{
-    topBar:"Bangladesh's #1 Rental & Property Portal — 1.2M+ users trust Basha.app",
+    topBar:"Rentals & properties across all 8 divisions of Bangladesh",
     signIn:"Sign In", register:"Register", agentLogin:"Agent Login", langBtn:"বাংলা 🇧🇩",
     listBtn:"+ List Property Free",
     tenantMode:"🔍 I'm Looking for Property", ownerMode:"🏠 I Have a Property to List",
@@ -220,7 +220,7 @@ const LANG = {
     checkRajukDesc:"Verify RAJUK or CDA building approval for Dhaka properties.",
   },
   bn:{
-    topBar:"বাংলাদেশের #১ ভাড়া ও সম্পত্তি পোর্টাল — ১২ লক্ষ+ ব্যবহারকারী · Basha.app",
+    topBar:"বাংলাদেশের ৮টি বিভাগ জুড়ে ভাড়া ও সম্পত্তি · Basha.app",
     signIn:"সাইন ইন", register:"নিবন্ধন", agentLogin:"এজেন্ট লগইন", langBtn:"English 🇬🇧",
     listBtn:"+ বিনামূল্যে তালিকা দিন",
     tenantMode:"🔍 আমি সম্পত্তি খুঁজছি", ownerMode:"🏠 আমার সম্পত্তি আছে",
