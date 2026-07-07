@@ -1427,7 +1427,7 @@ function AuthModal({onClose, onLogin, initialMode="signin"}){
     setLoading(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: "https://www.bashabd.app/"
+        redirectTo: "https://bashabd.app/"
       });
       setLoading(false);
       if(error){ setError(error.message); return; }
