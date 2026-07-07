@@ -2010,7 +2010,7 @@ function OwnerDashboard({user, onClose, onLogout, onSwitchToTenant, onListProper
               <div style={{fontSize:13}}>{t("Detailed performance stats for your listings will be available here soon.","আপনার তালিকার বিস্তারিত পরিসংখ্যান শীঘ্রই এখানে পাওয়া যাবে।")}</div>
             </div>
           ))}
-          {tab==="admin" && isAdmin && <AdminPanel lang={lang}/>}
+          {tab==="admin" && isAdmin && <AdminPanel lang={lang} allListings={userProps}/>}
         </div>
       </div>
     </div>
@@ -2291,7 +2291,15 @@ function DetailModal({p, onClose, L, lang="en"}){
   const [booked, setBooked]        = useState(false);
   const [msgSent, setMsgSent]      = useState(false);
   const [msg, setMsg]              = useState({name:"",phone:"",email:"",subject:"I'd like to schedule an inspection",prefDate:"",prefTime:"Anytime",body:""});
+  const [photoIdx, setPhotoIdx]    = useState(0);
   if(!p) return null;
+  // Build the gallery: use all uploaded photos, fall back to the cover image
+  const gallery = (Array.isArray(p.photos) && p.photos.length>0)
+    ? p.photos.map(x => (x && x.url) ? x.url : x).filter(Boolean)
+    : (p.img ? [p.img] : []);
+  const galleryLen = gallery.length;
+  const curPhoto = gallery[photoIdx] || p.img || PHOTO_PLACEHOLDER;
+  const goPhoto = (dir) => setPhotoIdx(i => (i + dir + galleryLen) % galleryLen);
   const pr = fmtPrice(p.price,p.status,lang);
   const upd=(k,v)=>setMsg(m=>({...m,[k]:v}));
   const inp=(ph,key,type="text")=>(
@@ -2302,8 +2310,15 @@ function DetailModal({p, onClose, L, lang="en"}){
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:3000,display:"flex",alignItems:isMobile?"flex-end":"center",justifyContent:"center",padding:isMobile?0:12,overflowY:"auto"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:20,width:"100%",maxWidth:700,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(0,0,0,0.3)",margin:"auto"}}>
         <div style={{position:"relative",borderRadius:"20px 20px 0 0",overflow:"hidden"}}>
-          <img src={p.img||PHOTO_PLACEHOLDER} alt={p.title} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=PHOTO_PLACEHOLDER;}} style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
-          <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)"}}>✕</button>
+          <img src={curPhoto} alt={p.title} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=PHOTO_PLACEHOLDER;}} style={{width:"100%",height:260,objectFit:"cover",display:"block"}}/>
+          <button onClick={onClose} style={{position:"absolute",top:10,right:14,background:"#fff",border:"none",borderRadius:"50%",width:36,height:36,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 10px rgba(0,0,0,.25)",zIndex:2}}>✕</button>
+          {galleryLen>1&&(
+            <>
+              <button onClick={()=>goPhoto(-1)} aria-label="Previous photo" style={{position:"absolute",top:"50%",left:12,transform:"translateY(-50%)",background:"rgba(0,0,0,0.45)",border:"none",borderRadius:"50%",width:38,height:38,color:"#fff",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>‹</button>
+              <button onClick={()=>goPhoto(1)} aria-label="Next photo" style={{position:"absolute",top:"50%",right:12,transform:"translateY(-50%)",background:"rgba(0,0,0,0.45)",border:"none",borderRadius:"50%",width:38,height:38,color:"#fff",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>›</button>
+              <div style={{position:"absolute",top:12,left:14,background:"rgba(0,0,0,0.6)",color:"#fff",fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20}}>{photoIdx+1} / {galleryLen}</div>
+            </>
+          )}
           <div style={{position:"absolute",bottom:12,left:14,display:"flex",gap:6}}>
             <span style={{background:p.status==="for-sale"?T.red:T.green,color:"#fff",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>
               {p.status==="for-sale"?"FOR SALE":"FOR RENT"}
@@ -2311,6 +2326,14 @@ function DetailModal({p, onClose, L, lang="en"}){
             {p.featured&&<span style={{background:T.gold,color:"#111",fontSize:11,fontWeight:800,padding:"4px 12px",borderRadius:20}}>{L.featured}</span>}
           </div>
         </div>
+        {galleryLen>1&&(
+          <div style={{display:"flex",gap:7,padding:"10px 14px 0",overflowX:"auto"}}>
+            {gallery.map((src,i)=>(
+              <img key={i} src={src} alt={`Photo ${i+1}`} onClick={()=>setPhotoIdx(i)} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=PHOTO_PLACEHOLDER;}}
+                style={{width:64,height:48,objectFit:"cover",borderRadius:8,cursor:"pointer",flexShrink:0,border:i===photoIdx?`2.5px solid ${T.red}`:"2.5px solid transparent",opacity:i===photoIdx?1:0.65,transition:"opacity .15s"}}/>
+            ))}
+          </div>
+        )}
         <div style={{padding:"20px 24px 26px"}}>
           <div style={{marginBottom:16}}>
             <div style={{fontSize:26,fontWeight:900,color:T.red,fontFamily:"'Playfair Display',serif",lineHeight:1}}>
@@ -2344,6 +2367,12 @@ function DetailModal({p, onClose, L, lang="en"}){
                 {p.petFriendly&&<span style={{background:"#f0fdf4",color:"#166534",fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:10,border:"1px solid #bbf7d0"}}>🐾 Pet Friendly</span>}
                 {p.flatmate&&<span style={{background:"#eff6ff",color:"#1d4ed8",fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:10,border:"1px solid #bfdbfe"}}>{L.flatmate}</span>}
               </div>
+              {p.desc && p.desc.trim() && (
+                <div style={{marginBottom:14}}>
+                  <div style={{fontSize:11,fontWeight:800,color:T.muted,letterSpacing:.6,marginBottom:6}}>{lang==="bn"?"বিবরণ":"DESCRIPTION"}</div>
+                  <div style={{fontSize:13,color:T.text,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{p.desc}</div>
+                </div>
+              )}
               <div style={{background:T.bg,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   <div style={{width:40,height:40,background:T.green,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:900,fontSize:16}}>{p.agent[0]}</div>
@@ -2689,12 +2718,14 @@ function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEdit
                       const files=Array.from(e.target.files);
                       const remaining=10-form.photos.length;
                       const toAdd=files.slice(0,remaining);
-                      toAdd.forEach(async f=>{
-                        const compressed=await compressImage(f);
-                        if(!compressed) return;
-                        setForm(prev=>({...prev,photos:[...prev.photos,{url:compressed,name:f.name,size:dataUrlSizeMB(compressed)}]}));
-                      });
                       e.target.value="";
+                      Promise.all(toAdd.map(async f=>{
+                        const compressed=await compressImage(f);
+                        return compressed?{url:compressed,name:f.name,size:dataUrlSizeMB(compressed)}:null;
+                      })).then(results=>{
+                        const valid=results.filter(Boolean);
+                        if(valid.length) setForm(prev=>({...prev,photos:[...prev.photos,...valid].slice(0,10)}));
+                      });
                     }}
                   />
                   <div style={{fontSize:28,marginBottom:6}}>📷</div>
@@ -2730,12 +2761,15 @@ function ListWizard({onClose, onAddArea, onAddProperty, editingProp=null, onEdit
                           onChange={e=>{
                             const files=Array.from(e.target.files);
                             const remaining=10-form.photos.length;
-                            files.slice(0,remaining).forEach(async f=>{
-                              const compressed=await compressImage(f);
-                              if(!compressed) return;
-                              setForm(prev=>({...prev,photos:[...prev.photos,{url:compressed,name:f.name,size:dataUrlSizeMB(compressed)}]}));
-                            });
+                            const toAdd=files.slice(0,remaining);
                             e.target.value="";
+                            Promise.all(toAdd.map(async f=>{
+                              const compressed=await compressImage(f);
+                              return compressed?{url:compressed,name:f.name,size:dataUrlSizeMB(compressed)}:null;
+                            })).then(results=>{
+                              const valid=results.filter(Boolean);
+                              if(valid.length) setForm(prev=>({...prev,photos:[...prev.photos,...valid].slice(0,10)}));
+                            });
                           }}
                         />
                         <span style={{fontSize:20}}>➕</span>
@@ -3070,23 +3104,24 @@ const Analytics = {
 };
 
 /* ── ADMIN PANEL (admin-only, site-wide view) ── */
-function AdminPanel({lang="en"}){
+function AdminPanel({lang="en", allListings=[]}){
   const isBn = lang==="bn";
   const t = (en,bn)=>isBn?bn:en;
   const bn = v => isBn?toBn(v):v;
   const stats = Analytics.getStats();
   const pname = p => isBn&&p.titleBn ? p.titleBn : p.title;
 
-  // Site-wide totals across ALL listings (owners + everyone)
-  const allProps = PROPERTIES.map(p=>{
+  // Site-wide totals across ALL real listings (loaded from Supabase)
+  const sourceList = (Array.isArray(allListings) && allListings.length>0) ? allListings : PROPERTIES;
+  const allProps = sourceList.map(p=>{
     const live = Analytics.getPropStats(p.id);
-    return {...p, totalViews:p.views+live.views, totalSaves:p.saves+live.saves, enquiries:live.enquiries};
+    return {...p, totalViews:(p.views||0)+live.views, totalSaves:(p.saves||0)+live.saves, enquiries:live.enquiries};
   }).sort((a,b)=>b.totalViews-a.totalViews);
 
   const siteViews = allProps.reduce((a,p)=>a+p.totalViews,0);
   const siteSaves = allProps.reduce((a,p)=>a+p.totalSaves,0);
   const siteEnq = allProps.reduce((a,p)=>a+p.enquiries,0);
-  const totalListings = PROPERTIES.length;
+  const totalListings = sourceList.length;
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
